@@ -17,6 +17,7 @@ const buttonVariants = cva(
         danger: "bg-destructive/10 text-destructive hover:bg-destructive/15",
       },
       size: {
+        default: "h-11 rounded-full px-6 text-sm",
         sm: "h-9 rounded-full px-4 text-sm",
         md: "h-11 rounded-full px-6 text-sm",
         lg: "h-[52px] rounded-full px-7 text-base",
