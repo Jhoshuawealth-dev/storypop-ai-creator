@@ -1,24 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Logo } from "@/components/logo";
+import { pageHead } from "@/lib/seo";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: pageHead("Welcome", "Turn your ideas into engaging UGC videos with AI."),
+  component: Splash,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Splash() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const authed = window.localStorage.getItem("storypop-auth") === "1";
+      navigate({ to: authed ? "/home" : "/welcome", replace: true });
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center justify-between bg-primary-deep px-6 py-16 text-primary-foreground">
+      <div />
+      <div className="flex flex-col items-center text-center">
+        <span className="animate-splash-logo">
+          <Logo size={88} className="bg-primary ring-8 ring-primary/30" />
+        </span>
+        <h1 className="mt-8 font-display text-3xl font-extrabold tracking-tight">STORYPOP AI</h1>
+        <p className="mt-1.5 text-xs font-bold tracking-[0.28em] text-primary-light">AI UGC CREATOR APP</p>
+        <p className="mt-5 max-w-64 text-sm leading-relaxed text-primary-light/90">
+          Turn your ideas into engaging UGC videos with AI.
+        </p>
+      </div>
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex gap-1.5" aria-hidden="true">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="h-2 w-2 animate-dot-pulse rounded-full bg-primary-light"
+              style={{ animationDelay: `${i * 0.2}s` }}
+            />
+          ))}
+        </div>
+        <p className="text-sm font-medium text-primary-light/80">Creating your next story...</p>
+      </div>
     </div>
   );
 }

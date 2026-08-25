@@ -1,0 +1,65 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Info } from "lucide-react";
+import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
+import { ProgressRing } from "@/components/ui/progress-ring";
+import { pageHead } from "@/lib/seo";
+import { formatDuration, usage } from "@/lib/mock-data";
+
+export const Route = createFileRoute("/usage")({
+  head: pageHead("Video Usage", "Track your monthly video minutes."),
+  component: Usage,
+});
+
+function Usage() {
+  const remaining = usage.totalSeconds - usage.usedSeconds;
+
+  return (
+    <AppShell title="Video Usage" showBack backTo="/home">
+      <div className="mt-6 flex flex-col items-center rounded-3xl bg-card p-7 shadow-card">
+        <span className="rounded-full bg-primary-soft px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
+          {usage.plan}
+        </span>
+        <ProgressRing value={remaining / usage.totalSeconds} size={180} stroke={16} className="mt-6">
+          <span className="font-display text-3xl font-extrabold text-foreground">{formatDuration(remaining)}</span>
+          <span className="text-xs font-semibold text-muted-foreground">of {formatDuration(usage.totalSeconds)}</span>
+        </ProgressRing>
+
+        <div className="mt-7 grid w-full grid-cols-3 divide-x divide-border text-center">
+          <div>
+            <p className="font-display text-lg font-extrabold text-foreground">{formatDuration(usage.usedSeconds)}</p>
+            <p className="text-[11px] font-semibold text-muted-foreground">Used</p>
+          </div>
+          <div>
+            <p className="font-display text-lg font-extrabold text-primary">{formatDuration(remaining)}</p>
+            <p className="text-[11px] font-semibold text-muted-foreground">Remaining</p>
+          </div>
+          <div>
+            <p className="font-display text-lg font-extrabold text-foreground">{usage.resetDate}</p>
+            <p className="text-[11px] font-semibold text-muted-foreground">Reset date</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-primary-soft/70 p-4">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+        <p className="text-sm leading-relaxed text-secondary-foreground">
+          Your video allowance resets every billing cycle. Unused minutes don't roll over.
+        </p>
+      </div>
+
+      <div className="mt-6 space-y-3">
+        <Link to="/subscription" className="block">
+          <Button size="lg" fullWidth>
+            Upgrade Plan
+          </Button>
+        </Link>
+        <Link to="/subscription/credits" className="block">
+          <Button size="lg" variant="outline" fullWidth>
+            Buy Additional Minutes
+          </Button>
+        </Link>
+      </div>
+    </AppShell>
+  );
+}
