@@ -10,10 +10,10 @@ export function TopBar({
   right,
 }: {
   title: string;
-  subtitle?: string;
-  showBack?: boolean;
-  backTo?: string;
-  right?: ReactNode;
+  subtitle?: string | undefined;
+  showBack?: boolean | undefined;
+  backTo?: string | undefined;
+  right?: ReactNode | undefined;
 }) {
   const navigate = useNavigate();
   return (

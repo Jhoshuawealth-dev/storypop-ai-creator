@@ -22,9 +22,9 @@ export function AreaChart({
   const path = points
     .map(([x, y], i) => {
       if (i === 0) return `M ${x} ${y}`;
-      const [px, py] = points[i - 1];
-      const cx = (px + x) / 2;
-      return `C ${cx} ${py}, ${cx} ${y}, ${x} ${y}`;
+      const prev = points[i - 1]!;
+      const cx = (prev[0] + x) / 2;
+      return `C ${cx} ${prev[1]}, ${cx} ${y}, ${x} ${y}`;
     })
     .join(" ");
 

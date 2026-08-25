@@ -23,7 +23,7 @@ export function StatusBadge({ status }: { status: ProjectStatus | string }) {
     published: "bg-primary text-primary-foreground",
   };
   return (
-    <span className={cn("rounded-full px-2.5 py-1 text-[11px] font-bold capitalize", styles[status] ?? styles.draft)}>
+    <span className={cn("rounded-full px-2.5 py-1 text-[11px] font-bold capitalize", styles[status] ?? styles["draft"])}>
       {status}
     </span>
   );
