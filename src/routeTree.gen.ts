@@ -17,6 +17,16 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as CreateIndexRouteImport } from './routes/create.index'
+import { Route as CreateCharacterRouteImport } from './routes/create.character'
+import { Route as CreateGeneratingRouteImport } from './routes/create.generating'
+import { Route as CreateIdeaRouteImport } from './routes/create.idea'
+import { Route as CreateResultRouteImport } from './routes/create.result'
+import { Route as CreateScenesRouteImport } from './routes/create.scenes'
+import { Route as CreateScriptRouteImport } from './routes/create.script'
+import { Route as CreateSettingsRouteImport } from './routes/create.settings'
+import { Route as CreateStyleRouteImport } from './routes/create.style'
+import { Route as CreateVoiceRouteImport } from './routes/create.voice'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +68,56 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreateIndexRoute = CreateIndexRouteImport.update({
+  id: '/create/',
+  path: '/create/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateCharacterRoute = CreateCharacterRouteImport.update({
+  id: '/create/character',
+  path: '/create/character',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateGeneratingRoute = CreateGeneratingRouteImport.update({
+  id: '/create/generating',
+  path: '/create/generating',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateIdeaRoute = CreateIdeaRouteImport.update({
+  id: '/create/idea',
+  path: '/create/idea',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateResultRoute = CreateResultRouteImport.update({
+  id: '/create/result',
+  path: '/create/result',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateScenesRoute = CreateScenesRouteImport.update({
+  id: '/create/scenes',
+  path: '/create/scenes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateScriptRoute = CreateScriptRouteImport.update({
+  id: '/create/script',
+  path: '/create/script',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateSettingsRoute = CreateSettingsRouteImport.update({
+  id: '/create/settings',
+  path: '/create/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateStyleRoute = CreateStyleRouteImport.update({
+  id: '/create/style',
+  path: '/create/style',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateVoiceRoute = CreateVoiceRouteImport.update({
+  id: '/create/voice',
+  path: '/create/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +128,16 @@ export interface FileRoutesByFullPath {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/create/character': typeof CreateCharacterRoute
+  '/create/generating': typeof CreateGeneratingRoute
+  '/create/idea': typeof CreateIdeaRoute
+  '/create/result': typeof CreateResultRoute
+  '/create/scenes': typeof CreateScenesRoute
+  '/create/script': typeof CreateScriptRoute
+  '/create/settings': typeof CreateSettingsRoute
+  '/create/style': typeof CreateStyleRoute
+  '/create/voice': typeof CreateVoiceRoute
+  '/create/': typeof CreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +148,16 @@ export interface FileRoutesByTo {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/create/character': typeof CreateCharacterRoute
+  '/create/generating': typeof CreateGeneratingRoute
+  '/create/idea': typeof CreateIdeaRoute
+  '/create/result': typeof CreateResultRoute
+  '/create/scenes': typeof CreateScenesRoute
+  '/create/script': typeof CreateScriptRoute
+  '/create/settings': typeof CreateSettingsRoute
+  '/create/style': typeof CreateStyleRoute
+  '/create/voice': typeof CreateVoiceRoute
+  '/create': typeof CreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +169,16 @@ export interface FileRoutesById {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/create/character': typeof CreateCharacterRoute
+  '/create/generating': typeof CreateGeneratingRoute
+  '/create/idea': typeof CreateIdeaRoute
+  '/create/result': typeof CreateResultRoute
+  '/create/scenes': typeof CreateScenesRoute
+  '/create/script': typeof CreateScriptRoute
+  '/create/settings': typeof CreateSettingsRoute
+  '/create/style': typeof CreateStyleRoute
+  '/create/voice': typeof CreateVoiceRoute
+  '/create/': typeof CreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +191,16 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/create/character'
+    | '/create/generating'
+    | '/create/idea'
+    | '/create/result'
+    | '/create/scenes'
+    | '/create/script'
+    | '/create/settings'
+    | '/create/style'
+    | '/create/voice'
+    | '/create/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +211,16 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/create/character'
+    | '/create/generating'
+    | '/create/idea'
+    | '/create/result'
+    | '/create/scenes'
+    | '/create/script'
+    | '/create/settings'
+    | '/create/style'
+    | '/create/voice'
+    | '/create'
   id:
     | '__root__'
     | '/'
@@ -121,6 +231,16 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/create/character'
+    | '/create/generating'
+    | '/create/idea'
+    | '/create/result'
+    | '/create/scenes'
+    | '/create/script'
+    | '/create/settings'
+    | '/create/style'
+    | '/create/voice'
+    | '/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +252,16 @@ export interface RootRouteChildren {
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WelcomeRoute: typeof WelcomeRoute
+  CreateCharacterRoute: typeof CreateCharacterRoute
+  CreateGeneratingRoute: typeof CreateGeneratingRoute
+  CreateIdeaRoute: typeof CreateIdeaRoute
+  CreateResultRoute: typeof CreateResultRoute
+  CreateScenesRoute: typeof CreateScenesRoute
+  CreateScriptRoute: typeof CreateScriptRoute
+  CreateSettingsRoute: typeof CreateSettingsRoute
+  CreateStyleRoute: typeof CreateStyleRoute
+  CreateVoiceRoute: typeof CreateVoiceRoute
+  CreateIndexRoute: typeof CreateIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +322,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/create/': {
+      id: '/create/'
+      path: '/create'
+      fullPath: '/create/'
+      preLoaderRoute: typeof CreateIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/character': {
+      id: '/create/character'
+      path: '/create/character'
+      fullPath: '/create/character'
+      preLoaderRoute: typeof CreateCharacterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/generating': {
+      id: '/create/generating'
+      path: '/create/generating'
+      fullPath: '/create/generating'
+      preLoaderRoute: typeof CreateGeneratingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/idea': {
+      id: '/create/idea'
+      path: '/create/idea'
+      fullPath: '/create/idea'
+      preLoaderRoute: typeof CreateIdeaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/result': {
+      id: '/create/result'
+      path: '/create/result'
+      fullPath: '/create/result'
+      preLoaderRoute: typeof CreateResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/scenes': {
+      id: '/create/scenes'
+      path: '/create/scenes'
+      fullPath: '/create/scenes'
+      preLoaderRoute: typeof CreateScenesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/script': {
+      id: '/create/script'
+      path: '/create/script'
+      fullPath: '/create/script'
+      preLoaderRoute: typeof CreateScriptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/settings': {
+      id: '/create/settings'
+      path: '/create/settings'
+      fullPath: '/create/settings'
+      preLoaderRoute: typeof CreateSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/style': {
+      id: '/create/style'
+      path: '/create/style'
+      fullPath: '/create/style'
+      preLoaderRoute: typeof CreateStyleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/voice': {
+      id: '/create/voice'
+      path: '/create/voice'
+      fullPath: '/create/voice'
+      preLoaderRoute: typeof CreateVoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +404,16 @@ const rootRouteChildren: RootRouteChildren = {
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WelcomeRoute: WelcomeRoute,
+  CreateCharacterRoute: CreateCharacterRoute,
+  CreateGeneratingRoute: CreateGeneratingRoute,
+  CreateIdeaRoute: CreateIdeaRoute,
+  CreateResultRoute: CreateResultRoute,
+  CreateScenesRoute: CreateScenesRoute,
+  CreateScriptRoute: CreateScriptRoute,
+  CreateSettingsRoute: CreateSettingsRoute,
+  CreateStyleRoute: CreateStyleRoute,
+  CreateVoiceRoute: CreateVoiceRoute,
+  CreateIndexRoute: CreateIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
