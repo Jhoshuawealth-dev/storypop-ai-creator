@@ -27,6 +27,15 @@ import { Route as CreateScriptRouteImport } from './routes/create.script'
 import { Route as CreateSettingsRouteImport } from './routes/create.settings'
 import { Route as CreateStyleRouteImport } from './routes/create.style'
 import { Route as CreateVoiceRouteImport } from './routes/create.voice'
+import { Route as EditorIndexRouteImport } from './routes/editor.index'
+import { Route as EditorAiRouteImport } from './routes/editor.ai'
+import { Route as EditorAudioRouteImport } from './routes/editor.audio'
+import { Route as EditorCaptionsRouteImport } from './routes/editor.captions'
+import { Route as EditorExportRouteImport } from './routes/editor.export'
+import { Route as EditorScenesRouteImport } from './routes/editor.scenes'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
+import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scenes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -118,6 +127,51 @@ const CreateVoiceRoute = CreateVoiceRouteImport.update({
   path: '/create/voice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditorIndexRoute = EditorIndexRouteImport.update({
+  id: '/editor/',
+  path: '/editor/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorAiRoute = EditorAiRouteImport.update({
+  id: '/editor/ai',
+  path: '/editor/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorAudioRoute = EditorAudioRouteImport.update({
+  id: '/editor/audio',
+  path: '/editor/audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorCaptionsRoute = EditorCaptionsRouteImport.update({
+  id: '/editor/captions',
+  path: '/editor/captions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorExportRoute = EditorExportRouteImport.update({
+  id: '/editor/export',
+  path: '/editor/export',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorScenesRoute = EditorScenesRouteImport.update({
+  id: '/editor/scenes',
+  path: '/editor/scenes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIdIndexRoute = ProjectsIdIndexRouteImport.update({
+  id: '/projects/$id/',
+  path: '/projects/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIdScenesRoute = ProjectsIdScenesRouteImport.update({
+  id: '/projects/$id/scenes',
+  path: '/projects/$id/scenes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -137,7 +191,16 @@ export interface FileRoutesByFullPath {
   '/create/settings': typeof CreateSettingsRoute
   '/create/style': typeof CreateStyleRoute
   '/create/voice': typeof CreateVoiceRoute
+  '/editor/ai': typeof EditorAiRoute
+  '/editor/audio': typeof EditorAudioRoute
+  '/editor/captions': typeof EditorCaptionsRoute
+  '/editor/export': typeof EditorExportRoute
+  '/editor/scenes': typeof EditorScenesRoute
   '/create/': typeof CreateIndexRoute
+  '/editor/': typeof EditorIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/projects/$id/': typeof ProjectsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -157,7 +220,16 @@ export interface FileRoutesByTo {
   '/create/settings': typeof CreateSettingsRoute
   '/create/style': typeof CreateStyleRoute
   '/create/voice': typeof CreateVoiceRoute
+  '/editor/ai': typeof EditorAiRoute
+  '/editor/audio': typeof EditorAudioRoute
+  '/editor/captions': typeof EditorCaptionsRoute
+  '/editor/export': typeof EditorExportRoute
+  '/editor/scenes': typeof EditorScenesRoute
   '/create': typeof CreateIndexRoute
+  '/editor': typeof EditorIndexRoute
+  '/projects': typeof ProjectsIndexRoute
+  '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/projects/$id': typeof ProjectsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -178,7 +250,16 @@ export interface FileRoutesById {
   '/create/settings': typeof CreateSettingsRoute
   '/create/style': typeof CreateStyleRoute
   '/create/voice': typeof CreateVoiceRoute
+  '/editor/ai': typeof EditorAiRoute
+  '/editor/audio': typeof EditorAudioRoute
+  '/editor/captions': typeof EditorCaptionsRoute
+  '/editor/export': typeof EditorExportRoute
+  '/editor/scenes': typeof EditorScenesRoute
   '/create/': typeof CreateIndexRoute
+  '/editor/': typeof EditorIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/projects/$id/': typeof ProjectsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -200,7 +281,16 @@ export interface FileRouteTypes {
     | '/create/settings'
     | '/create/style'
     | '/create/voice'
+    | '/editor/ai'
+    | '/editor/audio'
+    | '/editor/captions'
+    | '/editor/export'
+    | '/editor/scenes'
     | '/create/'
+    | '/editor/'
+    | '/projects/'
+    | '/projects/$id/scenes'
+    | '/projects/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -220,7 +310,16 @@ export interface FileRouteTypes {
     | '/create/settings'
     | '/create/style'
     | '/create/voice'
+    | '/editor/ai'
+    | '/editor/audio'
+    | '/editor/captions'
+    | '/editor/export'
+    | '/editor/scenes'
     | '/create'
+    | '/editor'
+    | '/projects'
+    | '/projects/$id/scenes'
+    | '/projects/$id'
   id:
     | '__root__'
     | '/'
@@ -240,7 +339,16 @@ export interface FileRouteTypes {
     | '/create/settings'
     | '/create/style'
     | '/create/voice'
+    | '/editor/ai'
+    | '/editor/audio'
+    | '/editor/captions'
+    | '/editor/export'
+    | '/editor/scenes'
     | '/create/'
+    | '/editor/'
+    | '/projects/'
+    | '/projects/$id/scenes'
+    | '/projects/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,7 +369,16 @@ export interface RootRouteChildren {
   CreateSettingsRoute: typeof CreateSettingsRoute
   CreateStyleRoute: typeof CreateStyleRoute
   CreateVoiceRoute: typeof CreateVoiceRoute
+  EditorAiRoute: typeof EditorAiRoute
+  EditorAudioRoute: typeof EditorAudioRoute
+  EditorCaptionsRoute: typeof EditorCaptionsRoute
+  EditorExportRoute: typeof EditorExportRoute
+  EditorScenesRoute: typeof EditorScenesRoute
   CreateIndexRoute: typeof CreateIndexRoute
+  EditorIndexRoute: typeof EditorIndexRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
+  ProjectsIdIndexRoute: typeof ProjectsIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -392,6 +509,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateVoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/editor/': {
+      id: '/editor/'
+      path: '/editor'
+      fullPath: '/editor/'
+      preLoaderRoute: typeof EditorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/ai': {
+      id: '/editor/ai'
+      path: '/editor/ai'
+      fullPath: '/editor/ai'
+      preLoaderRoute: typeof EditorAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/audio': {
+      id: '/editor/audio'
+      path: '/editor/audio'
+      fullPath: '/editor/audio'
+      preLoaderRoute: typeof EditorAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/captions': {
+      id: '/editor/captions'
+      path: '/editor/captions'
+      fullPath: '/editor/captions'
+      preLoaderRoute: typeof EditorCaptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/export': {
+      id: '/editor/export'
+      path: '/editor/export'
+      fullPath: '/editor/export'
+      preLoaderRoute: typeof EditorExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/scenes': {
+      id: '/editor/scenes'
+      path: '/editor/scenes'
+      fullPath: '/editor/scenes'
+      preLoaderRoute: typeof EditorScenesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$id/': {
+      id: '/projects/$id/'
+      path: '/projects/$id'
+      fullPath: '/projects/$id/'
+      preLoaderRoute: typeof ProjectsIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$id/scenes': {
+      id: '/projects/$id/scenes'
+      path: '/projects/$id/scenes'
+      fullPath: '/projects/$id/scenes'
+      preLoaderRoute: typeof ProjectsIdScenesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -413,7 +593,16 @@ const rootRouteChildren: RootRouteChildren = {
   CreateSettingsRoute: CreateSettingsRoute,
   CreateStyleRoute: CreateStyleRoute,
   CreateVoiceRoute: CreateVoiceRoute,
+  EditorAiRoute: EditorAiRoute,
+  EditorAudioRoute: EditorAudioRoute,
+  EditorCaptionsRoute: EditorCaptionsRoute,
+  EditorExportRoute: EditorExportRoute,
+  EditorScenesRoute: EditorScenesRoute,
   CreateIndexRoute: CreateIndexRoute,
+  EditorIndexRoute: EditorIndexRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
+  ProjectsIdScenesRoute: ProjectsIdScenesRoute,
+  ProjectsIdIndexRoute: ProjectsIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
