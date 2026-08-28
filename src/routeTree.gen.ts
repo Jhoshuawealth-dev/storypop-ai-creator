@@ -17,6 +17,16 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as CalendarIndexRouteImport } from './routes/calendar.index'
+import { Route as CalendarPublishedRouteImport } from './routes/calendar.published'
+import { Route as CalendarPublishingRouteImport } from './routes/calendar.publishing'
+import { Route as CalendarScheduleRouteImport } from './routes/calendar.schedule'
+import { Route as CharactersIndexRouteImport } from './routes/characters.index'
+import { Route as CharactersIdRouteImport } from './routes/characters.$id'
+import { Route as CharactersGeneratingRouteImport } from './routes/characters.generating'
+import { Route as CharactersPreviewRouteImport } from './routes/characters.preview'
+import { Route as CharactersStyleRouteImport } from './routes/characters.style'
+import { Route as CharactersUploadRouteImport } from './routes/characters.upload'
 import { Route as CreateIndexRouteImport } from './routes/create.index'
 import { Route as CreateCharacterRouteImport } from './routes/create.character'
 import { Route as CreateGeneratingRouteImport } from './routes/create.generating'
@@ -75,6 +85,56 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarIndexRoute = CalendarIndexRouteImport.update({
+  id: '/calendar/',
+  path: '/calendar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarPublishedRoute = CalendarPublishedRouteImport.update({
+  id: '/calendar/published',
+  path: '/calendar/published',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarPublishingRoute = CalendarPublishingRouteImport.update({
+  id: '/calendar/publishing',
+  path: '/calendar/publishing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarScheduleRoute = CalendarScheduleRouteImport.update({
+  id: '/calendar/schedule',
+  path: '/calendar/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersIndexRoute = CharactersIndexRouteImport.update({
+  id: '/characters/',
+  path: '/characters/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersIdRoute = CharactersIdRouteImport.update({
+  id: '/characters/$id',
+  path: '/characters/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersGeneratingRoute = CharactersGeneratingRouteImport.update({
+  id: '/characters/generating',
+  path: '/characters/generating',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersPreviewRoute = CharactersPreviewRouteImport.update({
+  id: '/characters/preview',
+  path: '/characters/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersStyleRoute = CharactersStyleRouteImport.update({
+  id: '/characters/style',
+  path: '/characters/style',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharactersUploadRoute = CharactersUploadRouteImport.update({
+  id: '/characters/upload',
+  path: '/characters/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreateIndexRoute = CreateIndexRouteImport.update({
@@ -182,6 +242,14 @@ export interface FileRoutesByFullPath {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/calendar/published': typeof CalendarPublishedRoute
+  '/calendar/publishing': typeof CalendarPublishingRoute
+  '/calendar/schedule': typeof CalendarScheduleRoute
+  '/characters/$id': typeof CharactersIdRoute
+  '/characters/generating': typeof CharactersGeneratingRoute
+  '/characters/preview': typeof CharactersPreviewRoute
+  '/characters/style': typeof CharactersStyleRoute
+  '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
@@ -196,6 +264,8 @@ export interface FileRoutesByFullPath {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/calendar/': typeof CalendarIndexRoute
+  '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -211,6 +281,14 @@ export interface FileRoutesByTo {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/calendar/published': typeof CalendarPublishedRoute
+  '/calendar/publishing': typeof CalendarPublishingRoute
+  '/calendar/schedule': typeof CalendarScheduleRoute
+  '/characters/$id': typeof CharactersIdRoute
+  '/characters/generating': typeof CharactersGeneratingRoute
+  '/characters/preview': typeof CharactersPreviewRoute
+  '/characters/style': typeof CharactersStyleRoute
+  '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
@@ -225,6 +303,8 @@ export interface FileRoutesByTo {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/calendar': typeof CalendarIndexRoute
+  '/characters': typeof CharactersIndexRoute
   '/create': typeof CreateIndexRoute
   '/editor': typeof EditorIndexRoute
   '/projects': typeof ProjectsIndexRoute
@@ -241,6 +321,14 @@ export interface FileRoutesById {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/calendar/published': typeof CalendarPublishedRoute
+  '/calendar/publishing': typeof CalendarPublishingRoute
+  '/calendar/schedule': typeof CalendarScheduleRoute
+  '/characters/$id': typeof CharactersIdRoute
+  '/characters/generating': typeof CharactersGeneratingRoute
+  '/characters/preview': typeof CharactersPreviewRoute
+  '/characters/style': typeof CharactersStyleRoute
+  '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
@@ -255,6 +343,8 @@ export interface FileRoutesById {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/calendar/': typeof CalendarIndexRoute
+  '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -272,6 +362,14 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/calendar/published'
+    | '/calendar/publishing'
+    | '/calendar/schedule'
+    | '/characters/$id'
+    | '/characters/generating'
+    | '/characters/preview'
+    | '/characters/style'
+    | '/characters/upload'
     | '/create/character'
     | '/create/generating'
     | '/create/idea'
@@ -286,6 +384,8 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/calendar/'
+    | '/characters/'
     | '/create/'
     | '/editor/'
     | '/projects/'
@@ -301,6 +401,14 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/calendar/published'
+    | '/calendar/publishing'
+    | '/calendar/schedule'
+    | '/characters/$id'
+    | '/characters/generating'
+    | '/characters/preview'
+    | '/characters/style'
+    | '/characters/upload'
     | '/create/character'
     | '/create/generating'
     | '/create/idea'
@@ -315,6 +423,8 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/calendar'
+    | '/characters'
     | '/create'
     | '/editor'
     | '/projects'
@@ -330,6 +440,14 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/calendar/published'
+    | '/calendar/publishing'
+    | '/calendar/schedule'
+    | '/characters/$id'
+    | '/characters/generating'
+    | '/characters/preview'
+    | '/characters/style'
+    | '/characters/upload'
     | '/create/character'
     | '/create/generating'
     | '/create/idea'
@@ -344,6 +462,8 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/calendar/'
+    | '/characters/'
     | '/create/'
     | '/editor/'
     | '/projects/'
@@ -360,6 +480,14 @@ export interface RootRouteChildren {
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WelcomeRoute: typeof WelcomeRoute
+  CalendarPublishedRoute: typeof CalendarPublishedRoute
+  CalendarPublishingRoute: typeof CalendarPublishingRoute
+  CalendarScheduleRoute: typeof CalendarScheduleRoute
+  CharactersIdRoute: typeof CharactersIdRoute
+  CharactersGeneratingRoute: typeof CharactersGeneratingRoute
+  CharactersPreviewRoute: typeof CharactersPreviewRoute
+  CharactersStyleRoute: typeof CharactersStyleRoute
+  CharactersUploadRoute: typeof CharactersUploadRoute
   CreateCharacterRoute: typeof CreateCharacterRoute
   CreateGeneratingRoute: typeof CreateGeneratingRoute
   CreateIdeaRoute: typeof CreateIdeaRoute
@@ -374,6 +502,8 @@ export interface RootRouteChildren {
   EditorCaptionsRoute: typeof EditorCaptionsRoute
   EditorExportRoute: typeof EditorExportRoute
   EditorScenesRoute: typeof EditorScenesRoute
+  CalendarIndexRoute: typeof CalendarIndexRoute
+  CharactersIndexRoute: typeof CharactersIndexRoute
   CreateIndexRoute: typeof CreateIndexRoute
   EditorIndexRoute: typeof EditorIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -437,6 +567,76 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar/': {
+      id: '/calendar/'
+      path: '/calendar'
+      fullPath: '/calendar/'
+      preLoaderRoute: typeof CalendarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar/published': {
+      id: '/calendar/published'
+      path: '/calendar/published'
+      fullPath: '/calendar/published'
+      preLoaderRoute: typeof CalendarPublishedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar/publishing': {
+      id: '/calendar/publishing'
+      path: '/calendar/publishing'
+      fullPath: '/calendar/publishing'
+      preLoaderRoute: typeof CalendarPublishingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar/schedule': {
+      id: '/calendar/schedule'
+      path: '/calendar/schedule'
+      fullPath: '/calendar/schedule'
+      preLoaderRoute: typeof CalendarScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/': {
+      id: '/characters/'
+      path: '/characters'
+      fullPath: '/characters/'
+      preLoaderRoute: typeof CharactersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/$id': {
+      id: '/characters/$id'
+      path: '/characters/$id'
+      fullPath: '/characters/$id'
+      preLoaderRoute: typeof CharactersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/generating': {
+      id: '/characters/generating'
+      path: '/characters/generating'
+      fullPath: '/characters/generating'
+      preLoaderRoute: typeof CharactersGeneratingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/preview': {
+      id: '/characters/preview'
+      path: '/characters/preview'
+      fullPath: '/characters/preview'
+      preLoaderRoute: typeof CharactersPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/style': {
+      id: '/characters/style'
+      path: '/characters/style'
+      fullPath: '/characters/style'
+      preLoaderRoute: typeof CharactersStyleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/characters/upload': {
+      id: '/characters/upload'
+      path: '/characters/upload'
+      fullPath: '/characters/upload'
+      preLoaderRoute: typeof CharactersUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/create/': {
@@ -584,6 +784,14 @@ const rootRouteChildren: RootRouteChildren = {
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WelcomeRoute: WelcomeRoute,
+  CalendarPublishedRoute: CalendarPublishedRoute,
+  CalendarPublishingRoute: CalendarPublishingRoute,
+  CalendarScheduleRoute: CalendarScheduleRoute,
+  CharactersIdRoute: CharactersIdRoute,
+  CharactersGeneratingRoute: CharactersGeneratingRoute,
+  CharactersPreviewRoute: CharactersPreviewRoute,
+  CharactersStyleRoute: CharactersStyleRoute,
+  CharactersUploadRoute: CharactersUploadRoute,
   CreateCharacterRoute: CreateCharacterRoute,
   CreateGeneratingRoute: CreateGeneratingRoute,
   CreateIdeaRoute: CreateIdeaRoute,
@@ -598,6 +806,8 @@ const rootRouteChildren: RootRouteChildren = {
   EditorCaptionsRoute: EditorCaptionsRoute,
   EditorExportRoute: EditorExportRoute,
   EditorScenesRoute: EditorScenesRoute,
+  CalendarIndexRoute: CalendarIndexRoute,
+  CharactersIndexRoute: CharactersIndexRoute,
   CreateIndexRoute: CreateIndexRoute,
   EditorIndexRoute: EditorIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
