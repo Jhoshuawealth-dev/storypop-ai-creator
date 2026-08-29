@@ -17,6 +17,9 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AnalyticsIndexRouteImport } from './routes/analytics.index'
+import { Route as AnalyticsIdRouteImport } from './routes/analytics.$id'
+import { Route as AnalyticsInsightsRouteImport } from './routes/analytics.insights'
 import { Route as CalendarIndexRouteImport } from './routes/calendar.index'
 import { Route as CalendarPublishedRouteImport } from './routes/calendar.published'
 import { Route as CalendarPublishingRouteImport } from './routes/calendar.publishing'
@@ -44,6 +47,14 @@ import { Route as EditorCaptionsRouteImport } from './routes/editor.captions'
 import { Route as EditorExportRouteImport } from './routes/editor.export'
 import { Route as EditorScenesRouteImport } from './routes/editor.scenes'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as PublishIndexRouteImport } from './routes/publish.index'
+import { Route as PublishCaptionRouteImport } from './routes/publish.caption'
+import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
+import { Route as SubscriptionIndexRouteImport } from './routes/subscription.index'
+import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.checkout'
+import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.credits'
+import { Route as SubscriptionManageRouteImport } from './routes/subscription.manage'
+import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
 import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scenes'
 
@@ -85,6 +96,21 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
+  id: '/analytics/',
+  path: '/analytics/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsIdRoute = AnalyticsIdRouteImport.update({
+  id: '/analytics/$id',
+  path: '/analytics/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsInsightsRoute = AnalyticsInsightsRouteImport.update({
+  id: '/analytics/insights',
+  path: '/analytics/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarIndexRoute = CalendarIndexRouteImport.update({
@@ -222,6 +248,46 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/projects/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublishIndexRoute = PublishIndexRouteImport.update({
+  id: '/publish/',
+  path: '/publish/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublishCaptionRoute = PublishCaptionRouteImport.update({
+  id: '/publish/caption',
+  path: '/publish/caption',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublishScheduleRoute = PublishScheduleRouteImport.update({
+  id: '/publish/schedule',
+  path: '/publish/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionIndexRoute = SubscriptionIndexRouteImport.update({
+  id: '/subscription/',
+  path: '/subscription/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionCheckoutRoute = SubscriptionCheckoutRouteImport.update({
+  id: '/subscription/checkout',
+  path: '/subscription/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionCreditsRoute = SubscriptionCreditsRouteImport.update({
+  id: '/subscription/credits',
+  path: '/subscription/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionManageRoute = SubscriptionManageRouteImport.update({
+  id: '/subscription/manage',
+  path: '/subscription/manage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionSuccessRoute = SubscriptionSuccessRouteImport.update({
+  id: '/subscription/success',
+  path: '/subscription/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsIdIndexRoute = ProjectsIdIndexRouteImport.update({
   id: '/projects/$id/',
   path: '/projects/$id/',
@@ -242,6 +308,8 @@ export interface FileRoutesByFullPath {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/analytics/$id': typeof AnalyticsIdRoute
+  '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
   '/calendar/schedule': typeof CalendarScheduleRoute
@@ -264,11 +332,20 @@ export interface FileRoutesByFullPath {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/schedule': typeof PublishScheduleRoute
+  '/subscription/checkout': typeof SubscriptionCheckoutRoute
+  '/subscription/credits': typeof SubscriptionCreditsRoute
+  '/subscription/manage': typeof SubscriptionManageRoute
+  '/subscription/success': typeof SubscriptionSuccessRoute
+  '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/publish/': typeof PublishIndexRoute
+  '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
 }
@@ -281,6 +358,8 @@ export interface FileRoutesByTo {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/analytics/$id': typeof AnalyticsIdRoute
+  '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
   '/calendar/schedule': typeof CalendarScheduleRoute
@@ -303,11 +382,20 @@ export interface FileRoutesByTo {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/schedule': typeof PublishScheduleRoute
+  '/subscription/checkout': typeof SubscriptionCheckoutRoute
+  '/subscription/credits': typeof SubscriptionCreditsRoute
+  '/subscription/manage': typeof SubscriptionManageRoute
+  '/subscription/success': typeof SubscriptionSuccessRoute
+  '/analytics': typeof AnalyticsIndexRoute
   '/calendar': typeof CalendarIndexRoute
   '/characters': typeof CharactersIndexRoute
   '/create': typeof CreateIndexRoute
   '/editor': typeof EditorIndexRoute
   '/projects': typeof ProjectsIndexRoute
+  '/publish': typeof PublishIndexRoute
+  '/subscription': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id': typeof ProjectsIdIndexRoute
 }
@@ -321,6 +409,8 @@ export interface FileRoutesById {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/analytics/$id': typeof AnalyticsIdRoute
+  '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
   '/calendar/schedule': typeof CalendarScheduleRoute
@@ -343,11 +433,20 @@ export interface FileRoutesById {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/schedule': typeof PublishScheduleRoute
+  '/subscription/checkout': typeof SubscriptionCheckoutRoute
+  '/subscription/credits': typeof SubscriptionCreditsRoute
+  '/subscription/manage': typeof SubscriptionManageRoute
+  '/subscription/success': typeof SubscriptionSuccessRoute
+  '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/publish/': typeof PublishIndexRoute
+  '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
 }
@@ -362,6 +461,8 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/analytics/$id'
+    | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
     | '/calendar/schedule'
@@ -384,11 +485,20 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/publish/caption'
+    | '/publish/schedule'
+    | '/subscription/checkout'
+    | '/subscription/credits'
+    | '/subscription/manage'
+    | '/subscription/success'
+    | '/analytics/'
     | '/calendar/'
     | '/characters/'
     | '/create/'
     | '/editor/'
     | '/projects/'
+    | '/publish/'
+    | '/subscription/'
     | '/projects/$id/scenes'
     | '/projects/$id/'
   fileRoutesByTo: FileRoutesByTo
@@ -401,6 +511,8 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/analytics/$id'
+    | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
     | '/calendar/schedule'
@@ -423,11 +535,20 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/publish/caption'
+    | '/publish/schedule'
+    | '/subscription/checkout'
+    | '/subscription/credits'
+    | '/subscription/manage'
+    | '/subscription/success'
+    | '/analytics'
     | '/calendar'
     | '/characters'
     | '/create'
     | '/editor'
     | '/projects'
+    | '/publish'
+    | '/subscription'
     | '/projects/$id/scenes'
     | '/projects/$id'
   id:
@@ -440,6 +561,8 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/analytics/$id'
+    | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
     | '/calendar/schedule'
@@ -462,11 +585,20 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/publish/caption'
+    | '/publish/schedule'
+    | '/subscription/checkout'
+    | '/subscription/credits'
+    | '/subscription/manage'
+    | '/subscription/success'
+    | '/analytics/'
     | '/calendar/'
     | '/characters/'
     | '/create/'
     | '/editor/'
     | '/projects/'
+    | '/publish/'
+    | '/subscription/'
     | '/projects/$id/scenes'
     | '/projects/$id/'
   fileRoutesById: FileRoutesById
@@ -480,6 +612,8 @@ export interface RootRouteChildren {
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WelcomeRoute: typeof WelcomeRoute
+  AnalyticsIdRoute: typeof AnalyticsIdRoute
+  AnalyticsInsightsRoute: typeof AnalyticsInsightsRoute
   CalendarPublishedRoute: typeof CalendarPublishedRoute
   CalendarPublishingRoute: typeof CalendarPublishingRoute
   CalendarScheduleRoute: typeof CalendarScheduleRoute
@@ -502,11 +636,20 @@ export interface RootRouteChildren {
   EditorCaptionsRoute: typeof EditorCaptionsRoute
   EditorExportRoute: typeof EditorExportRoute
   EditorScenesRoute: typeof EditorScenesRoute
+  PublishCaptionRoute: typeof PublishCaptionRoute
+  PublishScheduleRoute: typeof PublishScheduleRoute
+  SubscriptionCheckoutRoute: typeof SubscriptionCheckoutRoute
+  SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
+  SubscriptionManageRoute: typeof SubscriptionManageRoute
+  SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
+  AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   CalendarIndexRoute: typeof CalendarIndexRoute
   CharactersIndexRoute: typeof CharactersIndexRoute
   CreateIndexRoute: typeof CreateIndexRoute
   EditorIndexRoute: typeof EditorIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  PublishIndexRoute: typeof PublishIndexRoute
+  SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
   ProjectsIdIndexRoute: typeof ProjectsIdIndexRoute
 }
@@ -567,6 +710,27 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics/': {
+      id: '/analytics/'
+      path: '/analytics'
+      fullPath: '/analytics/'
+      preLoaderRoute: typeof AnalyticsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics/$id': {
+      id: '/analytics/$id'
+      path: '/analytics/$id'
+      fullPath: '/analytics/$id'
+      preLoaderRoute: typeof AnalyticsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics/insights': {
+      id: '/analytics/insights'
+      path: '/analytics/insights'
+      fullPath: '/analytics/insights'
+      preLoaderRoute: typeof AnalyticsInsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar/': {
@@ -758,6 +922,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/publish/': {
+      id: '/publish/'
+      path: '/publish'
+      fullPath: '/publish/'
+      preLoaderRoute: typeof PublishIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publish/caption': {
+      id: '/publish/caption'
+      path: '/publish/caption'
+      fullPath: '/publish/caption'
+      preLoaderRoute: typeof PublishCaptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publish/schedule': {
+      id: '/publish/schedule'
+      path: '/publish/schedule'
+      fullPath: '/publish/schedule'
+      preLoaderRoute: typeof PublishScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription/': {
+      id: '/subscription/'
+      path: '/subscription'
+      fullPath: '/subscription/'
+      preLoaderRoute: typeof SubscriptionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription/checkout': {
+      id: '/subscription/checkout'
+      path: '/subscription/checkout'
+      fullPath: '/subscription/checkout'
+      preLoaderRoute: typeof SubscriptionCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription/credits': {
+      id: '/subscription/credits'
+      path: '/subscription/credits'
+      fullPath: '/subscription/credits'
+      preLoaderRoute: typeof SubscriptionCreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription/manage': {
+      id: '/subscription/manage'
+      path: '/subscription/manage'
+      fullPath: '/subscription/manage'
+      preLoaderRoute: typeof SubscriptionManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscription/success': {
+      id: '/subscription/success'
+      path: '/subscription/success'
+      fullPath: '/subscription/success'
+      preLoaderRoute: typeof SubscriptionSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$id/': {
       id: '/projects/$id/'
       path: '/projects/$id'
@@ -784,6 +1004,8 @@ const rootRouteChildren: RootRouteChildren = {
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WelcomeRoute: WelcomeRoute,
+  AnalyticsIdRoute: AnalyticsIdRoute,
+  AnalyticsInsightsRoute: AnalyticsInsightsRoute,
   CalendarPublishedRoute: CalendarPublishedRoute,
   CalendarPublishingRoute: CalendarPublishingRoute,
   CalendarScheduleRoute: CalendarScheduleRoute,
@@ -806,11 +1028,20 @@ const rootRouteChildren: RootRouteChildren = {
   EditorCaptionsRoute: EditorCaptionsRoute,
   EditorExportRoute: EditorExportRoute,
   EditorScenesRoute: EditorScenesRoute,
+  PublishCaptionRoute: PublishCaptionRoute,
+  PublishScheduleRoute: PublishScheduleRoute,
+  SubscriptionCheckoutRoute: SubscriptionCheckoutRoute,
+  SubscriptionCreditsRoute: SubscriptionCreditsRoute,
+  SubscriptionManageRoute: SubscriptionManageRoute,
+  SubscriptionSuccessRoute: SubscriptionSuccessRoute,
+  AnalyticsIndexRoute: AnalyticsIndexRoute,
   CalendarIndexRoute: CalendarIndexRoute,
   CharactersIndexRoute: CharactersIndexRoute,
   CreateIndexRoute: CreateIndexRoute,
   EditorIndexRoute: EditorIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  PublishIndexRoute: PublishIndexRoute,
+  SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
   ProjectsIdIndexRoute: ProjectsIdIndexRoute,
 }
