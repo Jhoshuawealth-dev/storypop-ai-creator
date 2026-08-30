@@ -10,9 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
@@ -50,6 +53,10 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as PublishIndexRouteImport } from './routes/publish.index'
 import { Route as PublishCaptionRouteImport } from './routes/publish.caption'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
+import { Route as SettingsSecurityRouteImport } from './routes/settings.security'
+import { Route as SettingsSocialRouteImport } from './routes/settings.social'
 import { Route as SubscriptionIndexRouteImport } from './routes/subscription.index'
 import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.checkout'
 import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.credits'
@@ -61,6 +68,16 @@ import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scen
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -76,6 +93,11 @@ const LoginRoute = LoginRouteImport.update({
 const NotificationsRoute = NotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -263,6 +285,26 @@ const PublishScheduleRoute = PublishScheduleRouteImport.update({
   path: '/publish/schedule',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/settings/notifications',
+  path: '/settings/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
+  id: '/settings/security',
+  path: '/settings/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsSocialRoute = SettingsSocialRouteImport.update({
+  id: '/settings/social',
+  path: '/settings/social',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubscriptionIndexRoute = SubscriptionIndexRouteImport.update({
   id: '/subscription/',
   path: '/subscription/',
@@ -301,9 +343,12 @@ const ProjectsIdScenesRoute = ProjectsIdScenesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -334,6 +379,9 @@ export interface FileRoutesByFullPath {
   '/editor/scenes': typeof EditorScenesRoute
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -345,15 +393,19 @@ export interface FileRoutesByFullPath {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -384,6 +436,9 @@ export interface FileRoutesByTo {
   '/editor/scenes': typeof EditorScenesRoute
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -395,6 +450,7 @@ export interface FileRoutesByTo {
   '/editor': typeof EditorIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/publish': typeof PublishIndexRoute
+  '/settings': typeof SettingsIndexRoute
   '/subscription': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id': typeof ProjectsIdIndexRoute
@@ -402,9 +458,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
   '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -435,6 +494,9 @@ export interface FileRoutesById {
   '/editor/scenes': typeof EditorScenesRoute
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -446,6 +508,7 @@ export interface FileRoutesById {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
@@ -454,9 +517,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/help'
     | '/home'
     | '/login'
     | '/notifications'
+    | '/profile'
     | '/register'
     | '/usage'
     | '/verify-email'
@@ -487,6 +553,9 @@ export interface FileRouteTypes {
     | '/editor/scenes'
     | '/publish/caption'
     | '/publish/schedule'
+    | '/settings/notifications'
+    | '/settings/security'
+    | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -498,15 +567,19 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
+    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/projects/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/help'
     | '/home'
     | '/login'
     | '/notifications'
+    | '/profile'
     | '/register'
     | '/usage'
     | '/verify-email'
@@ -537,6 +610,9 @@ export interface FileRouteTypes {
     | '/editor/scenes'
     | '/publish/caption'
     | '/publish/schedule'
+    | '/settings/notifications'
+    | '/settings/security'
+    | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -548,15 +624,19 @@ export interface FileRouteTypes {
     | '/editor'
     | '/projects'
     | '/publish'
+    | '/settings'
     | '/subscription'
     | '/projects/$id/scenes'
     | '/projects/$id'
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/help'
     | '/home'
     | '/login'
     | '/notifications'
+    | '/profile'
     | '/register'
     | '/usage'
     | '/verify-email'
@@ -587,6 +667,9 @@ export interface FileRouteTypes {
     | '/editor/scenes'
     | '/publish/caption'
     | '/publish/schedule'
+    | '/settings/notifications'
+    | '/settings/security'
+    | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -598,6 +681,7 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
+    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/projects/$id/'
@@ -605,9 +689,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  HelpRoute: typeof HelpRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
   NotificationsRoute: typeof NotificationsRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
@@ -638,6 +725,9 @@ export interface RootRouteChildren {
   EditorScenesRoute: typeof EditorScenesRoute
   PublishCaptionRoute: typeof PublishCaptionRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  SettingsSecurityRoute: typeof SettingsSecurityRoute
+  SettingsSocialRoute: typeof SettingsSocialRoute
   SubscriptionCheckoutRoute: typeof SubscriptionCheckoutRoute
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
   SubscriptionManageRoute: typeof SubscriptionManageRoute
@@ -649,6 +739,7 @@ export interface RootRouteChildren {
   EditorIndexRoute: typeof EditorIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   PublishIndexRoute: typeof PublishIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
   ProjectsIdIndexRoute: typeof ProjectsIdIndexRoute
@@ -661,6 +752,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -682,6 +787,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -943,6 +1055,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublishScheduleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/security': {
+      id: '/settings/security'
+      path: '/settings/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof SettingsSecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/social': {
+      id: '/settings/social'
+      path: '/settings/social'
+      fullPath: '/settings/social'
+      preLoaderRoute: typeof SettingsSocialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subscription/': {
       id: '/subscription/'
       path: '/subscription'
@@ -997,9 +1137,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  HelpRoute: HelpRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
   NotificationsRoute: NotificationsRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
@@ -1030,6 +1173,9 @@ const rootRouteChildren: RootRouteChildren = {
   EditorScenesRoute: EditorScenesRoute,
   PublishCaptionRoute: PublishCaptionRoute,
   PublishScheduleRoute: PublishScheduleRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
+  SettingsSecurityRoute: SettingsSecurityRoute,
+  SettingsSocialRoute: SettingsSocialRoute,
   SubscriptionCheckoutRoute: SubscriptionCheckoutRoute,
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
   SubscriptionManageRoute: SubscriptionManageRoute,
@@ -1041,6 +1187,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditorIndexRoute: EditorIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   PublishIndexRoute: PublishIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
   ProjectsIdIndexRoute: ProjectsIdIndexRoute,
