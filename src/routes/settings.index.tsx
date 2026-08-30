@@ -1,0 +1,56 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
+import { Field, Input, SelectField, TextArea } from "@/components/ui/input";
+import { pageHead } from "@/lib/seo";
+import { currentUser } from "@/lib/mock-data";
+
+export const Route = createFileRoute("/settings/")({
+  head: pageHead("Account Settings", "Update your Storypop AI profile details."),
+  component: AccountSettings,
+});
+
+function AccountSettings() {
+  const [name, setName] = useState(currentUser.fullName);
+  const [email, setEmail] = useState(currentUser.email);
+  const [bio, setBio] = useState("Creator building product stories with AI.");
+  const [language, setLanguage] = useState("English");
+
+  return (
+    <AppShell title="Account Settings" showBack backTo="/profile">
+      <div className="mt-5 flex flex-col items-center">
+        <img
+          src={currentUser.avatar}
+          alt={currentUser.fullName}
+          className="h-24 w-24 rounded-3xl object-cover shadow-card"
+          width={96}
+          height={96}
+        />
+        <Button variant="ghost" size="sm" className="mt-2.5" onClick={() => toast.info("Photo picker opens here")}>
+          Change photo
+        </Button>
+      </div>
+
+      <div className="mt-4 space-y-4">
+        <Field label="Full name">
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
+        </Field>
+        <Field label="Email">
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </Field>
+        <Field label="Bio" hint="Used to personalise AI script suggestions.">
+          <TextArea rows={3} value={bio} onChange={(e) => setBio(e.target.value)} />
+        </Field>
+        <Field label="Language">
+          <SelectField options={["English", "French", "Spanish", "Portuguese"]} value={language} onChange={setLanguage} />
+        </Field>
+      </div>
+
+      <Button size="lg" fullWidth className="mt-6" onClick={() => toast.success("Changes saved")}>
+        Save changes
+      </Button>
+    </AppShell>
+  );
+}
