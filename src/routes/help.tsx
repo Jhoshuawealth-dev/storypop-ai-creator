@@ -1,0 +1,73 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { ChevronDown, Mail, MessageCircle, Search } from "lucide-react";
+import { toast } from "sonner";
+import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SectionHeader } from "@/components/ui/feedback";
+import { pageHead } from "@/lib/seo";
+import { faqs } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
+
+export const Route = createFileRoute("/help")({
+  head: pageHead("Help & Support", "Find answers or contact the Storypop AI team."),
+  component: Help,
+});
+
+function Help() {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState<number | null>(0);
+
+  const results = faqs.filter(
+    (f) => f.q.toLowerCase().includes(query.toLowerCase()) || f.a.toLowerCase().includes(query.toLowerCase())
+  );
+
+  return (
+    <AppShell title="Help & Support" showBack backTo="/profile">
+      <div className="relative mt-5">
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search help articles"
+          className="pl-11"
+        />
+      </div>
+
+      <SectionHeader title="Frequently asked" />
+      <div className="space-y-2.5">
+        {results.length === 0 && (
+          <p className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-card">
+            No articles matched “{query}”. Try a different search or contact support.
+          </p>
+        )}
+        {results.map((f, i) => (
+          <div key={f.q} className="overflow-hidden rounded-2xl bg-card shadow-card">
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
+              aria-expanded={open === i}
+            >
+              <span className="min-w-0 flex-1 font-semibold text-foreground">{f.q}</span>
+              <ChevronDown
+                className={cn("h-4.5 w-4.5 shrink-0 text-muted-foreground transition-transform", open === i && "rotate-180")}
+              />
+            </button>
+            {open === i && <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">{f.a}</p>}
+          </div>
+        ))}
+      </div>
+
+      <SectionHeader title="Still need help?" />
+      <div className="space-y-3">
+        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("Live chat opens here")}>
+          <MessageCircle className="h-4 w-4" /> Chat with support
+        </Button>
+        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("support@storypop.ai")}>
+          <Mail className="h-4 w-4" /> Email support
+        </Button>
+      </div>
+    </AppShell>
+  );
+}
