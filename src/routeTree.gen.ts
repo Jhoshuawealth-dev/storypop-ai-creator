@@ -64,6 +64,9 @@ import { Route as SubscriptionManageRouteImport } from './routes/subscription.ma
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
 import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scenes'
+import { Route as SettingsSecurity2faRouteImport } from './routes/settings.security.2fa'
+import { Route as SettingsSecurityDataRouteImport } from './routes/settings.security.data'
+import { Route as SettingsSecurityDevicesRouteImport } from './routes/settings.security.devices'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -340,6 +343,21 @@ const ProjectsIdScenesRoute = ProjectsIdScenesRouteImport.update({
   path: '/projects/$id/scenes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsSecurity2faRoute = SettingsSecurity2faRouteImport.update({
+  id: '/2fa',
+  path: '/2fa',
+  getParentRoute: () => SettingsSecurityRoute,
+} as any)
+const SettingsSecurityDataRoute = SettingsSecurityDataRouteImport.update({
+  id: '/data',
+  path: '/data',
+  getParentRoute: () => SettingsSecurityRoute,
+} as any)
+const SettingsSecurityDevicesRoute = SettingsSecurityDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => SettingsSecurityRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -380,7 +398,7 @@ export interface FileRoutesByFullPath {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
@@ -396,6 +414,9 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/settings/security/2fa': typeof SettingsSecurity2faRoute
+  '/settings/security/data': typeof SettingsSecurityDataRoute
+  '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -437,7 +458,7 @@ export interface FileRoutesByTo {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
@@ -453,6 +474,9 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsIndexRoute
   '/subscription': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/settings/security/2fa': typeof SettingsSecurity2faRoute
+  '/settings/security/data': typeof SettingsSecurityDataRoute
+  '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id': typeof ProjectsIdIndexRoute
 }
 export interface FileRoutesById {
@@ -495,7 +519,7 @@ export interface FileRoutesById {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
@@ -511,6 +535,9 @@ export interface FileRoutesById {
   '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
+  '/settings/security/2fa': typeof SettingsSecurity2faRoute
+  '/settings/security/data': typeof SettingsSecurityDataRoute
+  '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -570,6 +597,9 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
+    | '/settings/security/2fa'
+    | '/settings/security/data'
+    | '/settings/security/devices'
     | '/projects/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -627,6 +657,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/subscription'
     | '/projects/$id/scenes'
+    | '/settings/security/2fa'
+    | '/settings/security/data'
+    | '/settings/security/devices'
     | '/projects/$id'
   id:
     | '__root__'
@@ -684,6 +717,9 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
+    | '/settings/security/2fa'
+    | '/settings/security/data'
+    | '/settings/security/devices'
     | '/projects/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -726,7 +762,7 @@ export interface RootRouteChildren {
   PublishCaptionRoute: typeof PublishCaptionRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
-  SettingsSecurityRoute: typeof SettingsSecurityRoute
+  SettingsSecurityRoute: typeof SettingsSecurityRouteWithChildren
   SettingsSocialRoute: typeof SettingsSocialRoute
   SubscriptionCheckoutRoute: typeof SubscriptionCheckoutRoute
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
@@ -1132,8 +1168,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIdScenesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/security/2fa': {
+      id: '/settings/security/2fa'
+      path: '/2fa'
+      fullPath: '/settings/security/2fa'
+      preLoaderRoute: typeof SettingsSecurity2faRouteImport
+      parentRoute: typeof SettingsSecurityRoute
+    }
+    '/settings/security/data': {
+      id: '/settings/security/data'
+      path: '/data'
+      fullPath: '/settings/security/data'
+      preLoaderRoute: typeof SettingsSecurityDataRouteImport
+      parentRoute: typeof SettingsSecurityRoute
+    }
+    '/settings/security/devices': {
+      id: '/settings/security/devices'
+      path: '/devices'
+      fullPath: '/settings/security/devices'
+      preLoaderRoute: typeof SettingsSecurityDevicesRouteImport
+      parentRoute: typeof SettingsSecurityRoute
+    }
   }
 }
+
+interface SettingsSecurityRouteChildren {
+  SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
+  SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
+  SettingsSecurityDevicesRoute: typeof SettingsSecurityDevicesRoute
+}
+
+const SettingsSecurityRouteChildren: SettingsSecurityRouteChildren = {
+  SettingsSecurity2faRoute: SettingsSecurity2faRoute,
+  SettingsSecurityDataRoute: SettingsSecurityDataRoute,
+  SettingsSecurityDevicesRoute: SettingsSecurityDevicesRoute,
+}
+
+const SettingsSecurityRouteWithChildren =
+  SettingsSecurityRoute._addFileChildren(SettingsSecurityRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -1174,7 +1246,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublishCaptionRoute: PublishCaptionRoute,
   PublishScheduleRoute: PublishScheduleRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
-  SettingsSecurityRoute: SettingsSecurityRoute,
+  SettingsSecurityRoute: SettingsSecurityRouteWithChildren,
   SettingsSocialRoute: SettingsSocialRoute,
   SubscriptionCheckoutRoute: SubscriptionCheckoutRoute,
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
