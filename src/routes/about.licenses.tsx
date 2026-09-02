@@ -1,14 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
-import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/about/licenses")({
   head: pageHead("Licenses", "Open source licenses used by Storypop AI."),
   component: Licenses,
 });
+
+const licenseBlurbs: Record<string, string> = {
+  MIT: "Permission is granted to use, copy, modify and distribute this software, provided the copyright notice and licence are included.",
+  ISC: "A permissive licence functionally equivalent to MIT, requiring preservation of the copyright notice.",
+  "Apache-2.0": "A permissive licence that also grants an express patent licence from contributors to users.",
+  "SIL OFL 1.1": "Fonts may be used, studied, modified and redistributed freely, as long as they are not sold by themselves.",
+};
 
 const groups = [
   {
