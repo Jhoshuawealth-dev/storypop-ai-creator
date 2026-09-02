@@ -73,7 +73,7 @@ function TwoFactor() {
       {step === "verify" && !enabled && (
         <div className="mt-8">
           <Field label="Enter the 6-digit code from your app">
-            <OtpInput value={code} onChange={setCode} />
+            <OtpInput onComplete={setCode} />
           </Field>
           <Button
             size="lg"
