@@ -50,9 +50,11 @@ function CharacterProfile() {
         </Button>
       </Link>
       <div className="mt-3 grid grid-cols-2 gap-3">
-        <Button variant="outline" size="lg" onClick={() => toast.info("Character editor opened")}>
-          <Pencil className="h-4 w-4" /> Edit
-        </Button>
+        <Link to="/editor" className="block">
+          <Button variant="outline" size="lg" fullWidth>
+            <Pencil className="h-4 w-4" /> Edit
+          </Button>
+        </Link>
         <Button
           variant="danger"
           size="lg"
