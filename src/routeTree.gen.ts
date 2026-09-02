@@ -20,6 +20,10 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AboutGuidelinesRouteImport } from './routes/about.guidelines'
+import { Route as AboutLicensesRouteImport } from './routes/about.licenses'
+import { Route as AboutPrivacyRouteImport } from './routes/about.privacy'
+import { Route as AboutTermsRouteImport } from './routes/about.terms'
 import { Route as AnalyticsIndexRouteImport } from './routes/analytics.index'
 import { Route as AnalyticsIdRouteImport } from './routes/analytics.$id'
 import { Route as AnalyticsInsightsRouteImport } from './routes/analytics.insights'
@@ -122,6 +126,26 @@ const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AboutGuidelinesRoute = AboutGuidelinesRouteImport.update({
+  id: '/guidelines',
+  path: '/guidelines',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutLicensesRoute = AboutLicensesRouteImport.update({
+  id: '/licenses',
+  path: '/licenses',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutPrivacyRoute = AboutPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutTermsRoute = AboutTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => AboutRoute,
 } as any)
 const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
   id: '/analytics/',
@@ -361,7 +385,7 @@ const SettingsSecurityDevicesRoute = SettingsSecurityDevicesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -371,6 +395,10 @@ export interface FileRoutesByFullPath {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/about/guidelines': typeof AboutGuidelinesRoute
+  '/about/licenses': typeof AboutLicensesRoute
+  '/about/privacy': typeof AboutPrivacyRoute
+  '/about/terms': typeof AboutTermsRoute
   '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
@@ -421,7 +449,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -431,6 +459,10 @@ export interface FileRoutesByTo {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/about/guidelines': typeof AboutGuidelinesRoute
+  '/about/licenses': typeof AboutLicensesRoute
+  '/about/privacy': typeof AboutPrivacyRoute
+  '/about/terms': typeof AboutTermsRoute
   '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
@@ -482,7 +514,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -492,6 +524,10 @@ export interface FileRoutesById {
   '/usage': typeof UsageRoute
   '/verify-email': typeof VerifyEmailRoute
   '/welcome': typeof WelcomeRoute
+  '/about/guidelines': typeof AboutGuidelinesRoute
+  '/about/licenses': typeof AboutLicensesRoute
+  '/about/privacy': typeof AboutPrivacyRoute
+  '/about/terms': typeof AboutTermsRoute
   '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
@@ -554,6 +590,10 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/about/guidelines'
+    | '/about/licenses'
+    | '/about/privacy'
+    | '/about/terms'
     | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
@@ -614,6 +654,10 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/about/guidelines'
+    | '/about/licenses'
+    | '/about/privacy'
+    | '/about/terms'
     | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
@@ -674,6 +718,10 @@ export interface FileRouteTypes {
     | '/usage'
     | '/verify-email'
     | '/welcome'
+    | '/about/guidelines'
+    | '/about/licenses'
+    | '/about/privacy'
+    | '/about/terms'
     | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
@@ -725,7 +773,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AboutRoute: typeof AboutRouteWithChildren
   HelpRoute: typeof HelpRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
@@ -859,6 +907,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/about/guidelines': {
+      id: '/about/guidelines'
+      path: '/guidelines'
+      fullPath: '/about/guidelines'
+      preLoaderRoute: typeof AboutGuidelinesRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/licenses': {
+      id: '/about/licenses'
+      path: '/licenses'
+      fullPath: '/about/licenses'
+      preLoaderRoute: typeof AboutLicensesRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/privacy': {
+      id: '/about/privacy'
+      path: '/privacy'
+      fullPath: '/about/privacy'
+      preLoaderRoute: typeof AboutPrivacyRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/terms': {
+      id: '/about/terms'
+      path: '/terms'
+      fullPath: '/about/terms'
+      preLoaderRoute: typeof AboutTermsRouteImport
+      parentRoute: typeof AboutRoute
     }
     '/analytics/': {
       id: '/analytics/'
@@ -1192,6 +1268,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AboutRouteChildren {
+  AboutGuidelinesRoute: typeof AboutGuidelinesRoute
+  AboutLicensesRoute: typeof AboutLicensesRoute
+  AboutPrivacyRoute: typeof AboutPrivacyRoute
+  AboutTermsRoute: typeof AboutTermsRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutGuidelinesRoute: AboutGuidelinesRoute,
+  AboutLicensesRoute: AboutLicensesRoute,
+  AboutPrivacyRoute: AboutPrivacyRoute,
+  AboutTermsRoute: AboutTermsRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
+
 interface SettingsSecurityRouteChildren {
   SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
   SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
@@ -1209,7 +1301,7 @@ const SettingsSecurityRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutRoute: AboutRouteWithChildren,
   HelpRoute: HelpRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,

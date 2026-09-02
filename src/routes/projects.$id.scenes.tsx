@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowDown, ArrowUp, Pencil, RefreshCw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -51,12 +51,12 @@ function SceneManager() {
               </div>
             </div>
             <div className="mt-2.5 flex items-center gap-1 border-t border-border pt-2.5">
-              <button
-                onClick={() => toast.info("Scene editor opened")}
+              <Link
+                to="/editor"
                 className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary-soft"
               >
                 <Pencil className="h-3.5 w-3.5" /> Edit
-              </button>
+              </Link>
               <button
                 onClick={() => toast.success("Scene regenerated")}
                 className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary-soft"

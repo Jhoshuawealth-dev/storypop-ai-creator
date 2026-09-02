@@ -17,20 +17,33 @@ function AccountSettings() {
   const [email, setEmail] = useState(currentUser.email);
   const [bio, setBio] = useState("Creator building product stories with AI.");
   const [language, setLanguage] = useState("English");
+  const [photo, setPhoto] = useState(currentUser.avatar);
+
+  const pickPhoto = (file: File | undefined) => {
+    if (!file) return;
+    setPhoto(URL.createObjectURL(file));
+    toast.success("Profile photo updated");
+  };
 
   return (
     <AppShell title="Account Settings" showBack backTo="/profile">
       <div className="mt-5 flex flex-col items-center">
         <img
-          src={currentUser.avatar}
+          src={photo}
           alt={currentUser.fullName}
           className="h-24 w-24 rounded-3xl object-cover shadow-card"
           width={96}
           height={96}
         />
-        <Button variant="ghost" size="sm" className="mt-2.5" onClick={() => toast.info("Photo picker opens here")}>
-          Change photo
-        </Button>
+        <label className="mt-2.5 cursor-pointer">
+          <span className="text-sm font-semibold text-primary">Change photo</span>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => pickPhoto(e.target.files?.[0])}
+          />
+        </label>
       </div>
 
       <div className="mt-4 space-y-4">
