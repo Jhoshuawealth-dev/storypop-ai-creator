@@ -83,13 +83,77 @@ function Help() {
 
       <SectionHeader title="Still need help?" />
       <div className="space-y-3">
-        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("Live chat opens here")}>
+        <Button variant="outline" size="lg" fullWidth onClick={() => setChatOpen(true)}>
           <MessageCircle className="h-4 w-4" /> Chat with support
         </Button>
-        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("support@storypop.ai")}>
-          <Mail className="h-4 w-4" /> Email support
-        </Button>
+        <a href="mailto:support@storypop.ai" className="block">
+          <Button variant="outline" size="lg" fullWidth>
+            <Mail className="h-4 w-4" /> Email support
+          </Button>
+        </a>
       </div>
+
+      {chatOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 backdrop-blur-sm"
+          onClick={() => setChatOpen(false)}
+        >
+          <div
+            className="flex h-[70dvh] w-full max-w-md flex-col rounded-t-3xl bg-card shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft">
+                <MessageCircle className="h-5 w-5 text-primary" strokeWidth={1.8} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold text-foreground">Storypop Support</p>
+                <p className="text-xs font-semibold text-primary">Online · replies in minutes</p>
+              </div>
+              <button
+                onClick={() => setChatOpen(false)}
+                aria-label="Close chat"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
+              {messages.map((m, i) => (
+                <div key={i} className={cn("flex", m.from === "user" ? "justify-end" : "justify-start")}>
+                  <p
+                    className={cn(
+                      "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
+                      m.from === "user"
+                        ? "rounded-br-md bg-primary text-primary-foreground"
+                        : "rounded-bl-md bg-muted text-foreground"
+                    )}
+                  >
+                    {m.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <form
+              className="flex items-center gap-2.5 border-t border-border px-5 py-3.5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+            >
+              <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Type a message…" className="flex-1" />
+              <button
+                type="submit"
+                aria-label="Send message"
+                disabled={!draft.trim()}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-40"
+              >
+                <Send className="h-4.5 w-4.5" />
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </AppShell>
   );
 }
