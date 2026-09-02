@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronDown, Mail, MessageCircle, Search } from "lucide-react";
-import { toast } from "sonner";
+import { ChevronDown, Mail, MessageCircle, Search, Send, X } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
