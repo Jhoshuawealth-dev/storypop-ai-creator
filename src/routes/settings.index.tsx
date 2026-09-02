@@ -17,6 +17,13 @@ function AccountSettings() {
   const [email, setEmail] = useState(currentUser.email);
   const [bio, setBio] = useState("Creator building product stories with AI.");
   const [language, setLanguage] = useState("English");
+  const [photo, setPhoto] = useState(currentUser.avatar);
+
+  const pickPhoto = (file: File | undefined) => {
+    if (!file) return;
+    setPhoto(URL.createObjectURL(file));
+    toast.success("Profile photo updated");
+  };
 
   return (
     <AppShell title="Account Settings" showBack backTo="/profile">
