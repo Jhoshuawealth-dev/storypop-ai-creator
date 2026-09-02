@@ -15,9 +15,31 @@ export const Route = createFileRoute("/help")({
   component: Help,
 });
 
+interface ChatMessage {
+  from: "user" | "support";
+  text: string;
+}
+
+const cannedReplies = [
+  "Hi! I'm Poppy from Storypop support. How can I help you today?",
+  "Got it — let me look into that for you. Anything else you'd like to add?",
+  "Thanks! I've passed this to the team and we'll follow up by email shortly.",
+];
+
 function Help() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | null>(0);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([{ from: "support", text: cannedReplies[0]! }]);
+  const [draft, setDraft] = useState("");
+
+  const sendMessage = () => {
+    const text = draft.trim();
+    if (!text) return;
+    const reply = cannedReplies[Math.min(messages.filter((m) => m.from === "user").length, cannedReplies.length - 1)]!;
+    setMessages((prev) => [...prev, { from: "user", text }, { from: "support", text: reply }]);
+    setDraft("");
+  };
 
   const results = faqs.filter(
     (f) => f.q.toLowerCase().includes(query.toLowerCase()) || f.a.toLowerCase().includes(query.toLowerCase())
