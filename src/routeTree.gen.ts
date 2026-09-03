@@ -128,24 +128,24 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutGuidelinesRoute = AboutGuidelinesRouteImport.update({
-  id: '/guidelines',
-  path: '/guidelines',
-  getParentRoute: () => AboutRoute,
+  id: '/about/guidelines',
+  path: '/about/guidelines',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutLicensesRoute = AboutLicensesRouteImport.update({
-  id: '/licenses',
-  path: '/licenses',
-  getParentRoute: () => AboutRoute,
+  id: '/about/licenses',
+  path: '/about/licenses',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutPrivacyRoute = AboutPrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => AboutRoute,
+  id: '/about/privacy',
+  path: '/about/privacy',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutTermsRoute = AboutTermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => AboutRoute,
+  id: '/about/terms',
+  path: '/about/terms',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
   id: '/analytics/',
@@ -368,19 +368,19 @@ const SettingsSecurityIndexRoute = SettingsSecurityIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurity2faRoute = SettingsSecurity2faRouteImport.update({
-  id: '/2fa',
-  path: '/2fa',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/2fa',
+  path: '/settings/security/2fa',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurityDataRoute = SettingsSecurityDataRouteImport.update({
-  id: '/data',
-  path: '/data',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/data',
+  path: '/settings/security/data',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurityDevicesRoute = SettingsSecurityDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/devices',
+  path: '/settings/security/devices',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -782,6 +782,10 @@ export interface RootRouteChildren {
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WelcomeRoute: typeof WelcomeRoute
+  AboutGuidelinesRoute: typeof AboutGuidelinesRoute
+  AboutLicensesRoute: typeof AboutLicensesRoute
+  AboutPrivacyRoute: typeof AboutPrivacyRoute
+  AboutTermsRoute: typeof AboutTermsRoute
   AnalyticsIdRoute: typeof AnalyticsIdRoute
   AnalyticsInsightsRoute: typeof AnalyticsInsightsRoute
   CalendarPublishedRoute: typeof CalendarPublishedRoute
@@ -825,6 +829,9 @@ export interface RootRouteChildren {
   SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
+  SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
+  SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
+  SettingsSecurityDevicesRoute: typeof SettingsSecurityDevicesRoute
   ProjectsIdIndexRoute: typeof ProjectsIdIndexRoute
   SettingsSecurityIndexRoute: typeof SettingsSecurityIndexRoute
 }
@@ -910,31 +917,31 @@ declare module '@tanstack/react-router' {
     }
     '/about/guidelines': {
       id: '/about/guidelines'
-      path: '/guidelines'
+      path: '/about/guidelines'
       fullPath: '/about/guidelines'
       preLoaderRoute: typeof AboutGuidelinesRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/licenses': {
       id: '/about/licenses'
-      path: '/licenses'
+      path: '/about/licenses'
       fullPath: '/about/licenses'
       preLoaderRoute: typeof AboutLicensesRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/privacy': {
       id: '/about/privacy'
-      path: '/privacy'
+      path: '/about/privacy'
       fullPath: '/about/privacy'
       preLoaderRoute: typeof AboutPrivacyRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/terms': {
       id: '/about/terms'
-      path: '/terms'
+      path: '/about/terms'
       fullPath: '/about/terms'
       preLoaderRoute: typeof AboutTermsRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/analytics/': {
       id: '/analytics/'
@@ -1246,24 +1253,24 @@ declare module '@tanstack/react-router' {
     }
     '/settings/security/2fa': {
       id: '/settings/security/2fa'
-      path: '/2fa'
+      path: '/settings/security/2fa'
       fullPath: '/settings/security/2fa'
       preLoaderRoute: typeof SettingsSecurity2faRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/settings/security/data': {
       id: '/settings/security/data'
-      path: '/data'
+      path: '/settings/security/data'
       fullPath: '/settings/security/data'
       preLoaderRoute: typeof SettingsSecurityDataRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/settings/security/devices': {
       id: '/settings/security/devices'
-      path: '/devices'
+      path: '/settings/security/devices'
       fullPath: '/settings/security/devices'
       preLoaderRoute: typeof SettingsSecurityDevicesRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1279,6 +1286,10 @@ const rootRouteChildren: RootRouteChildren = {
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WelcomeRoute: WelcomeRoute,
+  AboutGuidelinesRoute: AboutGuidelinesRoute,
+  AboutLicensesRoute: AboutLicensesRoute,
+  AboutPrivacyRoute: AboutPrivacyRoute,
+  AboutTermsRoute: AboutTermsRoute,
   AnalyticsIdRoute: AnalyticsIdRoute,
   AnalyticsInsightsRoute: AnalyticsInsightsRoute,
   CalendarPublishedRoute: CalendarPublishedRoute,
@@ -1322,6 +1333,9 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
+  SettingsSecurity2faRoute: SettingsSecurity2faRoute,
+  SettingsSecurityDataRoute: SettingsSecurityDataRoute,
+  SettingsSecurityDevicesRoute: SettingsSecurityDevicesRoute,
   ProjectsIdIndexRoute: ProjectsIdIndexRoute,
   SettingsSecurityIndexRoute: SettingsSecurityIndexRoute,
 }
