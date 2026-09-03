@@ -8,7 +8,7 @@ import { Field, Input, PasswordInput } from "@/components/ui/input";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/settings/security")({
+export const Route = createFileRoute("/settings/security/")({
   head: pageHead("Security & Privacy", "Manage your password, devices and data."),
   component: Security,
 });

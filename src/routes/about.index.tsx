@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute("/about/")({
   head: pageHead("About", "About Storypop AI — the AI UGC creator studio."),
   component: About,
 });
