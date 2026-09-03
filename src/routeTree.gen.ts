@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
@@ -20,6 +19,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutGuidelinesRouteImport } from './routes/about.guidelines'
 import { Route as AboutLicensesRouteImport } from './routes/about.licenses'
 import { Route as AboutPrivacyRouteImport } from './routes/about.privacy'
@@ -59,7 +59,6 @@ import { Route as PublishCaptionRouteImport } from './routes/publish.caption'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
-import { Route as SettingsSecurityRouteImport } from './routes/settings.security'
 import { Route as SettingsSocialRouteImport } from './routes/settings.social'
 import { Route as SubscriptionIndexRouteImport } from './routes/subscription.index'
 import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.checkout'
@@ -68,6 +67,7 @@ import { Route as SubscriptionManageRouteImport } from './routes/subscription.ma
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
 import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scenes'
+import { Route as SettingsSecurityIndexRouteImport } from './routes/settings.security.index'
 import { Route as SettingsSecurity2faRouteImport } from './routes/settings.security.2fa'
 import { Route as SettingsSecurityDataRouteImport } from './routes/settings.security.data'
 import { Route as SettingsSecurityDevicesRouteImport } from './routes/settings.security.devices'
@@ -75,11 +75,6 @@ import { Route as SettingsSecurityDevicesRouteImport } from './routes/settings.s
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -127,25 +122,30 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutGuidelinesRoute = AboutGuidelinesRouteImport.update({
-  id: '/guidelines',
-  path: '/guidelines',
-  getParentRoute: () => AboutRoute,
+  id: '/about/guidelines',
+  path: '/about/guidelines',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutLicensesRoute = AboutLicensesRouteImport.update({
-  id: '/licenses',
-  path: '/licenses',
-  getParentRoute: () => AboutRoute,
+  id: '/about/licenses',
+  path: '/about/licenses',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutPrivacyRoute = AboutPrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => AboutRoute,
+  id: '/about/privacy',
+  path: '/about/privacy',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutTermsRoute = AboutTermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => AboutRoute,
+  id: '/about/terms',
+  path: '/about/terms',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
   id: '/analytics/',
@@ -322,11 +322,6 @@ const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
   path: '/settings/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
-  id: '/settings/security',
-  path: '/settings/security',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsSocialRoute = SettingsSocialRouteImport.update({
   id: '/settings/social',
   path: '/settings/social',
@@ -367,25 +362,29 @@ const ProjectsIdScenesRoute = ProjectsIdScenesRouteImport.update({
   path: '/projects/$id/scenes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsSecurityIndexRoute = SettingsSecurityIndexRouteImport.update({
+  id: '/settings/security/',
+  path: '/settings/security/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsSecurity2faRoute = SettingsSecurity2faRouteImport.update({
-  id: '/2fa',
-  path: '/2fa',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/2fa',
+  path: '/settings/security/2fa',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurityDataRoute = SettingsSecurityDataRouteImport.update({
-  id: '/data',
-  path: '/data',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/data',
+  path: '/settings/security/data',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSecurityDevicesRoute = SettingsSecurityDevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
-  getParentRoute: () => SettingsSecurityRoute,
+  id: '/settings/security/devices',
+  path: '/settings/security/devices',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -426,12 +425,12 @@ export interface FileRoutesByFullPath {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
@@ -446,10 +445,10 @@ export interface FileRoutesByFullPath {
   '/settings/security/data': typeof SettingsSecurityDataRoute
   '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
+  '/settings/security/': typeof SettingsSecurityIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -490,12 +489,12 @@ export interface FileRoutesByTo {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/about': typeof AboutIndexRoute
   '/analytics': typeof AnalyticsIndexRoute
   '/calendar': typeof CalendarIndexRoute
   '/characters': typeof CharactersIndexRoute
@@ -510,11 +509,11 @@ export interface FileRoutesByTo {
   '/settings/security/data': typeof SettingsSecurityDataRoute
   '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id': typeof ProjectsIdIndexRoute
+  '/settings/security': typeof SettingsSecurityIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -555,12 +554,12 @@ export interface FileRoutesById {
   '/publish/caption': typeof PublishCaptionRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/security': typeof SettingsSecurityRouteWithChildren
   '/settings/social': typeof SettingsSocialRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
@@ -575,12 +574,12 @@ export interface FileRoutesById {
   '/settings/security/data': typeof SettingsSecurityDataRoute
   '/settings/security/devices': typeof SettingsSecurityDevicesRoute
   '/projects/$id/': typeof ProjectsIdIndexRoute
+  '/settings/security/': typeof SettingsSecurityIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/help'
     | '/home'
     | '/login'
@@ -621,12 +620,12 @@ export interface FileRouteTypes {
     | '/publish/caption'
     | '/publish/schedule'
     | '/settings/notifications'
-    | '/settings/security'
     | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/about/'
     | '/analytics/'
     | '/calendar/'
     | '/characters/'
@@ -641,10 +640,10 @@ export interface FileRouteTypes {
     | '/settings/security/data'
     | '/settings/security/devices'
     | '/projects/$id/'
+    | '/settings/security/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/help'
     | '/home'
     | '/login'
@@ -685,12 +684,12 @@ export interface FileRouteTypes {
     | '/publish/caption'
     | '/publish/schedule'
     | '/settings/notifications'
-    | '/settings/security'
     | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/about'
     | '/analytics'
     | '/calendar'
     | '/characters'
@@ -705,10 +704,10 @@ export interface FileRouteTypes {
     | '/settings/security/data'
     | '/settings/security/devices'
     | '/projects/$id'
+    | '/settings/security'
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/help'
     | '/home'
     | '/login'
@@ -749,12 +748,12 @@ export interface FileRouteTypes {
     | '/publish/caption'
     | '/publish/schedule'
     | '/settings/notifications'
-    | '/settings/security'
     | '/settings/social'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/about/'
     | '/analytics/'
     | '/calendar/'
     | '/characters/'
@@ -769,11 +768,11 @@ export interface FileRouteTypes {
     | '/settings/security/data'
     | '/settings/security/devices'
     | '/projects/$id/'
+    | '/settings/security/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRouteWithChildren
   HelpRoute: typeof HelpRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
@@ -783,6 +782,10 @@ export interface RootRouteChildren {
   UsageRoute: typeof UsageRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   WelcomeRoute: typeof WelcomeRoute
+  AboutGuidelinesRoute: typeof AboutGuidelinesRoute
+  AboutLicensesRoute: typeof AboutLicensesRoute
+  AboutPrivacyRoute: typeof AboutPrivacyRoute
+  AboutTermsRoute: typeof AboutTermsRoute
   AnalyticsIdRoute: typeof AnalyticsIdRoute
   AnalyticsInsightsRoute: typeof AnalyticsInsightsRoute
   CalendarPublishedRoute: typeof CalendarPublishedRoute
@@ -810,12 +813,12 @@ export interface RootRouteChildren {
   PublishCaptionRoute: typeof PublishCaptionRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
-  SettingsSecurityRoute: typeof SettingsSecurityRouteWithChildren
   SettingsSocialRoute: typeof SettingsSocialRoute
   SubscriptionCheckoutRoute: typeof SubscriptionCheckoutRoute
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
   SubscriptionManageRoute: typeof SubscriptionManageRoute
   SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
+  AboutIndexRoute: typeof AboutIndexRoute
   AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   CalendarIndexRoute: typeof CalendarIndexRoute
   CharactersIndexRoute: typeof CharactersIndexRoute
@@ -826,7 +829,11 @@ export interface RootRouteChildren {
   SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
+  SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
+  SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
+  SettingsSecurityDevicesRoute: typeof SettingsSecurityDevicesRoute
   ProjectsIdIndexRoute: typeof ProjectsIdIndexRoute
+  SettingsSecurityIndexRoute: typeof SettingsSecurityIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -836,13 +843,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -908,33 +908,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/': {
+      id: '/about/'
+      path: '/about'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AboutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about/guidelines': {
       id: '/about/guidelines'
-      path: '/guidelines'
+      path: '/about/guidelines'
       fullPath: '/about/guidelines'
       preLoaderRoute: typeof AboutGuidelinesRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/licenses': {
       id: '/about/licenses'
-      path: '/licenses'
+      path: '/about/licenses'
       fullPath: '/about/licenses'
       preLoaderRoute: typeof AboutLicensesRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/privacy': {
       id: '/about/privacy'
-      path: '/privacy'
+      path: '/about/privacy'
       fullPath: '/about/privacy'
       preLoaderRoute: typeof AboutPrivacyRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/about/terms': {
       id: '/about/terms'
-      path: '/terms'
+      path: '/about/terms'
       fullPath: '/about/terms'
       preLoaderRoute: typeof AboutTermsRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/analytics/': {
       id: '/analytics/'
@@ -1181,13 +1188,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsNotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings/security': {
-      id: '/settings/security'
-      path: '/settings/security'
-      fullPath: '/settings/security'
-      preLoaderRoute: typeof SettingsSecurityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings/social': {
       id: '/settings/social'
       path: '/settings/social'
@@ -1244,64 +1244,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIdScenesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/security/': {
+      id: '/settings/security/'
+      path: '/settings/security'
+      fullPath: '/settings/security/'
+      preLoaderRoute: typeof SettingsSecurityIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/security/2fa': {
       id: '/settings/security/2fa'
-      path: '/2fa'
+      path: '/settings/security/2fa'
       fullPath: '/settings/security/2fa'
       preLoaderRoute: typeof SettingsSecurity2faRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/settings/security/data': {
       id: '/settings/security/data'
-      path: '/data'
+      path: '/settings/security/data'
       fullPath: '/settings/security/data'
       preLoaderRoute: typeof SettingsSecurityDataRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/settings/security/devices': {
       id: '/settings/security/devices'
-      path: '/devices'
+      path: '/settings/security/devices'
       fullPath: '/settings/security/devices'
       preLoaderRoute: typeof SettingsSecurityDevicesRouteImport
-      parentRoute: typeof SettingsSecurityRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AboutRouteChildren {
-  AboutGuidelinesRoute: typeof AboutGuidelinesRoute
-  AboutLicensesRoute: typeof AboutLicensesRoute
-  AboutPrivacyRoute: typeof AboutPrivacyRoute
-  AboutTermsRoute: typeof AboutTermsRoute
-}
-
-const AboutRouteChildren: AboutRouteChildren = {
-  AboutGuidelinesRoute: AboutGuidelinesRoute,
-  AboutLicensesRoute: AboutLicensesRoute,
-  AboutPrivacyRoute: AboutPrivacyRoute,
-  AboutTermsRoute: AboutTermsRoute,
-}
-
-const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
-
-interface SettingsSecurityRouteChildren {
-  SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
-  SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
-  SettingsSecurityDevicesRoute: typeof SettingsSecurityDevicesRoute
-}
-
-const SettingsSecurityRouteChildren: SettingsSecurityRouteChildren = {
-  SettingsSecurity2faRoute: SettingsSecurity2faRoute,
-  SettingsSecurityDataRoute: SettingsSecurityDataRoute,
-  SettingsSecurityDevicesRoute: SettingsSecurityDevicesRoute,
-}
-
-const SettingsSecurityRouteWithChildren =
-  SettingsSecurityRoute._addFileChildren(SettingsSecurityRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRouteWithChildren,
   HelpRoute: HelpRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
@@ -1311,6 +1286,10 @@ const rootRouteChildren: RootRouteChildren = {
   UsageRoute: UsageRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   WelcomeRoute: WelcomeRoute,
+  AboutGuidelinesRoute: AboutGuidelinesRoute,
+  AboutLicensesRoute: AboutLicensesRoute,
+  AboutPrivacyRoute: AboutPrivacyRoute,
+  AboutTermsRoute: AboutTermsRoute,
   AnalyticsIdRoute: AnalyticsIdRoute,
   AnalyticsInsightsRoute: AnalyticsInsightsRoute,
   CalendarPublishedRoute: CalendarPublishedRoute,
@@ -1338,12 +1317,12 @@ const rootRouteChildren: RootRouteChildren = {
   PublishCaptionRoute: PublishCaptionRoute,
   PublishScheduleRoute: PublishScheduleRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
-  SettingsSecurityRoute: SettingsSecurityRouteWithChildren,
   SettingsSocialRoute: SettingsSocialRoute,
   SubscriptionCheckoutRoute: SubscriptionCheckoutRoute,
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
   SubscriptionManageRoute: SubscriptionManageRoute,
   SubscriptionSuccessRoute: SubscriptionSuccessRoute,
+  AboutIndexRoute: AboutIndexRoute,
   AnalyticsIndexRoute: AnalyticsIndexRoute,
   CalendarIndexRoute: CalendarIndexRoute,
   CharactersIndexRoute: CharactersIndexRoute,
@@ -1354,7 +1333,11 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
+  SettingsSecurity2faRoute: SettingsSecurity2faRoute,
+  SettingsSecurityDataRoute: SettingsSecurityDataRoute,
+  SettingsSecurityDevicesRoute: SettingsSecurityDevicesRoute,
   ProjectsIdIndexRoute: ProjectsIdIndexRoute,
+  SettingsSecurityIndexRoute: SettingsSecurityIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
