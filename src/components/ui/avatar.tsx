@@ -1,47 +1,48 @@
-"use client";
-
-import * as React from "react";
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const Avatar = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
-    {...props}
-  />
-));
-Avatar.displayName = AvatarPrimitive.Root.displayName;
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((n) => n[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
-const AvatarImage = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn("aspect-square h-full w-full", className)}
-    {...props}
-  />
-));
-AvatarImage.displayName = AvatarPrimitive.Image.displayName;
+/** Avatar that falls back to initials (or an icon) when no image exists. */
+export function Avatar({
+  src,
+  name,
+  className,
+  alt,
+}: {
+  src?: string;
+  name?: string;
+  className?: string;
+  alt?: string;
+}) {
+  if (src) {
+    return <img src={src} alt={alt ?? name ?? "Avatar"} className={cn("object-cover", className)} loading="lazy" />;
+  }
+  const label = name ? initials(name) : "";
+  return (
+    <span
+      className={cn(
+        "flex items-center justify-center bg-primary-soft font-display font-extrabold text-primary",
+        className
+      )}
+      aria-label={alt ?? name ?? "Avatar"}
+    >
+      {label || <User className="h-1/2 w-1/2" strokeWidth={1.8} />}
+    </span>
+  );
+}
 
-const AvatarFallback = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Fallback
-    ref={ref}
-    className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted",
-      className,
-    )}
-    {...props}
-  />
-));
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
-
-export { Avatar, AvatarImage, AvatarFallback };
+/** Square media thumbnail with a neutral fallback. */
+export function Thumb({ src, alt, className }: { src?: string; alt: string; className?: string }) {
+  if (src) {
+    return <img src={src} alt={alt} className={cn("object-cover", className)} loading="lazy" />;
+  }
+  return <span className={cn("block bg-primary-soft", className)} aria-label={alt} />;
+}
