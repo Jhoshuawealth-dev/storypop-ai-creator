@@ -9,7 +9,7 @@ export function VideoPreviewPlayer({
   className,
   autoPlay = false,
 }: {
-  poster: string;
+  poster?: string;
   durationSeconds?: number;
   className?: string;
   autoPlay?: boolean;
@@ -40,7 +40,11 @@ export function VideoPreviewPlayer({
 
   return (
     <div className={cn("relative overflow-hidden rounded-3xl bg-primary-deep shadow-card", className)}>
-      <img src={poster} alt="Video preview" className="h-full w-full object-cover" loading="lazy" />
+      {poster ? (
+        <img src={poster} alt="Video preview" className="h-full w-full object-cover" loading="lazy" />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-primary-soft" />
+      )}
       {!playing && (
         <button
           onClick={() => setPlaying(true)}
