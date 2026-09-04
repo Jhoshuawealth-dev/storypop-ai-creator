@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatDuration } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
 
-export function MockVideoPlayer({
+export function VideoPreviewPlayer({
   poster,
   durationSeconds = 30,
   className,

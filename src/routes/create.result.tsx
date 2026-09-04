@@ -3,7 +3,7 @@ import { CheckCircle2, Pencil, RefreshCw, Save } from "lucide-react";
 import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
-import { MockVideoPlayer } from "@/components/ui/video-player";
+import { VideoPreviewPlayer } from "@/components/ui/video-player";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
 import { formatDuration, thumbSneaker } from "@/lib/mock-data";
@@ -24,7 +24,7 @@ function VideoResult() {
         <p className="text-sm font-bold text-secondary-foreground">Your AI video is ready!</p>
       </div>
 
-      <MockVideoPlayer
+      <VideoPreviewPlayer
         poster={thumbSneaker}
         durationSeconds={draft.duration}
         className="mt-4 aspect-[9/16] w-full"

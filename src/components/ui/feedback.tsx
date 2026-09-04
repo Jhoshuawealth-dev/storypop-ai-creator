@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
-import type { ProjectStatus } from "@/lib/mock-data";
+import type { ProjectStatus } from "@/lib/catalog";
 
 export function SectionHeader({ title, action }: { title: string; action?: ReactNode }) {
   return (
