@@ -39,7 +39,7 @@ export function Avatar({
   );
 }
 
-/** Square media thumbnail with a neutral fallback. */
+/** Media thumbnail with a neutral fallback when no render exists yet. */
 export function Thumb({ src, alt, className }: { src?: string; alt: string; className?: string }) {
   if (src) {
     return <img src={src} alt={alt} className={cn("object-cover", className)} loading="lazy" />;
