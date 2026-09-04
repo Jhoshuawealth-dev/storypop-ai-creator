@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Eye, Heart, MessageCircle, Share2 } from "lucide-react";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
-import { MockVideoPlayer } from "@/components/ui/video-player";
+import { VideoPreviewPlayer } from "@/components/ui/video-player";
 import { pageHead } from "@/lib/seo";
 import { thumbSneaker } from "@/lib/mock-data";
 
@@ -21,7 +21,7 @@ const stats = [
 function PublishedPost() {
   return (
     <FlowShell title="Published Post" backTo="/calendar">
-      <MockVideoPlayer poster={thumbSneaker} durationSeconds={30} className="mt-4 aspect-[9/16] w-full" />
+      <VideoPreviewPlayer poster={thumbSneaker} durationSeconds={30} className="mt-4 aspect-[9/16] w-full" />
 
       <div className="mt-4 flex items-center justify-between">
         <div className="min-w-0">

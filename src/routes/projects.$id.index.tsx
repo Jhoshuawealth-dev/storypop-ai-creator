@@ -3,7 +3,7 @@ import { ChevronRight, Copy, Pencil, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
-import { MockVideoPlayer } from "@/components/ui/video-player";
+import { VideoPreviewPlayer } from "@/components/ui/video-player";
 import { StatusBadge } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 import { characters, defaultScript, formatDuration, projects } from "@/lib/mock-data";
@@ -21,7 +21,7 @@ function ProjectDetails() {
 
   return (
     <AppShell title={project.title} showBack backTo="/projects">
-      <MockVideoPlayer poster={project.thumb} durationSeconds={project.durationSeconds} className="mt-4 aspect-[9/16] w-full" />
+      <VideoPreviewPlayer poster={project.thumb} durationSeconds={project.durationSeconds} className="mt-4 aspect-[9/16] w-full" />
 
       <div className="mt-4 flex items-center justify-between">
         <div className="min-w-0">

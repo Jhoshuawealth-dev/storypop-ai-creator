@@ -18,7 +18,7 @@ import {
 import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
-import { MockVideoPlayer } from "@/components/ui/video-player";
+import { VideoPreviewPlayer } from "@/components/ui/video-player";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { defaultScenes, formatDuration, thumbSneaker } from "@/lib/mock-data";
@@ -55,7 +55,7 @@ function Editor() {
         </Link>
       }
     >
-      <MockVideoPlayer poster={thumbSneaker} durationSeconds={30} className="mt-4 aspect-[9/16] w-full" />
+      <VideoPreviewPlayer poster={thumbSneaker} durationSeconds={30} className="mt-4 aspect-[9/16] w-full" />
 
       {/* Undo / redo */}
       <div className="mt-3 flex items-center justify-center gap-2">

@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatDuration } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
 
-export function MockVideoPlayer({
+export function VideoPreviewPlayer({
   poster,
   durationSeconds = 30,
   className,
   autoPlay = false,
 }: {
-  poster: string;
+  poster?: string;
   durationSeconds?: number;
   className?: string;
   autoPlay?: boolean;
@@ -40,7 +40,11 @@ export function MockVideoPlayer({
 
   return (
     <div className={cn("relative overflow-hidden rounded-3xl bg-primary-deep shadow-card", className)}>
-      <img src={poster} alt="Video preview" className="h-full w-full object-cover" loading="lazy" />
+      {poster ? (
+        <img src={poster} alt="Video preview" className="h-full w-full object-cover" loading="lazy" />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-primary-soft" />
+      )}
       {!playing && (
         <button
           onClick={() => setPlaying(true)}

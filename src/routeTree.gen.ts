@@ -55,7 +55,7 @@ import { Route as EditorExportRouteImport } from './routes/editor.export'
 import { Route as EditorScenesRouteImport } from './routes/editor.scenes'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as PublishIndexRouteImport } from './routes/publish.index'
-import { Route as PublishCaptionRouteImport } from './routes/publish.caption'
+import { Route as PublishDetailsRouteImport } from './routes/publish.details'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
@@ -302,9 +302,9 @@ const PublishIndexRoute = PublishIndexRouteImport.update({
   path: '/publish/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PublishCaptionRoute = PublishCaptionRouteImport.update({
-  id: '/publish/caption',
-  path: '/publish/caption',
+const PublishDetailsRoute = PublishDetailsRouteImport.update({
+  id: '/publish/details',
+  path: '/publish/details',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublishScheduleRoute = PublishScheduleRouteImport.update({
@@ -422,7 +422,7 @@ export interface FileRoutesByFullPath {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
-  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/social': typeof SettingsSocialRoute
@@ -486,7 +486,7 @@ export interface FileRoutesByTo {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
-  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/social': typeof SettingsSocialRoute
@@ -551,7 +551,7 @@ export interface FileRoutesById {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
-  '/publish/caption': typeof PublishCaptionRoute
+  '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/social': typeof SettingsSocialRoute
@@ -617,7 +617,7 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
-    | '/publish/caption'
+    | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
     | '/settings/social'
@@ -681,7 +681,7 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
-    | '/publish/caption'
+    | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
     | '/settings/social'
@@ -745,7 +745,7 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
-    | '/publish/caption'
+    | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
     | '/settings/social'
@@ -810,7 +810,7 @@ export interface RootRouteChildren {
   EditorCaptionsRoute: typeof EditorCaptionsRoute
   EditorExportRoute: typeof EditorExportRoute
   EditorScenesRoute: typeof EditorScenesRoute
-  PublishCaptionRoute: typeof PublishCaptionRoute
+  PublishDetailsRoute: typeof PublishDetailsRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsSocialRoute: typeof SettingsSocialRoute
@@ -1160,11 +1160,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublishIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/publish/caption': {
-      id: '/publish/caption'
-      path: '/publish/caption'
-      fullPath: '/publish/caption'
-      preLoaderRoute: typeof PublishCaptionRouteImport
+    '/publish/details': {
+      id: '/publish/details'
+      path: '/publish/details'
+      fullPath: '/publish/details'
+      preLoaderRoute: typeof PublishDetailsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/publish/schedule': {
@@ -1314,7 +1314,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditorCaptionsRoute: EditorCaptionsRoute,
   EditorExportRoute: EditorExportRoute,
   EditorScenesRoute: EditorScenesRoute,
-  PublishCaptionRoute: PublishCaptionRoute,
+  PublishDetailsRoute: PublishDetailsRoute,
   PublishScheduleRoute: PublishScheduleRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsSocialRoute: SettingsSocialRoute,
