@@ -5,7 +5,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { EmptyState } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { notifications as seed, type NotificationType } from "@/lib/mock-data";
+import type { NotificationType } from "@/lib/catalog";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/notifications")({
   head: pageHead("Notifications", "Updates on your videos, posts and plan."),
@@ -21,7 +22,7 @@ const typeIcons: Record<NotificationType, typeof Clapperboard> = {
 };
 
 function Notifications() {
-  const [items, setItems] = useState(seed);
+  const { notifications: items, markNotificationsRead } = useApp();
   const [tab, setTab] = useState<"all" | "unread">("all");
 
   const visible = tab === "all" ? items : items.filter((n) => !n.read);
@@ -34,7 +35,7 @@ function Notifications() {
       right={
         <button
           aria-label="Mark all as read"
-          onClick={() => setItems((prev) => prev.map((n) => ({ ...n, read: true })))}
+          onClick={markNotificationsRead}
           className="text-primary"
         >
           <CheckCheck className="h-5 w-5" />
@@ -68,11 +69,10 @@ function Notifications() {
       ) : (
         <ul className="mt-4 space-y-3">
           {visible.map((n) => {
-            const Icon = typeIcons[n.type];
+            const Icon = typeIcons[n.type] ?? Lightbulb;
             return (
               <li key={n.id}>
-                <button
-                  onClick={() => setItems((prev) => prev.map((x) => (x.id === n.id ? { ...x, read: true } : x)))}
+                <div
                   className={cn(
                     "flex w-full items-start gap-3.5 rounded-2xl p-4 text-left shadow-card transition-all active:scale-[0.99]",
                     n.read ? "bg-card" : "bg-primary-soft"
@@ -94,7 +94,7 @@ function Notifications() {
                     <span className="mt-0.5 block text-sm leading-snug text-muted-foreground">{n.body}</span>
                   </span>
                   {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />}
-                </button>
+                </div>
               </li>
             );
           })}

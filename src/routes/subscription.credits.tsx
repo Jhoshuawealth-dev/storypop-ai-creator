@@ -3,7 +3,8 @@ import { useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
-import { creditPacks, formatDuration, usage } from "@/lib/mock-data";
+import { creditPacks, formatDuration } from "@/lib/catalog";
+import { useApp } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/subscription/credits")({
@@ -14,7 +15,8 @@ export const Route = createFileRoute("/subscription/credits")({
 function Credits() {
   const navigate = useNavigate();
   const [pack, setPack] = useState(creditPacks[1]!.id);
-  const remaining = usage.totalSeconds - usage.usedSeconds;
+  const { minutesTotal, minutesUsed } = useApp();
+  const remaining = Math.max(0, minutesTotal - minutesUsed);
 
   return (
     <AppShell title="Buy Minutes" showBack backTo="/subscription/manage">

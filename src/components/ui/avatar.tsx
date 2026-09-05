@@ -17,10 +17,10 @@ export function Avatar({
   className,
   alt,
 }: {
-  src?: string;
-  name?: string;
-  className?: string;
-  alt?: string;
+  src?: string | undefined;
+  name?: string | undefined;
+  className?: string | undefined;
+  alt?: string | undefined;
 }) {
   if (src) {
     return <img src={src} alt={alt ?? name ?? "Avatar"} className={cn("object-cover", className)} loading="lazy" />;
@@ -40,7 +40,7 @@ export function Avatar({
 }
 
 /** Media thumbnail with a neutral fallback when no render exists yet. */
-export function Thumb({ src, alt, className }: { src?: string; alt: string; className?: string }) {
+export function Thumb({ src, alt, className }: { src?: string | undefined; alt: string; className?: string | undefined }) {
   if (src) {
     return <img src={src} alt={alt} className={cn("object-cover", className)} loading="lazy" />;
   }

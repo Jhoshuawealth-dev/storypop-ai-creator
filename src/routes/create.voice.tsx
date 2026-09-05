@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
-import { voices } from "@/lib/mock-data";
+import { voices } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/create/voice")({

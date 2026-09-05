@@ -19,7 +19,8 @@ import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-ring";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { currentUser, formatDuration, projects, usage } from "@/lib/mock-data";
+import { formatDate, formatDuration } from "@/lib/catalog";
+import { Avatar } from "@/components/ui/avatar";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/profile")({
@@ -56,25 +57,23 @@ const groups = [
 
 function Profile() {
   const navigate = useNavigate();
-  const { signOut } = useApp();
-  const remaining = usage.totalSeconds - usage.usedSeconds;
+  const { signOut, user, projects, subscription, minutesTotal, minutesUsed, planName } = useApp();
+  const remaining = Math.max(0, minutesTotal - minutesUsed);
   const published = projects.filter((p) => p.status === "published").length;
 
   return (
     <AppShell title="Profile">
       <section className="mt-5 flex items-center gap-4">
-        <img
-          src={currentUser.avatar}
-          alt={currentUser.fullName}
-          className="h-18 w-18 shrink-0 rounded-3xl object-cover shadow-card"
-          width={72}
-          height={72}
+        <Avatar
+          src={user.avatar || undefined}
+          name={user.fullName || user.name}
+          className="h-18 w-18 shrink-0 rounded-3xl text-xl shadow-card"
         />
         <div className="min-w-0">
-          <h1 className="truncate font-display text-xl font-extrabold text-foreground">{currentUser.fullName}</h1>
-          <p className="truncate text-sm text-muted-foreground">{currentUser.email}</p>
+          <h1 className="truncate font-display text-xl font-extrabold text-foreground">{user.fullName || "Your profile"}</h1>
+          <p className="truncate text-sm text-muted-foreground">{user.email || "Add your email in settings"}</p>
           <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-primary-soft px-2.5 py-1 text-[11px] font-extrabold text-primary">
-            <Sparkles className="h-3 w-3" /> {currentUser.plan} Plan
+            <Sparkles className="h-3 w-3" /> {planName} Plan
           </span>
         </div>
       </section>
@@ -94,14 +93,14 @@ function Profile() {
 
       <section className="mt-4 rounded-3xl bg-primary-deep p-5 text-primary-foreground shadow-fab">
         <div className="flex items-center justify-between">
-          <p className="font-bold">{usage.plan}</p>
+          <p className="font-bold">{planName} plan</p>
           <Link to="/subscription" className="text-xs font-extrabold text-primary-light underline">
             Upgrade
           </Link>
         </div>
-        <ProgressBar value={remaining / usage.totalSeconds} className="mt-3 bg-white/15" />
+        <ProgressBar value={minutesTotal ? remaining / minutesTotal : 0} className="mt-3 bg-white/15" />
         <p className="mt-2 text-xs text-primary-light">
-          {formatDuration(remaining)} of {formatDuration(usage.totalSeconds)} left · resets {usage.resetDate}
+          {formatDuration(remaining)} of {formatDuration(minutesTotal)} left · renews {formatDate(subscription.renewsOn)}
         </p>
       </section>
 

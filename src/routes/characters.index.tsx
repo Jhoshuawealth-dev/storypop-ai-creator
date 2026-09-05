@@ -4,7 +4,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { characters } from "@/lib/mock-data";
+import { Avatar } from "@/components/ui/avatar";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/characters/")({
   head: pageHead("My Characters", "Your reusable AI characters."),
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/characters/")({
 });
 
 function CharacterLibrary() {
+  const { characters } = useApp();
   return (
     <AppShell title="My Characters" showBack backTo="/profile">
       <div className="mt-5 rounded-3xl bg-primary-deep p-5 text-primary-foreground shadow-fab">
@@ -38,7 +40,7 @@ function CharacterLibrary() {
               params={{ id: c.id }}
               className="overflow-hidden rounded-2xl bg-card p-2.5 shadow-card transition-transform active:scale-[0.98]"
             >
-              <img src={c.image} alt={c.name} className="aspect-square w-full rounded-xl object-cover" loading="lazy" />
+              <Avatar src={c.image} name={c.name} className="aspect-square w-full rounded-xl text-2xl" />
               <p className="mt-2 truncate font-bold text-foreground">{c.name}</p>
               <p className="truncate text-xs font-medium text-muted-foreground">{c.style}</p>
               <p className="truncate text-xs text-muted-foreground">{c.voice}</p>

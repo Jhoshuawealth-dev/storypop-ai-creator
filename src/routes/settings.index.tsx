@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Field, Input, SelectField, TextArea } from "@/components/ui/input";
 import { pageHead } from "@/lib/seo";
-import { currentUser } from "@/lib/mock-data";
+import { Avatar } from "@/components/ui/avatar";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/settings/")({
   head: pageHead("Account Settings", "Update your Storypop AI profile details."),
@@ -13,11 +14,20 @@ export const Route = createFileRoute("/settings/")({
 });
 
 function AccountSettings() {
-  const [name, setName] = useState(currentUser.fullName);
-  const [email, setEmail] = useState(currentUser.email);
-  const [bio, setBio] = useState("Creator building product stories with AI.");
-  const [language, setLanguage] = useState("English");
-  const [photo, setPhoto] = useState(currentUser.avatar);
+  const { user, updateUser } = useApp();
+  const [name, setName] = useState(user.fullName);
+  const [email, setEmail] = useState(user.email);
+  const [bio, setBio] = useState(user.bio);
+  const [language, setLanguage] = useState(user.language || "English");
+  const [photo, setPhoto] = useState(user.avatar);
+
+  useEffect(() => {
+    setName(user.fullName);
+    setEmail(user.email);
+    setBio(user.bio);
+    setLanguage(user.language || "English");
+    setPhoto(user.avatar);
+  }, [user]);
 
   const pickPhoto = (file: File | undefined) => {
     if (!file) return;
@@ -28,13 +38,7 @@ function AccountSettings() {
   return (
     <AppShell title="Account Settings" showBack backTo="/profile">
       <div className="mt-5 flex flex-col items-center">
-        <img
-          src={photo}
-          alt={currentUser.fullName}
-          className="h-24 w-24 rounded-3xl object-cover shadow-card"
-          width={96}
-          height={96}
-        />
+        <Avatar src={photo} name={name} className="h-24 w-24 rounded-3xl text-2xl shadow-card" />
         <label className="mt-2.5 cursor-pointer">
           <span className="text-sm font-semibold text-primary">Change photo</span>
           <input
@@ -61,7 +65,14 @@ function AccountSettings() {
         </Field>
       </div>
 
-      <Button size="lg" fullWidth className="mt-6" onClick={() => toast.success("Changes saved")}>
+      <Button size="lg" fullWidth className="mt-6" onClick={() => {
+          if (!name.trim()) {
+            toast.error("Please enter your full name.");
+            return;
+          }
+          updateUser({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim(), bio, language, avatar: photo });
+          toast.success("Changes saved");
+        }}>
         Save changes
       </Button>
     </AppShell>

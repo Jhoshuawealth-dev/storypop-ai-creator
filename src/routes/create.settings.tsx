@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
-import { formatDuration, usage } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/create/settings")({
@@ -22,8 +22,8 @@ const ratios = [
 
 function VideoSettings() {
   const navigate = useNavigate();
-  const { draft, updateDraft } = useApp();
-  const remaining = usage.totalSeconds - usage.usedSeconds;
+  const { draft, updateDraft, minutesTotal, minutesUsed } = useApp();
+  const remaining = Math.max(0, minutesTotal - minutesUsed);
 
   return (
     <FlowShell title="Video Settings" backTo="/create/style">

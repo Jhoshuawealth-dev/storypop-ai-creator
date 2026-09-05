@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
-import { formatDuration } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
 
 export const Route = createFileRoute("/create/scenes")({
   head: pageHead("Scene Planner", "Plan and arrange the scenes of your video."),

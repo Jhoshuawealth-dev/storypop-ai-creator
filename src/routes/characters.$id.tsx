@@ -4,7 +4,9 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
-import { characters } from "@/lib/mock-data";
+import { Avatar } from "@/components/ui/avatar";
+import { ErrorState } from "@/components/ui/feedback";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/characters/$id")({
   head: pageHead("Character Profile", "Details about your AI character."),
@@ -14,17 +16,26 @@ export const Route = createFileRoute("/characters/$id")({
 function CharacterProfile() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const character = characters.find((c) => c.id === id) ?? characters[0]!;
+  const { characters, removeCharacter } = useApp();
+  const character = characters.find((c) => c.id === id);
+
+  if (!character) {
+    return (
+      <AppShell title="Character" showBack backTo="/characters">
+        <ErrorState
+          title="Character not found"
+          description="This character no longer exists or was removed."
+          actionLabel="Back to characters"
+          actionTo="/characters"
+        />
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell title={character.name} showBack backTo="/characters">
       <div className="mt-5 overflow-hidden rounded-3xl shadow-card">
-        <img
-          src={character.image}
-          alt={character.name}
-          className="aspect-square w-full object-cover"
-          loading="lazy"
-        />
+        <Avatar src={character.image} name={character.name} className="aspect-square w-full text-4xl" />
       </div>
 
       <h1 className="mt-5 font-display text-2xl font-extrabold tracking-tight text-foreground">{character.name}</h1>
@@ -59,6 +70,7 @@ function CharacterProfile() {
           variant="danger"
           size="lg"
           onClick={() => {
+            removeCharacter(character.id);
             toast.success("Character deleted");
             navigate({ to: "/characters" });
           }}
