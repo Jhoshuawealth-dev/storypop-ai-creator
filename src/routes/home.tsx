@@ -3,13 +3,11 @@ import { Bell, CalendarClock, ChevronRight, Clapperboard, Plus, Send, Sparkles }
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ui/progress-ring";
-import { SectionHeader, StatusBadge } from "@/components/ui/feedback";
+import { EmptyState, SectionHeader, StatusBadge } from "@/components/ui/feedback";
+import { Avatar, Thumb } from "@/components/ui/avatar";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
 import { formatDuration } from "@/lib/catalog";
-import { Avatar, Thumb } from "@/components/ui/avatar";
-import { EmptyState } from "@/components/ui/feedback";
-import { Clapperboard as ClapperIcon } from "lucide-react";
 
 export const Route = createFileRoute("/home")({
   head: pageHead("Home", "Your Storypop AI creator dashboard."),
