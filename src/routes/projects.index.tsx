@@ -5,7 +5,9 @@ import { AppShell } from "@/components/layout/app-shell";
 import { EmptyState, StatusBadge } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { formatDuration, projects } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
+import { Thumb } from "@/components/ui/avatar";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/projects/")({
   head: pageHead("Projects", "All your AI-generated UGC video projects."),
@@ -15,6 +17,7 @@ export const Route = createFileRoute("/projects/")({
 const tabs = ["All", "Drafts", "Completed"] as const;
 
 function Projects() {
+  const { projects } = useApp();
   const [tab, setTab] = useState<(typeof tabs)[number]>("All");
 
   const visible = projects.filter((p) => {
@@ -57,7 +60,7 @@ function Projects() {
               params={{ id: p.id }}
               className="flex items-center gap-3.5 rounded-2xl bg-card p-3 shadow-card transition-transform active:scale-[0.98]"
             >
-              <img src={p.thumb} alt={p.title} className="h-20 w-16 rounded-xl object-cover" loading="lazy" />
+              <Thumb src={p.thumb} alt={p.title} className="h-20 w-16 rounded-xl" />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold text-foreground">{p.title}</p>
                 <p className="mt-0.5 text-xs font-medium text-muted-foreground">
