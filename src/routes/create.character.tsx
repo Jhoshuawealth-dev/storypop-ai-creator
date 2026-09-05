@@ -1,11 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Check, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
-import { characters } from "@/lib/mock-data";
+import { Avatar } from "@/components/ui/avatar";
+import { EmptyState } from "@/components/ui/feedback";
+import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/create/character")({
@@ -15,7 +18,7 @@ export const Route = createFileRoute("/create/character")({
 
 function ChooseCharacter() {
   const navigate = useNavigate();
-  const { draft, updateDraft } = useApp();
+  const { draft, updateDraft, characters } = useApp();
 
   return (
     <FlowShell title="Choose Character" backTo="/create/scenes">
@@ -24,6 +27,16 @@ function ChooseCharacter() {
         Choose your AI character
       </h1>
       <p className="mt-1.5 text-[15px] text-muted-foreground">This is who your audience will see on screen.</p>
+
+      {characters.length === 0 && (
+        <EmptyState
+          icon={Users}
+          title="No characters yet"
+          description="Create your first AI character to star in this video."
+          actionLabel="Create Character"
+          actionTo="/characters/upload"
+        />
+      )}
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         {characters.map((c) => {
@@ -37,7 +50,7 @@ function ChooseCharacter() {
                 selected && "ring-2 ring-primary"
               )}
             >
-              <img src={c.image} alt={c.name} className="aspect-square w-full rounded-xl object-cover" loading="lazy" />
+              <Avatar src={c.image} name={c.name} className="aspect-square w-full rounded-xl text-2xl" />
               {selected && (
                 <span className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
@@ -57,7 +70,13 @@ function ChooseCharacter() {
         </Button>
       </Link>
 
-      <Button size="lg" fullWidth className="mt-3" onClick={() => navigate({ to: "/create/voice" })}>
+      <Button size="lg" fullWidth className="mt-3" onClick={() => {
+          if (!draft.characterId) {
+            toast.error("Choose or create a character first.");
+            return;
+          }
+          navigate({ to: "/create/voice" });
+        }}>
         Use Character
       </Button>
     </FlowShell>
