@@ -273,3 +273,11 @@ export const faqs = [
     a: "Failed generations never deduct minutes. You can retry instantly from the result screen.",
   },
 ];
+
+/** Short human date, e.g. "12 Sep 2026". Returns a dash for empty values. */
+export function formatDate(iso: string | null | undefined) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+}

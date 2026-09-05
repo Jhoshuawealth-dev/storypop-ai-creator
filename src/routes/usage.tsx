@@ -4,7 +4,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
-import { formatDuration, usage } from "@/lib/mock-data";
+import { formatDate, formatDuration } from "@/lib/catalog";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/usage")({
   head: pageHead("Video Usage", "Track your monthly video minutes."),
@@ -12,22 +13,23 @@ export const Route = createFileRoute("/usage")({
 });
 
 function Usage() {
-  const remaining = usage.totalSeconds - usage.usedSeconds;
+  const { minutesTotal, minutesUsed, planName, subscription } = useApp();
+  const remaining = Math.max(0, minutesTotal - minutesUsed);
 
   return (
     <AppShell title="Video Usage" showBack backTo="/home">
       <div className="mt-6 flex flex-col items-center rounded-3xl bg-card p-7 shadow-card">
         <span className="rounded-full bg-primary-soft px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-          {usage.plan}
+          {planName} plan
         </span>
-        <ProgressRing value={remaining / usage.totalSeconds} size={180} stroke={16} className="mt-6">
+        <ProgressRing value={minutesTotal ? remaining / minutesTotal : 0} size={180} stroke={16} className="mt-6">
           <span className="font-display text-3xl font-extrabold text-foreground">{formatDuration(remaining)}</span>
-          <span className="text-xs font-semibold text-muted-foreground">of {formatDuration(usage.totalSeconds)}</span>
+          <span className="text-xs font-semibold text-muted-foreground">of {formatDuration(minutesTotal)}</span>
         </ProgressRing>
 
         <div className="mt-7 grid w-full grid-cols-3 divide-x divide-border text-center">
           <div>
-            <p className="font-display text-lg font-extrabold text-foreground">{formatDuration(usage.usedSeconds)}</p>
+            <p className="font-display text-lg font-extrabold text-foreground">{formatDuration(minutesUsed)}</p>
             <p className="text-[11px] font-semibold text-muted-foreground">Used</p>
           </div>
           <div>
@@ -35,7 +37,7 @@ function Usage() {
             <p className="text-[11px] font-semibold text-muted-foreground">Remaining</p>
           </div>
           <div>
-            <p className="font-display text-lg font-extrabold text-foreground">{usage.resetDate}</p>
+            <p className="font-display text-lg font-extrabold text-foreground">{formatDate(subscription.renewsOn)}</p>
             <p className="text-[11px] font-semibold text-muted-foreground">Reset date</p>
           </div>
         </div>
