@@ -5,7 +5,7 @@ import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { plans } from "@/lib/mock-data";
+import { plans } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/subscription/checkout")({
