@@ -98,7 +98,7 @@ function Home() {
       />
       {recent.length === 0 ? (
         <EmptyState
-          icon={ClapperIcon}
+          icon={Clapperboard}
           title="No projects yet"
           description="Your videos will appear here once you create your first UGC video."
           actionLabel="Create UGC"
