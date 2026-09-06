@@ -25,8 +25,8 @@ function CharacterProfile() {
         <ErrorState
           title="Character not found"
           description="This character no longer exists or was removed."
-          actionLabel="Back to characters"
-          actionTo="/characters"
+          secondaryLabel="Back to characters"
+          secondaryTo="/characters"
         />
       </AppShell>
     );

@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
-import { avatarAva, avatarDavid, avatarJoshua, avatarSarah, characterStyles } from "@/lib/mock-data";
+import { characterStyles } from "@/lib/catalog";
+import { readCharacterDraft, saveCharacterDraft } from "@/lib/character-draft";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/characters/style")({
@@ -12,11 +13,14 @@ export const Route = createFileRoute("/characters/style")({
   component: CharacterStyle,
 });
 
-const previews = [avatarJoshua, avatarSarah, avatarDavid, avatarAva, avatarJoshua];
-
 function CharacterStyle() {
   const navigate = useNavigate();
+  const [photo, setPhoto] = useState("");
   const [style, setStyle] = useState("3d");
+
+  useEffect(() => {
+    setPhoto(readCharacterDraft().photo);
+  }, []);
 
   return (
     <FlowShell title="Character Style" backTo="/characters/upload">
@@ -24,7 +28,7 @@ function CharacterStyle() {
       <p className="mt-1.5 text-[15px] text-muted-foreground">This is how your animated identity will look.</p>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
-        {characterStyles.map((s, i) => (
+        {characterStyles.map((s) => (
           <button
             key={s.id}
             onClick={() => setStyle(s.id)}
@@ -33,12 +37,17 @@ function CharacterStyle() {
               style === s.id && "ring-2 ring-primary"
             )}
           >
-            <img
-              src={previews[i] ?? avatarJoshua}
-              alt={`${s.label} style preview`}
-              className="aspect-square w-full rounded-xl object-cover"
-              loading="lazy"
-            />
+            {photo ? (
+              <img
+                src={photo}
+                alt={`${s.label} style preview`}
+                className="aspect-square w-full rounded-xl object-cover"
+              />
+            ) : (
+              <span className="flex aspect-square w-full items-center justify-center rounded-xl bg-primary-soft font-display text-sm font-extrabold text-primary">
+                {s.label}
+              </span>
+            )}
             {style === s.id && (
               <span className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <Check className="h-3.5 w-3.5" strokeWidth={3} />
@@ -50,7 +59,10 @@ function CharacterStyle() {
         ))}
       </div>
 
-      <Button size="lg" fullWidth className="mt-6" onClick={() => navigate({ to: "/characters/generating" })}>
+      <Button size="lg" fullWidth className="mt-6" onClick={() => {
+          saveCharacterDraft({ styleId: style });
+          navigate({ to: "/characters/generating" });
+        }}>
         Create Character
       </Button>
     </FlowShell>
