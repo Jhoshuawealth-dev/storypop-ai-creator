@@ -4,6 +4,8 @@ import { Camera, ImagePlus, X } from "lucide-react";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
+import { fileToDataUrl, saveCharacterDraft } from "@/lib/character-draft";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/characters/upload")({
   head: pageHead("Upload Photo", "Upload a photo to create your AI character."),
@@ -15,9 +17,15 @@ function UploadPhoto() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
-  const pick = (file?: File) => {
+  const pick = async (file?: File) => {
     if (!file) return;
-    setPreview(URL.createObjectURL(file));
+    try {
+      const dataUrl = await fileToDataUrl(file);
+      setPreview(dataUrl);
+      saveCharacterDraft({ photo: dataUrl });
+    } catch {
+      toast.error("We couldn't read that image. Try another photo.");
+    }
   };
 
   return (
@@ -34,7 +42,7 @@ function UploadPhoto() {
         type="file"
         accept="image/*"
         className="sr-only"
-        onChange={(e) => pick(e.target.files?.[0])}
+        onChange={(e) => void pick(e.target.files?.[0])}
       />
 
       {preview ? (

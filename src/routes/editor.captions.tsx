@@ -6,7 +6,7 @@ import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { TextArea } from "@/components/ui/input";
 import { pageHead } from "@/lib/seo";
-import { captionMock } from "@/lib/mock-data";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/editor/captions")({
   head: pageHead("Caption & Hashtags", "Generate captions and hashtags with AI."),
@@ -14,10 +14,23 @@ export const Route = createFileRoute("/editor/captions")({
 });
 
 export function CaptionHashtagEditor({ backTo }: { backTo: string }) {
-  const [caption, setCaption] = useState(captionMock.caption);
-  const [cta, setCta] = useState(captionMock.cta);
-  const [tags, setTags] = useState(captionMock.hashtags.join(" "));
+  const { draft, updatePost_Draft } = useApp();
+  const caption = draft.post.description;
+  const cta = draft.post.cta;
+  const [tags, setTags] = useState(draft.post.hashtags.join(" "));
   const [busy, setBusy] = useState(false);
+
+  const setCaption = (value: string) => updatePost_Draft({ description: value });
+  const setCta = (value: string) => updatePost_Draft({ cta: value });
+  const setHashtags = (value: string) => {
+    setTags(value);
+    updatePost_Draft({
+      hashtags: value
+        .split(/[\s,]+/)
+        .filter(Boolean)
+        .map((t) => (t.startsWith("#") ? t : `#${t}`)),
+    });
+  };
 
   const regenerate = () => {
     setBusy(true);
@@ -44,6 +57,7 @@ export function CaptionHashtagEditor({ backTo }: { backTo: string }) {
         <TextArea
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
+          placeholder="Write the caption people will read under your video…"
           className="mt-2 min-h-24 border-none bg-transparent px-0 focus:ring-0"
         />
       </section>
@@ -57,7 +71,8 @@ export function CaptionHashtagEditor({ backTo }: { backTo: string }) {
         </div>
         <TextArea
           value={tags}
-          onChange={(e) => setTags(e.target.value)}
+          onChange={(e) => setHashtags(e.target.value)}
+          placeholder="#yourbrand #ugc"
           className="mt-2 min-h-20 border-none bg-transparent px-0 font-semibold text-primary focus:ring-0"
         />
       </section>
@@ -72,6 +87,7 @@ export function CaptionHashtagEditor({ backTo }: { backTo: string }) {
         <TextArea
           value={cta}
           onChange={(e) => setCta(e.target.value)}
+          placeholder="Tell viewers what to do next…"
           className="mt-2 min-h-16 border-none bg-transparent px-0 focus:ring-0"
         />
       </section>

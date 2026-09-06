@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProgressBar, StepList, type GenStep } from "@/components/ui/progress-ring";
 import { ErrorState } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { avatarJoshua } from "@/lib/mock-data";
+import { readCharacterDraft } from "@/lib/character-draft";
 
 export const Route = createFileRoute("/characters/generating")({
   head: pageHead("Creating Character", "Your AI character is being generated."),
@@ -16,8 +16,13 @@ const stepLabels = ["Analyzing photo", "Building facial model", "Applying style"
 
 function CharacterGenerating() {
   const navigate = useNavigate();
+  const [photo, setPhoto] = useState("");
   const [progress, setProgress] = useState(5);
   const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setPhoto(readCharacterDraft().photo);
+  }, []);
 
   useEffect(() => {
     if (failed) return;
@@ -57,12 +62,15 @@ function CharacterGenerating() {
     <FlowShell title="Creating Character" backTo="/characters/style">
       <div className="mt-6 flex flex-col items-center">
         <div className="relative">
-          <img
-            src={avatarJoshua}
-            alt="Your photo being processed"
-            className="h-40 w-40 rounded-3xl object-cover opacity-70"
-            loading="lazy"
-          />
+          {photo ? (
+            <img
+              src={photo}
+              alt="Your photo being processed"
+              className="h-40 w-40 rounded-3xl object-cover opacity-70"
+            />
+          ) : (
+            <span className="block h-40 w-40 rounded-3xl bg-primary-soft" />
+          )}
           <span className="absolute inset-0 animate-dot-pulse rounded-3xl ring-4 ring-primary" />
         </div>
         <p className="mt-6 font-display text-4xl font-extrabold tabular-nums text-foreground">

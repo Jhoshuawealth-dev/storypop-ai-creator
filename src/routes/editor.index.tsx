@@ -21,7 +21,9 @@ import { Button } from "@/components/ui/button";
 import { VideoPreviewPlayer } from "@/components/ui/video-player";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { defaultScenes, formatDuration, thumbSneaker } from "@/lib/mock-data";
+import { formatDuration } from "@/lib/catalog";
+import { Thumb } from "@/components/ui/avatar";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/editor/")({
   head: pageHead("Video Editor", "Edit your AI-generated video."),
@@ -43,6 +45,9 @@ const tools = [
 ] as const;
 
 function Editor() {
+  const { projects } = useApp();
+  const project = projects[0];
+  const scenes = project?.scenes ?? [];
   const [active, setActive] = useState("Trim");
 
   return (
@@ -55,7 +60,11 @@ function Editor() {
         </Link>
       }
     >
-      <VideoPreviewPlayer poster={thumbSneaker} durationSeconds={30} className="mt-4 aspect-[9/16] w-full" />
+      <VideoPreviewPlayer
+        {...(project?.thumb ? { poster: project.thumb } : {})}
+        durationSeconds={project?.durationSeconds ?? 30}
+        className="mt-4 aspect-[9/16] w-full"
+      />
 
       {/* Undo / redo */}
       <div className="mt-3 flex items-center justify-center gap-2">
@@ -76,13 +85,16 @@ function Editor() {
       {/* Timeline */}
       <section className="mt-4 rounded-2xl bg-card p-3.5 shadow-card">
         <p className="text-xs font-extrabold uppercase tracking-widest text-primary">Timeline</p>
+        {scenes.length === 0 && (
+          <p className="mt-2 text-sm text-muted-foreground">Scenes appear here once your video is generated.</p>
+        )}
         <div className="mt-2.5 flex gap-1.5 overflow-x-auto no-scrollbar">
-          {defaultScenes.map((s, i) => (
+          {scenes.map((s, i) => (
             <button
               key={s.id}
               className="shrink-0 overflow-hidden rounded-lg ring-2 ring-transparent transition-all focus:ring-primary"
             >
-              <img src={thumbSneaker} alt={`Scene ${i + 1}`} className="h-14 w-11 object-cover" loading="lazy" />
+              <Thumb {...(project?.thumb ? { src: project.thumb } : {})} alt={`Scene ${i + 1}`} className="h-14 w-11" />
               <span className="block bg-primary-soft py-0.5 text-[9px] font-bold text-primary">
                 {formatDuration(s.durationSeconds)}
               </span>

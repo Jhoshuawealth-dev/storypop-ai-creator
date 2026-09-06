@@ -6,7 +6,9 @@ import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { TextArea } from "@/components/ui/input";
 import { pageHead } from "@/lib/seo";
-import { suggestedCommands, thumbSneaker } from "@/lib/mock-data";
+import { suggestedCommands } from "@/lib/catalog";
+import { Thumb } from "@/components/ui/avatar";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/editor/ai")({
   head: pageHead("AI Editor", "Tell AI what to change in your video."),
@@ -14,6 +16,8 @@ export const Route = createFileRoute("/editor/ai")({
 });
 
 function AiEditor() {
+  const { projects } = useApp();
+  const project = projects[0];
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +36,7 @@ function AiEditor() {
   return (
     <FlowShell title="AI Editor" backTo="/editor">
       <div className="mt-4 overflow-hidden rounded-3xl shadow-card">
-        <img src={thumbSneaker} alt="Current video" className="aspect-video w-full object-cover" loading="lazy" />
+        <Thumb {...(project?.thumb ? { src: project.thumb } : {})} alt="Current video" className="aspect-video w-full" />
       </div>
 
       <h1 className="mt-6 font-display text-2xl font-extrabold tracking-tight text-foreground">
@@ -51,7 +55,7 @@ function AiEditor() {
 
       <p className="mt-5 text-sm font-bold text-foreground">Try also</p>
       <div className="mt-2.5 space-y-2">
-        {suggestedCommands.map((c) => (
+        {suggestedCommands.map((c: string) => (
           <button
             key={c}
             onClick={() => setPrompt(c)}
