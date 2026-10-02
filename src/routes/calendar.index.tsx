@@ -4,9 +4,10 @@ import { CalendarPlus, CalendarX } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { EmptyState, StatusBadge } from "@/components/ui/feedback";
+import { Thumb } from "@/components/ui/avatar";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { scheduledPosts } from "@/lib/mock-data";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/calendar/")({
   head: pageHead("Content Calendar", "Plan, schedule and track your posts."),
@@ -15,18 +16,31 @@ export const Route = createFileRoute("/calendar/")({
 
 const tabs = ["Drafts", "Scheduled", "Published"] as const;
 const weekdays = ["M", "T", "W", "T", "F", "S", "S"];
-const scheduledDays = [12, 15, 18, 24];
-
 function CalendarScreen() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("Scheduled");
-  const visible = scheduledPosts.filter((p) => p.status === tab.toLowerCase().replace(/s$/, ""));
+  const { posts } = useApp();
+  const visible = posts.filter((p) => p.status === tab.toLowerCase().replace(/s$/, ""));
+  const today = new Date();
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const startOffset = (monthStart.getDay() + 6) % 7;
+  const postDays = new Set(
+    posts
+      .filter((post) => {
+        const postDate = new Date(`${post.date}T00:00:00`);
+        return postDate.getFullYear() === today.getFullYear() && postDate.getMonth() === today.getMonth();
+      })
+      .map((post) => new Date(`${post.date}T00:00:00`).getDate())
+  );
 
   return (
     <AppShell title="Calendar">
       {/* Month grid */}
       <section className="mt-4 rounded-3xl bg-card p-4 shadow-card">
         <div className="flex items-center justify-between">
-          <p className="font-display text-lg font-extrabold text-foreground">May 2026</p>
+          <p className="font-display text-lg font-extrabold text-foreground">
+            {today.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
+          </p>
           <Link to="/calendar/schedule" className="text-sm font-bold text-primary">
             Schedule
           </Link>
@@ -37,14 +51,21 @@ function CalendarScreen() {
               {d}
             </span>
           ))}
-          {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => {
-            const has = scheduledDays.includes(day);
+          {Array.from({ length: startOffset }, (_, i) => (
+            <span key={`blank-${i}`} aria-hidden="true" />
+          ))}
+          {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => {
+            const has = postDays.has(day);
             return (
               <span
                 key={day}
                 className={cn(
                   "flex aspect-square items-center justify-center rounded-lg text-xs font-semibold",
-                  has ? "bg-primary text-primary-foreground" : "text-foreground"
+                  has
+                    ? "bg-primary text-primary-foreground"
+                    : day === today.getDate()
+                      ? "bg-primary-soft text-primary"
+                      : "text-foreground"
                 )}
               >
                 {day}
@@ -86,7 +107,7 @@ function CalendarScreen() {
               to={p.status === "published" ? "/calendar/published" : "/calendar/publishing"}
               className="flex items-center gap-3.5 rounded-2xl bg-card p-3 shadow-card transition-transform active:scale-[0.98]"
             >
-              <img src={p.thumb} alt={p.title} className="h-16 w-14 rounded-xl object-cover" loading="lazy" />
+              <Thumb src={p.thumb} alt={p.title} className="h-16 w-14 rounded-xl" />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold text-foreground">{p.title}</p>
                 <p className="mt-0.5 text-xs font-medium text-muted-foreground">
