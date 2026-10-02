@@ -4,8 +4,11 @@ import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Field, Input, SelectField } from "@/components/ui/input";
+import { EmptyState } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { platforms, projects } from "@/lib/mock-data";
+import { useApp } from "@/lib/store";
+import { platformSpecs } from "@/lib/catalog";
+import { CalendarX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/calendar/schedule")({
@@ -15,11 +18,27 @@ export const Route = createFileRoute("/calendar/schedule")({
 
 function SchedulePost() {
   const navigate = useNavigate();
-  const [video, setVideo] = useState(projects[0]!.id);
-  const [platform, setPlatform] = useState("TikTok");
-  const [date, setDate] = useState("2026-05-12");
+  const { projects, addPost, addNotification } = useApp();
+  const [video, setVideo] = useState("");
+  const [platform, setPlatform] = useState(platformSpecs[0]?.name ?? "");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [time, setTime] = useState("10:00");
   const [auto, setAuto] = useState(true);
+  const selectedProject = projects.find((project) => project.id === video);
+
+  if (projects.length === 0) {
+    return (
+      <FlowShell title="Schedule Post" backTo="/calendar">
+        <EmptyState
+          icon={CalendarX}
+          title="No videos to schedule"
+          description="Create a video first, then return here to choose when to share it."
+          actionLabel="Create Video"
+          actionTo="/create"
+        />
+      </FlowShell>
+    );
+  }
 
   return (
     <FlowShell title="Schedule Post" backTo="/calendar">
@@ -43,7 +62,7 @@ function SchedulePost() {
 
       <div className="mt-6 space-y-4">
         <Field label="Platform">
-          <SelectField options={platforms.map((p) => p.name)} value={platform} onChange={setPlatform} />
+          <SelectField options={platformSpecs.map((p) => p.name)} value={platform} onChange={setPlatform} />
         </Field>
         <Field label="Date">
           <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
@@ -81,7 +100,22 @@ function SchedulePost() {
         fullWidth
         className="mt-6"
         onClick={() => {
-          toast.success("Post scheduled");
+          if (!selectedProject) {
+            toast.error("Choose a video to schedule.");
+            return;
+          }
+          const post = {
+            id: `post_${Date.now()}`,
+            title: selectedProject.title,
+            date,
+            time,
+            platform,
+            status: "scheduled" as const,
+            ...(selectedProject.thumb ? { thumb: selectedProject.thumb } : {}),
+          };
+          addPost(post);
+          addNotification({ type: "schedule", title: "Post scheduled", body: `${post.title} · ${platform}` });
+          toast.success("Post added to your calendar");
           navigate({ to: "/calendar/publishing" });
         }}
       >
