@@ -24,6 +24,7 @@ import { Route as AboutGuidelinesRouteImport } from './routes/about.guidelines'
 import { Route as AboutLicensesRouteImport } from './routes/about.licenses'
 import { Route as AboutPrivacyRouteImport } from './routes/about.privacy'
 import { Route as AboutTermsRouteImport } from './routes/about.terms'
+import { Route as AnalyticsIndexRouteImport } from './routes/analytics.index'
 import { Route as AnalyticsIdRouteImport } from './routes/analytics.$id'
 import { Route as AnalyticsInsightsRouteImport } from './routes/analytics.insights'
 import { Route as CalendarIndexRouteImport } from './routes/calendar.index'
@@ -144,6 +145,11 @@ const AboutPrivacyRoute = AboutPrivacyRouteImport.update({
 const AboutTermsRoute = AboutTermsRouteImport.update({
   id: '/about/terms',
   path: '/about/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
+  id: '/analytics/',
+  path: '/analytics/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsIdRoute = AnalyticsIdRouteImport.update({
@@ -425,6 +431,7 @@ export interface FileRoutesByFullPath {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/about/': typeof AboutIndexRoute
+  '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
@@ -488,6 +495,7 @@ export interface FileRoutesByTo {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/about': typeof AboutIndexRoute
+  '/analytics': typeof AnalyticsIndexRoute
   '/calendar': typeof CalendarIndexRoute
   '/characters': typeof CharactersIndexRoute
   '/create': typeof CreateIndexRoute
@@ -552,6 +560,7 @@ export interface FileRoutesById {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/about/': typeof AboutIndexRoute
+  '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
   '/characters/': typeof CharactersIndexRoute
   '/create/': typeof CreateIndexRoute
@@ -617,6 +626,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/about/'
+    | '/analytics/'
     | '/calendar/'
     | '/characters/'
     | '/create/'
@@ -680,6 +690,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/about'
+    | '/analytics'
     | '/calendar'
     | '/characters'
     | '/create'
@@ -743,6 +754,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/about/'
+    | '/analytics/'
     | '/calendar/'
     | '/characters/'
     | '/create/'
@@ -807,6 +819,7 @@ export interface RootRouteChildren {
   SubscriptionManageRoute: typeof SubscriptionManageRoute
   SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
   AboutIndexRoute: typeof AboutIndexRoute
+  AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   CalendarIndexRoute: typeof CalendarIndexRoute
   CharactersIndexRoute: typeof CharactersIndexRoute
   CreateIndexRoute: typeof CreateIndexRoute
@@ -928,6 +941,13 @@ declare module '@tanstack/react-router' {
       path: '/about/terms'
       fullPath: '/about/terms'
       preLoaderRoute: typeof AboutTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics/': {
+      id: '/analytics/'
+      path: '/analytics'
+      fullPath: '/analytics/'
+      preLoaderRoute: typeof AnalyticsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analytics/$id': {
@@ -1303,6 +1323,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubscriptionManageRoute: SubscriptionManageRoute,
   SubscriptionSuccessRoute: SubscriptionSuccessRoute,
   AboutIndexRoute: AboutIndexRoute,
+  AnalyticsIndexRoute: AnalyticsIndexRoute,
   CalendarIndexRoute: CalendarIndexRoute,
   CharactersIndexRoute: CharactersIndexRoute,
   CreateIndexRoute: CreateIndexRoute,
