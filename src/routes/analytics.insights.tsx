@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
+import { EmptyState } from "@/components/ui/feedback";
 import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
-import { aiInsights } from "@/lib/mock-data";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/analytics/insights")({
   head: pageHead("AI Insights", "AI-generated insights about your content."),
@@ -11,31 +12,35 @@ export const Route = createFileRoute("/analytics/insights")({
 });
 
 function Insights() {
+  const { posts } = useApp();
   return (
     <AppShell title="AI Insights" showBack backTo="/analytics">
-      <div className="mt-5 rounded-3xl bg-primary-deep p-5 text-primary-foreground shadow-fab">
-        <Sparkles className="h-6 w-6" />
-        <p className="mt-3 font-display text-lg font-extrabold leading-snug">
-          Here's what your last 30 days of content is telling us.
-        </p>
-      </div>
-
-      <div className="mt-5 space-y-3">
-        {aiInsights.map((insight, i) => (
-          <article key={i} className="flex items-start gap-3.5 rounded-2xl bg-card p-4 shadow-card">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-soft font-display text-sm font-extrabold text-primary">
-              {i + 1}
-            </span>
-            <p className="text-[15px] leading-relaxed text-foreground">{insight}</p>
-          </article>
-        ))}
-      </div>
-
-      <Link to="/create/idea" className="mt-6 block">
-        <Button size="lg" fullWidth>
-          Create More Like This
-        </Button>
-      </Link>
+      {posts.length === 0 ? (
+        <EmptyState
+          icon={Sparkles}
+          title="Insights will grow with your content"
+          description="Publish videos and connect your channels to see personalized recommendations here."
+          actionLabel="Create Video"
+          actionTo="/create"
+        />
+      ) : (
+        <>
+          <div className="mt-5 rounded-2xl bg-primary-deep p-5 text-primary-foreground shadow-fab">
+            <Sparkles className="h-6 w-6" />
+            <p className="mt-3 font-display text-lg font-extrabold leading-snug">
+              Your published content is ready to analyze.
+            </p>
+            <p className="mt-2 text-sm text-primary-light">
+              {posts.length} {posts.length === 1 ? "post is" : "posts are"} in your publishing history. Platform metrics will appear when available.
+            </p>
+          </div>
+          <Link to="/create/idea" className="mt-6 block">
+            <Button size="lg" fullWidth>
+              Create Video
+            </Button>
+          </Link>
+        </>
+      )}
     </AppShell>
   );
 }
