@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as LoginRouteImport } from './routes/login'
@@ -39,9 +40,11 @@ import { Route as CharactersStyleRouteImport } from './routes/characters.style'
 import { Route as CharactersUploadRouteImport } from './routes/characters.upload'
 import { Route as CreateIndexRouteImport } from './routes/create.index'
 import { Route as CreateCharacterRouteImport } from './routes/create.character'
+import { Route as CreateClipsRouteImport } from './routes/create.clips'
 import { Route as CreateGeneratingRouteImport } from './routes/create.generating'
 import { Route as CreateIdeaRouteImport } from './routes/create.idea'
 import { Route as CreateResultRouteImport } from './routes/create.result'
+import { Route as CreateReverseEngineerRouteImport } from './routes/create.reverse-engineer'
 import { Route as CreateScenesRouteImport } from './routes/create.scenes'
 import { Route as CreateScriptRouteImport } from './routes/create.script'
 import { Route as CreateSettingsRouteImport } from './routes/create.settings'
@@ -53,6 +56,16 @@ import { Route as EditorAudioRouteImport } from './routes/editor.audio'
 import { Route as EditorCaptionsRouteImport } from './routes/editor.captions'
 import { Route as EditorExportRouteImport } from './routes/editor.export'
 import { Route as EditorScenesRouteImport } from './routes/editor.scenes'
+import { Route as GrowthAutopilotRouteImport } from './routes/growth.autopilot'
+import { Route as GrowthCommunityRouteImport } from './routes/growth.community'
+import { Route as GrowthExperimentsRouteImport } from './routes/growth.experiments'
+import { Route as GrowthRevenueRouteImport } from './routes/growth.revenue'
+import { Route as IntelligenceBrainRouteImport } from './routes/intelligence.brain'
+import { Route as IntelligenceCompetitorsRouteImport } from './routes/intelligence.competitors'
+import { Route as IntelligenceContentDnaRouteImport } from './routes/intelligence.content-dna'
+import { Route as IntelligenceTrendsRouteImport } from './routes/intelligence.trends'
+import { Route as MonetizationAffiliatesRouteImport } from './routes/monetization.affiliates'
+import { Route as MonetizationAutopilotRouteImport } from './routes/monetization.autopilot'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as PublishIndexRouteImport } from './routes/publish.index'
 import { Route as PublishDetailsRouteImport } from './routes/publish.details'
@@ -75,6 +88,11 @@ import { Route as SettingsSecurityDevicesRouteImport } from './routes/settings.s
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -222,6 +240,11 @@ const CreateCharacterRoute = CreateCharacterRouteImport.update({
   path: '/create/character',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreateClipsRoute = CreateClipsRouteImport.update({
+  id: '/create/clips',
+  path: '/create/clips',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreateGeneratingRoute = CreateGeneratingRouteImport.update({
   id: '/create/generating',
   path: '/create/generating',
@@ -235,6 +258,11 @@ const CreateIdeaRoute = CreateIdeaRouteImport.update({
 const CreateResultRoute = CreateResultRouteImport.update({
   id: '/create/result',
   path: '/create/result',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateReverseEngineerRoute = CreateReverseEngineerRouteImport.update({
+  id: '/create/reverse-engineer',
+  path: '/create/reverse-engineer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreateScenesRoute = CreateScenesRouteImport.update({
@@ -290,6 +318,56 @@ const EditorExportRoute = EditorExportRouteImport.update({
 const EditorScenesRoute = EditorScenesRouteImport.update({
   id: '/editor/scenes',
   path: '/editor/scenes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrowthAutopilotRoute = GrowthAutopilotRouteImport.update({
+  id: '/growth/autopilot',
+  path: '/growth/autopilot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrowthCommunityRoute = GrowthCommunityRouteImport.update({
+  id: '/growth/community',
+  path: '/growth/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrowthExperimentsRoute = GrowthExperimentsRouteImport.update({
+  id: '/growth/experiments',
+  path: '/growth/experiments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrowthRevenueRoute = GrowthRevenueRouteImport.update({
+  id: '/growth/revenue',
+  path: '/growth/revenue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceBrainRoute = IntelligenceBrainRouteImport.update({
+  id: '/intelligence/brain',
+  path: '/intelligence/brain',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceCompetitorsRoute = IntelligenceCompetitorsRouteImport.update({
+  id: '/intelligence/competitors',
+  path: '/intelligence/competitors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceContentDnaRoute = IntelligenceContentDnaRouteImport.update({
+  id: '/intelligence/content-dna',
+  path: '/intelligence/content-dna',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntelligenceTrendsRoute = IntelligenceTrendsRouteImport.update({
+  id: '/intelligence/trends',
+  path: '/intelligence/trends',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonetizationAffiliatesRoute = MonetizationAffiliatesRouteImport.update({
+  id: '/monetization/affiliates',
+  path: '/monetization/affiliates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonetizationAutopilotRoute = MonetizationAutopilotRouteImport.update({
+  id: '/monetization/autopilot',
+  path: '/monetization/autopilot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
@@ -385,6 +463,7 @@ const SettingsSecurityDevicesRoute = SettingsSecurityDevicesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -409,9 +488,11 @@ export interface FileRoutesByFullPath {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
+  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
+  '/create/reverse-engineer': typeof CreateReverseEngineerRoute
   '/create/scenes': typeof CreateScenesRoute
   '/create/script': typeof CreateScriptRoute
   '/create/settings': typeof CreateSettingsRoute
@@ -422,6 +503,16 @@ export interface FileRoutesByFullPath {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/growth/autopilot': typeof GrowthAutopilotRoute
+  '/growth/community': typeof GrowthCommunityRoute
+  '/growth/experiments': typeof GrowthExperimentsRoute
+  '/growth/revenue': typeof GrowthRevenueRoute
+  '/intelligence/brain': typeof IntelligenceBrainRoute
+  '/intelligence/competitors': typeof IntelligenceCompetitorsRoute
+  '/intelligence/content-dna': typeof IntelligenceContentDnaRoute
+  '/intelligence/trends': typeof IntelligenceTrendsRoute
+  '/monetization/affiliates': typeof MonetizationAffiliatesRoute
+  '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -449,6 +540,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -473,9 +565,11 @@ export interface FileRoutesByTo {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
+  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
+  '/create/reverse-engineer': typeof CreateReverseEngineerRoute
   '/create/scenes': typeof CreateScenesRoute
   '/create/script': typeof CreateScriptRoute
   '/create/settings': typeof CreateSettingsRoute
@@ -486,6 +580,16 @@ export interface FileRoutesByTo {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/growth/autopilot': typeof GrowthAutopilotRoute
+  '/growth/community': typeof GrowthCommunityRoute
+  '/growth/experiments': typeof GrowthExperimentsRoute
+  '/growth/revenue': typeof GrowthRevenueRoute
+  '/intelligence/brain': typeof IntelligenceBrainRoute
+  '/intelligence/competitors': typeof IntelligenceCompetitorsRoute
+  '/intelligence/content-dna': typeof IntelligenceContentDnaRoute
+  '/intelligence/trends': typeof IntelligenceTrendsRoute
+  '/monetization/affiliates': typeof MonetizationAffiliatesRoute
+  '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -514,6 +618,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
   '/help': typeof HelpRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
@@ -538,9 +643,11 @@ export interface FileRoutesById {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
+  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
+  '/create/reverse-engineer': typeof CreateReverseEngineerRoute
   '/create/scenes': typeof CreateScenesRoute
   '/create/script': typeof CreateScriptRoute
   '/create/settings': typeof CreateSettingsRoute
@@ -551,6 +658,16 @@ export interface FileRoutesById {
   '/editor/captions': typeof EditorCaptionsRoute
   '/editor/export': typeof EditorExportRoute
   '/editor/scenes': typeof EditorScenesRoute
+  '/growth/autopilot': typeof GrowthAutopilotRoute
+  '/growth/community': typeof GrowthCommunityRoute
+  '/growth/experiments': typeof GrowthExperimentsRoute
+  '/growth/revenue': typeof GrowthRevenueRoute
+  '/intelligence/brain': typeof IntelligenceBrainRoute
+  '/intelligence/competitors': typeof IntelligenceCompetitorsRoute
+  '/intelligence/content-dna': typeof IntelligenceContentDnaRoute
+  '/intelligence/trends': typeof IntelligenceTrendsRoute
+  '/monetization/affiliates': typeof MonetizationAffiliatesRoute
+  '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -580,6 +697,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/help'
     | '/home'
     | '/login'
@@ -604,9 +722,11 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
+    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
+    | '/create/reverse-engineer'
     | '/create/scenes'
     | '/create/script'
     | '/create/settings'
@@ -617,6 +737,16 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/growth/autopilot'
+    | '/growth/community'
+    | '/growth/experiments'
+    | '/growth/revenue'
+    | '/intelligence/brain'
+    | '/intelligence/competitors'
+    | '/intelligence/content-dna'
+    | '/intelligence/trends'
+    | '/monetization/affiliates'
+    | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
@@ -644,6 +774,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
     | '/help'
     | '/home'
     | '/login'
@@ -668,9 +799,11 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
+    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
+    | '/create/reverse-engineer'
     | '/create/scenes'
     | '/create/script'
     | '/create/settings'
@@ -681,6 +814,16 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/growth/autopilot'
+    | '/growth/community'
+    | '/growth/experiments'
+    | '/growth/revenue'
+    | '/intelligence/brain'
+    | '/intelligence/competitors'
+    | '/intelligence/content-dna'
+    | '/intelligence/trends'
+    | '/monetization/affiliates'
+    | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
@@ -708,6 +851,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/dashboard'
     | '/help'
     | '/home'
     | '/login'
@@ -732,9 +876,11 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
+    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
+    | '/create/reverse-engineer'
     | '/create/scenes'
     | '/create/script'
     | '/create/settings'
@@ -745,6 +891,16 @@ export interface FileRouteTypes {
     | '/editor/captions'
     | '/editor/export'
     | '/editor/scenes'
+    | '/growth/autopilot'
+    | '/growth/community'
+    | '/growth/experiments'
+    | '/growth/revenue'
+    | '/intelligence/brain'
+    | '/intelligence/competitors'
+    | '/intelligence/content-dna'
+    | '/intelligence/trends'
+    | '/monetization/affiliates'
+    | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
     | '/settings/notifications'
@@ -773,6 +929,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
   HelpRoute: typeof HelpRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
@@ -797,9 +954,11 @@ export interface RootRouteChildren {
   CharactersStyleRoute: typeof CharactersStyleRoute
   CharactersUploadRoute: typeof CharactersUploadRoute
   CreateCharacterRoute: typeof CreateCharacterRoute
+  CreateClipsRoute: typeof CreateClipsRoute
   CreateGeneratingRoute: typeof CreateGeneratingRoute
   CreateIdeaRoute: typeof CreateIdeaRoute
   CreateResultRoute: typeof CreateResultRoute
+  CreateReverseEngineerRoute: typeof CreateReverseEngineerRoute
   CreateScenesRoute: typeof CreateScenesRoute
   CreateScriptRoute: typeof CreateScriptRoute
   CreateSettingsRoute: typeof CreateSettingsRoute
@@ -810,6 +969,16 @@ export interface RootRouteChildren {
   EditorCaptionsRoute: typeof EditorCaptionsRoute
   EditorExportRoute: typeof EditorExportRoute
   EditorScenesRoute: typeof EditorScenesRoute
+  GrowthAutopilotRoute: typeof GrowthAutopilotRoute
+  GrowthCommunityRoute: typeof GrowthCommunityRoute
+  GrowthExperimentsRoute: typeof GrowthExperimentsRoute
+  GrowthRevenueRoute: typeof GrowthRevenueRoute
+  IntelligenceBrainRoute: typeof IntelligenceBrainRoute
+  IntelligenceCompetitorsRoute: typeof IntelligenceCompetitorsRoute
+  IntelligenceContentDnaRoute: typeof IntelligenceContentDnaRoute
+  IntelligenceTrendsRoute: typeof IntelligenceTrendsRoute
+  MonetizationAffiliatesRoute: typeof MonetizationAffiliatesRoute
+  MonetizationAutopilotRoute: typeof MonetizationAutopilotRoute
   PublishDetailsRoute: typeof PublishDetailsRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
@@ -843,6 +1012,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -1048,6 +1224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateCharacterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/create/clips': {
+      id: '/create/clips'
+      path: '/create/clips'
+      fullPath: '/create/clips'
+      preLoaderRoute: typeof CreateClipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/create/generating': {
       id: '/create/generating'
       path: '/create/generating'
@@ -1067,6 +1250,13 @@ declare module '@tanstack/react-router' {
       path: '/create/result'
       fullPath: '/create/result'
       preLoaderRoute: typeof CreateResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create/reverse-engineer': {
+      id: '/create/reverse-engineer'
+      path: '/create/reverse-engineer'
+      fullPath: '/create/reverse-engineer'
+      preLoaderRoute: typeof CreateReverseEngineerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/create/scenes': {
@@ -1144,6 +1334,76 @@ declare module '@tanstack/react-router' {
       path: '/editor/scenes'
       fullPath: '/editor/scenes'
       preLoaderRoute: typeof EditorScenesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/growth/autopilot': {
+      id: '/growth/autopilot'
+      path: '/growth/autopilot'
+      fullPath: '/growth/autopilot'
+      preLoaderRoute: typeof GrowthAutopilotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/growth/community': {
+      id: '/growth/community'
+      path: '/growth/community'
+      fullPath: '/growth/community'
+      preLoaderRoute: typeof GrowthCommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/growth/experiments': {
+      id: '/growth/experiments'
+      path: '/growth/experiments'
+      fullPath: '/growth/experiments'
+      preLoaderRoute: typeof GrowthExperimentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/growth/revenue': {
+      id: '/growth/revenue'
+      path: '/growth/revenue'
+      fullPath: '/growth/revenue'
+      preLoaderRoute: typeof GrowthRevenueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence/brain': {
+      id: '/intelligence/brain'
+      path: '/intelligence/brain'
+      fullPath: '/intelligence/brain'
+      preLoaderRoute: typeof IntelligenceBrainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence/competitors': {
+      id: '/intelligence/competitors'
+      path: '/intelligence/competitors'
+      fullPath: '/intelligence/competitors'
+      preLoaderRoute: typeof IntelligenceCompetitorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence/content-dna': {
+      id: '/intelligence/content-dna'
+      path: '/intelligence/content-dna'
+      fullPath: '/intelligence/content-dna'
+      preLoaderRoute: typeof IntelligenceContentDnaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intelligence/trends': {
+      id: '/intelligence/trends'
+      path: '/intelligence/trends'
+      fullPath: '/intelligence/trends'
+      preLoaderRoute: typeof IntelligenceTrendsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/monetization/affiliates': {
+      id: '/monetization/affiliates'
+      path: '/monetization/affiliates'
+      fullPath: '/monetization/affiliates'
+      preLoaderRoute: typeof MonetizationAffiliatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/monetization/autopilot': {
+      id: '/monetization/autopilot'
+      path: '/monetization/autopilot'
+      fullPath: '/monetization/autopilot'
+      preLoaderRoute: typeof MonetizationAutopilotRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/': {
@@ -1277,6 +1537,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
   HelpRoute: HelpRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
@@ -1301,9 +1562,11 @@ const rootRouteChildren: RootRouteChildren = {
   CharactersStyleRoute: CharactersStyleRoute,
   CharactersUploadRoute: CharactersUploadRoute,
   CreateCharacterRoute: CreateCharacterRoute,
+  CreateClipsRoute: CreateClipsRoute,
   CreateGeneratingRoute: CreateGeneratingRoute,
   CreateIdeaRoute: CreateIdeaRoute,
   CreateResultRoute: CreateResultRoute,
+  CreateReverseEngineerRoute: CreateReverseEngineerRoute,
   CreateScenesRoute: CreateScenesRoute,
   CreateScriptRoute: CreateScriptRoute,
   CreateSettingsRoute: CreateSettingsRoute,
@@ -1314,6 +1577,16 @@ const rootRouteChildren: RootRouteChildren = {
   EditorCaptionsRoute: EditorCaptionsRoute,
   EditorExportRoute: EditorExportRoute,
   EditorScenesRoute: EditorScenesRoute,
+  GrowthAutopilotRoute: GrowthAutopilotRoute,
+  GrowthCommunityRoute: GrowthCommunityRoute,
+  GrowthExperimentsRoute: GrowthExperimentsRoute,
+  GrowthRevenueRoute: GrowthRevenueRoute,
+  IntelligenceBrainRoute: IntelligenceBrainRoute,
+  IntelligenceCompetitorsRoute: IntelligenceCompetitorsRoute,
+  IntelligenceContentDnaRoute: IntelligenceContentDnaRoute,
+  IntelligenceTrendsRoute: IntelligenceTrendsRoute,
+  MonetizationAffiliatesRoute: MonetizationAffiliatesRoute,
+  MonetizationAutopilotRoute: MonetizationAutopilotRoute,
   PublishDetailsRoute: PublishDetailsRoute,
   PublishScheduleRoute: PublishScheduleRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
