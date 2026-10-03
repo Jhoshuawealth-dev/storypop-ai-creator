@@ -25,7 +25,6 @@ import { Route as AboutLicensesRouteImport } from './routes/about.licenses'
 import { Route as AboutPrivacyRouteImport } from './routes/about.privacy'
 import { Route as AboutTermsRouteImport } from './routes/about.terms'
 import { Route as AnalyticsIndexRouteImport } from './routes/analytics.index'
-import { Route as AnalyticsIdRouteImport } from './routes/analytics.$id'
 import { Route as AnalyticsInsightsRouteImport } from './routes/analytics.insights'
 import { Route as CalendarIndexRouteImport } from './routes/calendar.index'
 import { Route as CalendarPublishedRouteImport } from './routes/calendar.published'
@@ -150,11 +149,6 @@ const AboutTermsRoute = AboutTermsRouteImport.update({
 const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
   id: '/analytics/',
   path: '/analytics/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalyticsIdRoute = AnalyticsIdRouteImport.update({
-  id: '/analytics/$id',
-  path: '/analytics/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsInsightsRoute = AnalyticsInsightsRouteImport.update({
@@ -398,7 +392,6 @@ export interface FileRoutesByFullPath {
   '/about/licenses': typeof AboutLicensesRoute
   '/about/privacy': typeof AboutPrivacyRoute
   '/about/terms': typeof AboutTermsRoute
-  '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
@@ -462,7 +455,6 @@ export interface FileRoutesByTo {
   '/about/licenses': typeof AboutLicensesRoute
   '/about/privacy': typeof AboutPrivacyRoute
   '/about/terms': typeof AboutTermsRoute
-  '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
@@ -527,7 +519,6 @@ export interface FileRoutesById {
   '/about/licenses': typeof AboutLicensesRoute
   '/about/privacy': typeof AboutPrivacyRoute
   '/about/terms': typeof AboutTermsRoute
-  '/analytics/$id': typeof AnalyticsIdRoute
   '/analytics/insights': typeof AnalyticsInsightsRoute
   '/calendar/published': typeof CalendarPublishedRoute
   '/calendar/publishing': typeof CalendarPublishingRoute
@@ -593,7 +584,6 @@ export interface FileRouteTypes {
     | '/about/licenses'
     | '/about/privacy'
     | '/about/terms'
-    | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
@@ -657,7 +647,6 @@ export interface FileRouteTypes {
     | '/about/licenses'
     | '/about/privacy'
     | '/about/terms'
-    | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
@@ -721,7 +710,6 @@ export interface FileRouteTypes {
     | '/about/licenses'
     | '/about/privacy'
     | '/about/terms'
-    | '/analytics/$id'
     | '/analytics/insights'
     | '/calendar/published'
     | '/calendar/publishing'
@@ -786,7 +774,6 @@ export interface RootRouteChildren {
   AboutLicensesRoute: typeof AboutLicensesRoute
   AboutPrivacyRoute: typeof AboutPrivacyRoute
   AboutTermsRoute: typeof AboutTermsRoute
-  AnalyticsIdRoute: typeof AnalyticsIdRoute
   AnalyticsInsightsRoute: typeof AnalyticsInsightsRoute
   CalendarPublishedRoute: typeof CalendarPublishedRoute
   CalendarPublishingRoute: typeof CalendarPublishingRoute
@@ -948,13 +935,6 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/analytics/'
       preLoaderRoute: typeof AnalyticsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analytics/$id': {
-      id: '/analytics/$id'
-      path: '/analytics/$id'
-      fullPath: '/analytics/$id'
-      preLoaderRoute: typeof AnalyticsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analytics/insights': {
@@ -1290,7 +1270,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutLicensesRoute: AboutLicensesRoute,
   AboutPrivacyRoute: AboutPrivacyRoute,
   AboutTermsRoute: AboutTermsRoute,
-  AnalyticsIdRoute: AnalyticsIdRoute,
   AnalyticsInsightsRoute: AnalyticsInsightsRoute,
   CalendarPublishedRoute: CalendarPublishedRoute,
   CalendarPublishingRoute: CalendarPublishingRoute,
