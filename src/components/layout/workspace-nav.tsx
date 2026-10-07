@@ -86,10 +86,11 @@ export function WorkspaceNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { planName, user } = useApp();
   const planLevel = levels[planName.toLowerCase()] ?? 0;
-  const visibleBusinessItems = planLevel >= levels.business ? businessItems : [];
+  const visibleBusinessItems = planLevel >= levels["business"] ? businessItems : [];
 
   const itemLink = (item: NavItem) => {
-    const locked = item.minimum ? planLevel < levels[item.minimum] : false;
+    const requiredLevel = item.minimum ? levels[item.minimum] ?? 0 : 0;
+    const locked = item.minimum ? planLevel < requiredLevel : false;
     const Icon = item.icon;
     const active = pathname === item.to || (item.to !== "/dashboard" && pathname.startsWith(item.to));
     return (
@@ -104,7 +105,7 @@ export function WorkspaceNav({ onNavigate }: { onNavigate?: () => void }) {
       >
         <Icon className="h-4 w-4 shrink-0" strokeWidth={1.9} />
         <span className="min-w-0 flex-1 truncate">{item.label}</span>
-        {locked && <span className="text-[10px] font-bold uppercase tracking-wide">Pro</span>}
+        {locked && <span className="text-[10px] font-bold uppercase tracking-wide">{item.minimum}</span>}
       </Link>
     );
   };

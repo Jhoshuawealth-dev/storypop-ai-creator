@@ -247,9 +247,11 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
                   </label>
                 )}
                 {featureKey === "reverse-engineer" && (
-                  <Field label="Video URL or transcript" className="mt-5">
+                  <div className="mt-5">
+                    <Field label="Video URL or transcript">
                     <TextArea rows={5} value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Paste a public URL or a transcript you have permission to analyze." />
-                  </Field>
+                    </Field>
+                  </div>
                 )}
               </div>
               <form onSubmit={save} className="space-y-4">
@@ -272,7 +274,7 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
           </>
         )}
 
-        <Link to="/create/" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary">
+        <Link to="/create" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary">
           Continue to Create Video <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
