@@ -81,6 +81,7 @@ interface PersistedState {
   notifications: AppNotification[];
   posts: ScheduledPost[];
   socialAccounts: SocialAccount[];
+  preferences: Record<string, string | boolean>;
 }
 
 /* ---------------- Defaults (empty account) ---------------- */
@@ -122,7 +123,7 @@ const emptyUser: UserProfile = {
 const freeSubscription: Subscription = {
   planId: null,
   billing: "monthly",
-  minutesTotalSeconds: 60,
+  minutesTotalSeconds: plans.find((plan) => plan.id === "free")?.minuteSeconds ?? 60,
   minutesUsedSeconds: 0,
   renewsOn: null,
 };
@@ -136,6 +137,7 @@ const defaultState: PersistedState = {
   notifications: [],
   posts: [],
   socialAccounts: platformSpecs.map((p) => ({ id: p.id, name: p.name, connected: false, handle: "" })),
+  preferences: {},
 };
 
 function loadState(): PersistedState {
@@ -179,6 +181,8 @@ interface AppState extends PersistedState {
   updatePost: (id: string, patch: Partial<ScheduledPost>) => void;
   removePost: (id: string) => void;
   toggleSocial: (id: string, handle?: string) => void;
+  preferences: Record<string, string | boolean>;
+  updatePreference: (key: string, value: string | boolean) => void;
   draft: CreateDraft;
   updateDraft: (patch: Partial<CreateDraft>) => void;
   updatePost_Draft: (patch: Partial<PostMeta>) => void;
@@ -231,6 +235,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const subscribe = useCallback((planId: string, billing: "monthly" | "yearly") => {
     const plan = plans.find((p) => p.id === planId);
+    if (!plan || plan.id === "free") {
+      setState((prev) => ({ ...prev, subscription: { ...freeSubscription, minutesUsedSeconds: prev.subscription.minutesUsedSeconds } }));
+      return;
+    }
     const renews = new Date();
     renews.setMonth(renews.getMonth() + (billing === "yearly" ? 12 : 1));
     setState((prev) => ({
@@ -323,6 +331,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const updatePreference = useCallback((key: string, value: string | boolean) => {
+    setState((prev) => ({ ...prev, preferences: { ...prev.preferences, [key]: value } }));
+  }, []);
+
   const updateDraft = useCallback((patch: Partial<CreateDraft>) => {
     setDraft((prev) => ({ ...prev, ...patch }));
   }, []);
@@ -360,6 +372,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updatePost,
       removePost,
       toggleSocial,
+      updatePreference,
       draft,
       updateDraft,
       updatePost_Draft,
@@ -392,6 +405,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updatePost,
       removePost,
       toggleSocial,
+      updatePreference,
       updateDraft,
       updatePost_Draft,
       resetDraft,
