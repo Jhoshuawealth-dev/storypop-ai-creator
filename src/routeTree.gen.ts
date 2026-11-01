@@ -70,6 +70,7 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as PublishIndexRouteImport } from './routes/publish.index'
 import { Route as PublishDetailsRouteImport } from './routes/publish.details'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsAffiliateRouteImport } from './routes/settings.affiliate'
 import { Route as SettingsAiRouteImport } from './routes/settings.ai'
 import { Route as SettingsAppsRouteImport } from './routes/settings.apps'
@@ -399,6 +400,11 @@ const PublishScheduleRoute = PublishScheduleRouteImport.update({
   path: '/publish/schedule',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsAffiliateRoute = SettingsAffiliateRouteImport.update({
   id: '/settings/affiliate',
   path: '/settings/affiliate',
@@ -593,6 +599,7 @@ export interface FileRoutesByFullPath {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -679,6 +686,7 @@ export interface FileRoutesByTo {
   '/editor': typeof EditorIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/publish': typeof PublishIndexRoute
+  '/settings': typeof SettingsIndexRoute
   '/subscription': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -766,6 +774,7 @@ export interface FileRoutesById {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
+  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -854,6 +863,7 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
+    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -940,6 +950,7 @@ export interface FileRouteTypes {
     | '/editor'
     | '/projects'
     | '/publish'
+    | '/settings'
     | '/subscription'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -1026,6 +1037,7 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
+    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -1113,6 +1125,7 @@ export interface RootRouteChildren {
   EditorIndexRoute: typeof EditorIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   PublishIndexRoute: typeof PublishIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
   SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
@@ -1551,6 +1564,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublishScheduleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/affiliate': {
       id: '/settings/affiliate'
       path: '/settings/affiliate'
@@ -1793,6 +1813,7 @@ const rootRouteChildren: RootRouteChildren = {
   EditorIndexRoute: EditorIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   PublishIndexRoute: PublishIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
   SettingsSecurity2faRoute: SettingsSecurity2faRoute,
