@@ -1,3 +1,4 @@
+import { planLevels } from "@/lib/catalog";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   BarChart3,
@@ -80,13 +81,13 @@ const footerItems: NavItem[] = [
   { label: "Security & Privacy", to: "/settings/security", icon: Shield },
 ];
 
-const levels: Record<string, number> = { free: 0, creator: 1, pro: 2, business: 3 };
+const levels: Record<string, number> = planLevels;
 
 export function WorkspaceNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { planName, user } = useApp();
   const planLevel = levels[planName.toLowerCase()] ?? 0;
-  const visibleBusinessItems = planLevel >= levels["business"] ? businessItems : [];
+  const visibleBusinessItems = planLevel >= (levels["business"] ?? 4) ? businessItems : [];
 
   const itemLink = (item: NavItem) => {
     const requiredLevel = item.minimum ? levels[item.minimum] ?? 0 : 0;
