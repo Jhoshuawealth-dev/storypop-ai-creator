@@ -78,6 +78,9 @@ export interface Plan {
   minuteSeconds: number;
   features: string[];
   recommended?: boolean;
+  credits?: number;
+  idealFor?: string;
+  custom?: boolean;
 }
 
 /* ---------------- Helpers ---------------- */
@@ -178,68 +181,124 @@ export const platformSpecs: PlatformSpec[] = [
 
 /* ---------------- Plans & billing ---------------- */
 
+export const CREDITS_PER_MINUTE = 80;
+
 export const plans: Plan[] = [
   {
-    id: "free",
-    name: "Free",
-    priceMonthly: "₦0",
+    id: "starter",
+    name: "Starter",
+    priceMonthly: "$9",
     priceYearly: "Annual pricing coming soon",
-    minutes: "1 minute AI video / month",
-    minuteSeconds: 60,
-    features: ["1 minute AI video", "1 AI character", "Limited AI scripts", "Limited AI voice", "Limited Smart Editor", "Limited Storypop Clips"],
+    credits: 1500,
+    minutes: "1,500 AI credits · 18.75 minutes",
+    minuteSeconds: 1125,
+    idealFor: "Ideal for individuals and beginner content creators.",
+    features: [
+      "AI Character Creation",
+      "Photo-to-Video Generation",
+      "AI Script and Idea Generation",
+      "AI Voice and Narration",
+      "AI Video Editor",
+      "Content Formats and Variations",
+      "1 Content DNA profile",
+      "Basic Social Media Scheduling",
+    ],
   },
   {
     id: "creator",
     name: "Creator",
-    priceMonthly: "₦12,900",
+    priceMonthly: "$29",
     priceYearly: "Annual pricing coming soon",
-    minutes: "4 minutes AI video / month",
-    minuteSeconds: 240,
-    features: ["4 minutes AI video", "1 AI character", "AI scripts and voice", "Smart Editor", "Scene regeneration", "Social publishing", "Basic Storypop Brain", "Basic Trend-to-You", "Basic Storypop Clips"],
+    credits: 6000,
+    minutes: "6,000 AI credits · 75 minutes",
+    minuteSeconds: 4500,
+    recommended: true,
+    idealFor: "Ideal for serious creators, influencers and growing businesses.",
+    features: [
+      "Everything in Starter",
+      "Storypop Brain",
+      "Trend-to-You Content Strategy",
+      "Advanced AI Video Generation",
+      "Advanced Content Formats and Variations",
+      "Community Agent",
+      "3 Content DNA profiles",
+      "Social Media Publishing and Scheduling",
+    ],
   },
   {
     id: "pro",
-    name: "Pro",
-    priceMonthly: "₦29,900",
+    name: "Professional",
+    priceMonthly: "$59",
     priceYearly: "Annual pricing coming soon",
-    minutes: "12 minutes AI video / month",
-    minuteSeconds: 720,
-    recommended: true,
+    credits: 15000,
+    minutes: "15,000 AI credits · 187.5 minutes",
+    minuteSeconds: 11250,
+    idealFor: "Ideal for professional creators, influencers and agencies.",
     features: [
-      "12 minutes AI video",
-      "3 AI characters",
-      "Full Storypop Brain and Content DNA",
-      "Trend-to-You and Competitor Radar",
-      "Viral Reverse Engineering",
-      "20 Storypop Clips / month",
-      "Experiment Engine and Autopilot Lite",
-      "Advanced analytics and commercial use",
+      "Everything in Creator",
+      "Premium AI Video Generation",
+      "Advanced AI Video Editor",
+      "Advanced Clipping",
+      "Revenue Intelligence",
+      "Affiliate-to-Video",
+      "10 Content DNA profiles",
+      "Advanced Community Agent",
+      "Advanced Analytics",
+      "Priority Processing",
     ],
   },
   {
     id: "business",
     name: "Business",
-    priceMonthly: "₦69,900",
+    priceMonthly: "$149",
     priceYearly: "Annual pricing coming soon",
-    minutes: "30 minutes AI video / month",
-    minuteSeconds: 1800,
+    credits: 50000,
+    minutes: "50,000 AI credits · 625 minutes",
+    minuteSeconds: 37500,
+    idealFor: "Ideal for agencies, brands and marketing teams.",
     features: [
-      "30 minutes AI video",
-      "10 AI characters",
-      "Advanced Brain, Trends and Competitor Radar",
-      "60 Storypop Clips / month",
-      "Full Autopilot and Community Agent",
-      "Revenue Intelligence and Affiliate-to-Video",
-      "Affiliate Autopilot, multiple brands and team members",
-      "Advanced analytics and commercial use",
+      "Everything in Professional",
+      "Multiple Brand Workspaces",
+      "Team Collaboration",
+      "Advanced AI Workflows",
+      "Higher Video Generation Capacity",
+      "Advanced Revenue Intelligence",
+      "Multiple Content DNA profiles",
+      "Campaign Management",
+      "Team Usage Analytics",
+      "Priority Processing and Support",
+    ],
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    priceMonthly: "Custom",
+    priceYearly: "Custom",
+    credits: 0,
+    minutes: "Custom monthly credit allocation",
+    minuteSeconds: 0,
+    custom: true,
+    idealFor: "For large organisations that need custom limits and support.",
+    features: [
+      "Everything in Business",
+      "Custom monthly credit allocation",
+      "Custom generation limits",
+      "Dedicated infrastructure options",
+      "Custom AI workflows",
+      "Multiple teams and workspaces",
+      "Custom integrations",
+      "Dedicated support",
     ],
   },
 ];
 
+/** Plan rank used for feature gating. "none" = no active plan. */
+export const planLevels: Record<string, number> = { none: 0, starter: 1, creator: 2, pro: 3, professional: 3, business: 4, enterprise: 5 };
+
 export const creditPacks = [
-  { id: "c1", minutes: "2:00", seconds: 120, price: "₦4,500" },
-  { id: "c2", minutes: "5:00", seconds: 300, price: "₦9,900" },
-  { id: "c3", minutes: "12:00", seconds: 720, price: "₦19,900" },
+  { id: "c1", minutes: "2:00", seconds: 120, price: "$5" },
+  { id: "c2", minutes: "5:00", seconds: 300, price: "$10" },
+  { id: "c3", minutes: "12:00", seconds: 720, price: "$20" },
 ];
 
 /* ---------------- Editor ---------------- */

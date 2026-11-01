@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
-import { Field, Input, TextArea } from "@/components/ui/input";
+import { Field, Input, SelectField, TextArea } from "@/components/ui/input";
 import { useApp } from "@/lib/store";
 
 export interface SettingsField {
@@ -11,6 +11,11 @@ export interface SettingsField {
   label: string;
   placeholder?: string;
   multiline?: boolean;
+  /** Renders a dropdown with these choices. */
+  options?: string[];
+  /** Renders an on/off switch. */
+  toggle?: boolean;
+  hint?: string;
 }
 
 export function SettingsSection({
@@ -34,7 +39,7 @@ export function SettingsSection({
 
   const save = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    for (const field of fields ?? []) updatePreference(field.key, values[field.key] ?? "");
+    for (const field of fields ?? []) updatePreference(field.key, values[field.key] || field.options?.[0] || "");
     setSaved(true);
   };
 
@@ -47,8 +52,30 @@ export function SettingsSection({
         {fields && fields.length > 0 && (
           <form onSubmit={save} className="mt-6 space-y-4">
             {fields.map((field) => (
-              <Field key={field.key} label={field.label}>
-                {field.multiline ? (
+              <Field key={field.key} label={field.label} hint={field.hint}>
+                {field.toggle ? (
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={values[field.key] === "true"}
+                    onClick={() => {
+                      setValues((current) => ({ ...current, [field.key]: current[field.key] === "true" ? "false" : "true" }));
+                      setSaved(false);
+                    }}
+                    className={`relative h-7 w-12 rounded-full transition-colors ${values[field.key] === "true" ? "bg-primary" : "bg-muted"}`}
+                  >
+                    <span className={`absolute top-1 h-5 w-5 rounded-full bg-card shadow-card transition-all ${values[field.key] === "true" ? "left-6" : "left-1"}`} />
+                  </button>
+                ) : field.options ? (
+                  <SelectField
+                    options={field.options}
+                    value={values[field.key] || field.options[0] || ""}
+                    onChange={(value) => {
+                      setValues((current) => ({ ...current, [field.key]: value }));
+                      setSaved(false);
+                    }}
+                  />
+                ) : field.multiline ? (
                   <TextArea
                     rows={4}
                     value={values[field.key] ?? ""}
