@@ -70,9 +70,18 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as PublishIndexRouteImport } from './routes/publish.index'
 import { Route as PublishDetailsRouteImport } from './routes/publish.details'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
-import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsAffiliateRouteImport } from './routes/settings.affiliate'
+import { Route as SettingsAiRouteImport } from './routes/settings.ai'
+import { Route as SettingsAppsRouteImport } from './routes/settings.apps'
+import { Route as SettingsAutopilotRouteImport } from './routes/settings.autopilot'
+import { Route as SettingsBrandRouteImport } from './routes/settings.brand'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
+import { Route as SettingsPreferencesRouteImport } from './routes/settings.preferences'
+import { Route as SettingsProfileRouteImport } from './routes/settings.profile'
+import { Route as SettingsPublishingRouteImport } from './routes/settings.publishing'
 import { Route as SettingsSocialRouteImport } from './routes/settings.social'
+import { Route as SettingsTeamRouteImport } from './routes/settings.team'
+import { Route as SettingsVoicesRouteImport } from './routes/settings.voices'
 import { Route as SubscriptionIndexRouteImport } from './routes/subscription.index'
 import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.checkout'
 import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.credits'
@@ -390,9 +399,29 @@ const PublishScheduleRoute = PublishScheduleRouteImport.update({
   path: '/publish/schedule',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsIndexRoute = SettingsIndexRouteImport.update({
-  id: '/settings/',
-  path: '/settings/',
+const SettingsAffiliateRoute = SettingsAffiliateRouteImport.update({
+  id: '/settings/affiliate',
+  path: '/settings/affiliate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAiRoute = SettingsAiRouteImport.update({
+  id: '/settings/ai',
+  path: '/settings/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAppsRoute = SettingsAppsRouteImport.update({
+  id: '/settings/apps',
+  path: '/settings/apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAutopilotRoute = SettingsAutopilotRouteImport.update({
+  id: '/settings/autopilot',
+  path: '/settings/autopilot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsBrandRoute = SettingsBrandRouteImport.update({
+  id: '/settings/brand',
+  path: '/settings/brand',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
@@ -400,9 +429,34 @@ const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
   path: '/settings/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsPreferencesRoute = SettingsPreferencesRouteImport.update({
+  id: '/settings/preferences',
+  path: '/settings/preferences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/settings/profile',
+  path: '/settings/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsPublishingRoute = SettingsPublishingRouteImport.update({
+  id: '/settings/publishing',
+  path: '/settings/publishing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsSocialRoute = SettingsSocialRouteImport.update({
   id: '/settings/social',
   path: '/settings/social',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsTeamRoute = SettingsTeamRouteImport.update({
+  id: '/settings/team',
+  path: '/settings/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsVoicesRoute = SettingsVoicesRouteImport.update({
+  id: '/settings/voices',
+  path: '/settings/voices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubscriptionIndexRoute = SubscriptionIndexRouteImport.update({
@@ -515,8 +569,18 @@ export interface FileRoutesByFullPath {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/affiliate': typeof SettingsAffiliateRoute
+  '/settings/ai': typeof SettingsAiRoute
+  '/settings/apps': typeof SettingsAppsRoute
+  '/settings/autopilot': typeof SettingsAutopilotRoute
+  '/settings/brand': typeof SettingsBrandRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/publishing': typeof SettingsPublishingRoute
   '/settings/social': typeof SettingsSocialRoute
+  '/settings/team': typeof SettingsTeamRoute
+  '/settings/voices': typeof SettingsVoicesRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -529,7 +593,6 @@ export interface FileRoutesByFullPath {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
-  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -592,8 +655,18 @@ export interface FileRoutesByTo {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/affiliate': typeof SettingsAffiliateRoute
+  '/settings/ai': typeof SettingsAiRoute
+  '/settings/apps': typeof SettingsAppsRoute
+  '/settings/autopilot': typeof SettingsAutopilotRoute
+  '/settings/brand': typeof SettingsBrandRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/publishing': typeof SettingsPublishingRoute
   '/settings/social': typeof SettingsSocialRoute
+  '/settings/team': typeof SettingsTeamRoute
+  '/settings/voices': typeof SettingsVoicesRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -606,7 +679,6 @@ export interface FileRoutesByTo {
   '/editor': typeof EditorIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/publish': typeof PublishIndexRoute
-  '/settings': typeof SettingsIndexRoute
   '/subscription': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -670,8 +742,18 @@ export interface FileRoutesById {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
+  '/settings/affiliate': typeof SettingsAffiliateRoute
+  '/settings/ai': typeof SettingsAiRoute
+  '/settings/apps': typeof SettingsAppsRoute
+  '/settings/autopilot': typeof SettingsAutopilotRoute
+  '/settings/brand': typeof SettingsBrandRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/publishing': typeof SettingsPublishingRoute
   '/settings/social': typeof SettingsSocialRoute
+  '/settings/team': typeof SettingsTeamRoute
+  '/settings/voices': typeof SettingsVoicesRoute
   '/subscription/checkout': typeof SubscriptionCheckoutRoute
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
@@ -684,7 +766,6 @@ export interface FileRoutesById {
   '/editor/': typeof EditorIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/publish/': typeof PublishIndexRoute
-  '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
@@ -749,8 +830,18 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
+    | '/settings/affiliate'
+    | '/settings/ai'
+    | '/settings/apps'
+    | '/settings/autopilot'
+    | '/settings/brand'
     | '/settings/notifications'
+    | '/settings/preferences'
+    | '/settings/profile'
+    | '/settings/publishing'
     | '/settings/social'
+    | '/settings/team'
+    | '/settings/voices'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -763,7 +854,6 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
-    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -826,8 +916,18 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
+    | '/settings/affiliate'
+    | '/settings/ai'
+    | '/settings/apps'
+    | '/settings/autopilot'
+    | '/settings/brand'
     | '/settings/notifications'
+    | '/settings/preferences'
+    | '/settings/profile'
+    | '/settings/publishing'
     | '/settings/social'
+    | '/settings/team'
+    | '/settings/voices'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -840,7 +940,6 @@ export interface FileRouteTypes {
     | '/editor'
     | '/projects'
     | '/publish'
-    | '/settings'
     | '/subscription'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -903,8 +1002,18 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
+    | '/settings/affiliate'
+    | '/settings/ai'
+    | '/settings/apps'
+    | '/settings/autopilot'
+    | '/settings/brand'
     | '/settings/notifications'
+    | '/settings/preferences'
+    | '/settings/profile'
+    | '/settings/publishing'
     | '/settings/social'
+    | '/settings/team'
+    | '/settings/voices'
     | '/subscription/checkout'
     | '/subscription/credits'
     | '/subscription/manage'
@@ -917,7 +1026,6 @@ export interface FileRouteTypes {
     | '/editor/'
     | '/projects/'
     | '/publish/'
-    | '/settings/'
     | '/subscription/'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
@@ -981,8 +1089,18 @@ export interface RootRouteChildren {
   MonetizationAutopilotRoute: typeof MonetizationAutopilotRoute
   PublishDetailsRoute: typeof PublishDetailsRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
+  SettingsAffiliateRoute: typeof SettingsAffiliateRoute
+  SettingsAiRoute: typeof SettingsAiRoute
+  SettingsAppsRoute: typeof SettingsAppsRoute
+  SettingsAutopilotRoute: typeof SettingsAutopilotRoute
+  SettingsBrandRoute: typeof SettingsBrandRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  SettingsPreferencesRoute: typeof SettingsPreferencesRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsPublishingRoute: typeof SettingsPublishingRoute
   SettingsSocialRoute: typeof SettingsSocialRoute
+  SettingsTeamRoute: typeof SettingsTeamRoute
+  SettingsVoicesRoute: typeof SettingsVoicesRoute
   SubscriptionCheckoutRoute: typeof SubscriptionCheckoutRoute
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
   SubscriptionManageRoute: typeof SubscriptionManageRoute
@@ -995,7 +1113,6 @@ export interface RootRouteChildren {
   EditorIndexRoute: typeof EditorIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   PublishIndexRoute: typeof PublishIndexRoute
-  SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
   SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
@@ -1434,11 +1551,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublishScheduleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings/': {
-      id: '/settings/'
-      path: '/settings'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof SettingsIndexRouteImport
+    '/settings/affiliate': {
+      id: '/settings/affiliate'
+      path: '/settings/affiliate'
+      fullPath: '/settings/affiliate'
+      preLoaderRoute: typeof SettingsAffiliateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/ai': {
+      id: '/settings/ai'
+      path: '/settings/ai'
+      fullPath: '/settings/ai'
+      preLoaderRoute: typeof SettingsAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/apps': {
+      id: '/settings/apps'
+      path: '/settings/apps'
+      fullPath: '/settings/apps'
+      preLoaderRoute: typeof SettingsAppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/autopilot': {
+      id: '/settings/autopilot'
+      path: '/settings/autopilot'
+      fullPath: '/settings/autopilot'
+      preLoaderRoute: typeof SettingsAutopilotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/brand': {
+      id: '/settings/brand'
+      path: '/settings/brand'
+      fullPath: '/settings/brand'
+      preLoaderRoute: typeof SettingsBrandRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/notifications': {
@@ -1448,11 +1593,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsNotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/preferences': {
+      id: '/settings/preferences'
+      path: '/settings/preferences'
+      fullPath: '/settings/preferences'
+      preLoaderRoute: typeof SettingsPreferencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/settings/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/publishing': {
+      id: '/settings/publishing'
+      path: '/settings/publishing'
+      fullPath: '/settings/publishing'
+      preLoaderRoute: typeof SettingsPublishingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/social': {
       id: '/settings/social'
       path: '/settings/social'
       fullPath: '/settings/social'
       preLoaderRoute: typeof SettingsSocialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/team': {
+      id: '/settings/team'
+      path: '/settings/team'
+      fullPath: '/settings/team'
+      preLoaderRoute: typeof SettingsTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/voices': {
+      id: '/settings/voices'
+      path: '/settings/voices'
+      fullPath: '/settings/voices'
+      preLoaderRoute: typeof SettingsVoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subscription/': {
@@ -1589,8 +1769,18 @@ const rootRouteChildren: RootRouteChildren = {
   MonetizationAutopilotRoute: MonetizationAutopilotRoute,
   PublishDetailsRoute: PublishDetailsRoute,
   PublishScheduleRoute: PublishScheduleRoute,
+  SettingsAffiliateRoute: SettingsAffiliateRoute,
+  SettingsAiRoute: SettingsAiRoute,
+  SettingsAppsRoute: SettingsAppsRoute,
+  SettingsAutopilotRoute: SettingsAutopilotRoute,
+  SettingsBrandRoute: SettingsBrandRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
+  SettingsPreferencesRoute: SettingsPreferencesRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
+  SettingsPublishingRoute: SettingsPublishingRoute,
   SettingsSocialRoute: SettingsSocialRoute,
+  SettingsTeamRoute: SettingsTeamRoute,
+  SettingsVoicesRoute: SettingsVoicesRoute,
   SubscriptionCheckoutRoute: SubscriptionCheckoutRoute,
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
   SubscriptionManageRoute: SubscriptionManageRoute,
@@ -1603,7 +1793,6 @@ const rootRouteChildren: RootRouteChildren = {
   EditorIndexRoute: EditorIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   PublishIndexRoute: PublishIndexRoute,
-  SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
   SettingsSecurity2faRoute: SettingsSecurity2faRoute,
