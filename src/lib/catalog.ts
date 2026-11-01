@@ -296,9 +296,9 @@ export const plans: Plan[] = [
 export const planLevels: Record<string, number> = { none: 0, starter: 1, creator: 2, pro: 3, professional: 3, business: 4, enterprise: 5 };
 
 export const creditPacks = [
-  { id: "c1", minutes: "2:00", seconds: 120, price: "₦4,500" },
-  { id: "c2", minutes: "5:00", seconds: 300, price: "₦9,900" },
-  { id: "c3", minutes: "12:00", seconds: 720, price: "₦19,900" },
+  { id: "c1", minutes: "2:00", seconds: 120, price: "$5" },
+  { id: "c2", minutes: "5:00", seconds: 300, price: "$10" },
+  { id: "c3", minutes: "12:00", seconds: 720, price: "$20" },
 ];
 
 /* ---------------- Editor ---------------- */
