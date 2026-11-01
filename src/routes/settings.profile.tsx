@@ -8,8 +8,8 @@ import { pageHead } from "@/lib/seo";
 import { Avatar } from "@/components/ui/avatar";
 import { useApp } from "@/lib/store";
 
-export const Route = createFileRoute("/settings/")({
-  head: pageHead("Account Settings", "Update your Storypop AI profile details."),
+export const Route = createFileRoute("/settings/profile")({
+  head: pageHead("Profile Settings", "Update your Storypop AI profile details."),
   component: AccountSettings,
 });
 
@@ -36,7 +36,7 @@ function AccountSettings() {
   };
 
   return (
-    <AppShell title="Account Settings" showBack backTo="/profile">
+    <AppShell title="Profile" showBack backTo="/settings">
       <div className="mt-5 flex flex-col items-center">
         <Avatar src={photo} name={name} className="h-24 w-24 rounded-3xl text-2xl shadow-card" />
         <label className="mt-2.5 cursor-pointer">
