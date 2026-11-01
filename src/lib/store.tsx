@@ -34,6 +34,8 @@ export interface UserProfile {
 
 export interface SocialAccount {
   id: string;
+  /** Platform id from platformSpecs (tiktok, instagram, ...). */
+  platform: string;
   name: string;
   connected: boolean;
   handle: string;
@@ -123,7 +125,7 @@ const emptyUser: UserProfile = {
 const freeSubscription: Subscription = {
   planId: null,
   billing: "monthly",
-  minutesTotalSeconds: plans.find((plan) => plan.id === "free")?.minuteSeconds ?? 60,
+  minutesTotalSeconds: 0,
   minutesUsedSeconds: 0,
   renewsOn: null,
 };
@@ -136,7 +138,7 @@ const defaultState: PersistedState = {
   characters: [],
   notifications: [],
   posts: [],
-  socialAccounts: platformSpecs.map((p) => ({ id: p.id, name: p.name, connected: false, handle: "" })),
+  socialAccounts: [],
   preferences: {},
 };
 
@@ -151,7 +153,9 @@ function loadState(): PersistedState {
       ...parsed,
       user: { ...emptyUser, ...(parsed.user ?? {}) },
       subscription: { ...freeSubscription, ...(parsed.subscription ?? {}) },
-      socialAccounts: parsed.socialAccounts?.length ? parsed.socialAccounts : defaultState.socialAccounts,
+      socialAccounts: (parsed.socialAccounts ?? [])
+        .filter((a) => a.connected)
+        .map((a) => ({ ...a, platform: a.platform ?? a.id })),
     };
   } catch {
     return defaultState;
@@ -180,7 +184,8 @@ interface AppState extends PersistedState {
   addPost: (post: ScheduledPost) => void;
   updatePost: (id: string, patch: Partial<ScheduledPost>) => void;
   removePost: (id: string) => void;
-  toggleSocial: (id: string, handle?: string) => void;
+  addSocialAccount: (platform: string, handle: string) => boolean;
+  removeSocialAccount: (id: string) => void;
   preferences: Record<string, string | boolean>;
   updatePreference: (key: string, value: string | boolean) => void;
   draft: CreateDraft;
@@ -322,13 +327,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, posts: prev.posts.filter((p) => p.id !== id) }));
   }, []);
 
-  const toggleSocial = useCallback((id: string, handle?: string) => {
-    setState((prev) => ({
-      ...prev,
-      socialAccounts: prev.socialAccounts.map((a) =>
-        a.id === id ? { ...a, connected: !a.connected, handle: !a.connected ? (handle ?? a.handle) : "" } : a
-      ),
-    }));
+  const addSocialAccount = useCallback((platform: string, handle: string) => {
+    const spec = platformSpecs.find((p) => p.id === platform);
+    const clean = handle.trim().replace(/^@?/, "@");
+    if (!spec || clean.length < 2) return false;
+    let added = false;
+    setState((prev) => {
+      if (prev.socialAccounts.some((a) => a.platform === platform && a.handle.toLowerCase() === clean.toLowerCase())) return prev;
+      added = true;
+      return {
+        ...prev,
+        socialAccounts: [
+          ...prev.socialAccounts,
+          { id: `${platform}-${Date.now().toString(36)}`, platform, name: spec.name, handle: clean, connected: true },
+        ],
+      };
+    });
+    return added;
+  }, []);
+
+  const removeSocialAccount = useCallback((id: string) => {
+    setState((prev) => ({ ...prev, socialAccounts: prev.socialAccounts.filter((a) => a.id !== id) }));
   }, []);
 
   const updatePreference = useCallback((key: string, value: string | boolean) => {
@@ -346,8 +365,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const resetDraft = useCallback(() => setDraft({ ...defaultDraft, post: { ...emptyPost } }), []);
 
   const planName = state.subscription.planId
-    ? (plans.find((p) => p.id === state.subscription.planId)?.name ?? "Free")
-    : "Free";
+    ? (plans.find((p) => p.id === state.subscription.planId)?.name ?? "No plan")
+    : "No plan";
 
   const value = useMemo<AppState>(
     () => ({
@@ -371,7 +390,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       addPost,
       updatePost,
       removePost,
-      toggleSocial,
+      addSocialAccount,
+      removeSocialAccount,
       updatePreference,
       draft,
       updateDraft,
@@ -404,7 +424,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       addPost,
       updatePost,
       removePost,
-      toggleSocial,
+      addSocialAccount,
+      removeSocialAccount,
       updatePreference,
       updateDraft,
       updatePost_Draft,
