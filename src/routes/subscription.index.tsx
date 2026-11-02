@@ -98,7 +98,7 @@ function Pricing() {
                 <p className={cn("mt-4 text-xs italic", featured ? "text-primary-light" : "text-muted-foreground")}>{plan.idealFor}</p>
               )}
 
-              <Link to={plan.custom ? "/help" : "/subscription/checkout"} search={plan.custom ? undefined : { plan: plan.id }} className="mt-5 block">
+              <Link to={plan.custom ? "/help" : "/subscription/checkout"} search={plan.custom ? {} : { plan: plan.id }} className="mt-5 block">
                 <Button
                   fullWidth
                   size="lg"
