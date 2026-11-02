@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/subscription/checkout")({
   head: pageHead("Checkout", "Complete your Storypop AI subscription."),
+  validateSearch: (search: Record<string, unknown>) => ({ plan: typeof search.plan === "string" ? search.plan : "creator" }),
   component: Checkout,
 });
 
