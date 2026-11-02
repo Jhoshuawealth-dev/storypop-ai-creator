@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+import { useApp } from "@/lib/store";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Check } from "lucide-react";
@@ -24,6 +26,7 @@ function strengthOf(pw: string): { score: number; label: string } {
 
 function Register() {
   const navigate = useNavigate();
+  const { signIn } = useApp();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +49,11 @@ function Register() {
     if (Object.keys(next).length > 0) return;
 
     setLoading(true);
-    setTimeout(() => navigate({ to: "/verify-email" }), 1400);
+    setTimeout(() => {
+      signIn({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim() });
+      toast.success("Your account is ready!");
+      navigate({ to: "/home" });
+    }, 900);
   };
 
   return (
@@ -62,7 +69,7 @@ function Register() {
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Joshua Adeyemi"
+            placeholder="Your full name"
             invalid={!!errors["name"]}
             autoComplete="name"
           />

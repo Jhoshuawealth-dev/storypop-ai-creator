@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { pageHead } from "@/lib/seo";
 import { plans } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/subscription/")({
   head: pageHead("Pricing Plans", "Choose the Storypop AI plan that fits your output."),
@@ -14,14 +15,15 @@ export const Route = createFileRoute("/subscription/")({
 
 function Pricing() {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
-  const currentPlan = "pro";
+  const { subscription } = useApp();
+  const currentPlan = subscription.planId;
 
   return (
     <AppShell title="Plans" showBack backTo="/profile">
       <h1 className="mt-6 font-display text-2xl font-extrabold tracking-tight text-foreground">
         Pick your creator plan
       </h1>
-      <p className="mt-1.5 text-[15px] text-muted-foreground">Every plan includes AI scripts, characters and publishing.</p>
+      <p className="mt-1.5 text-[15px] text-muted-foreground">Every plan runs on AI credits — 80 credits make one minute of video.</p>
 
       <div className="mt-5 grid grid-cols-2 gap-1 rounded-full bg-muted p-1">
         {(["monthly", "yearly"] as const).map((b) => (
@@ -34,7 +36,7 @@ function Pricing() {
             )}
           >
             {b}
-            {b === "yearly" && <span className="ml-1 text-[11px] font-extrabold">−17%</span>}
+            
           </button>
         ))}
       </div>
@@ -53,7 +55,7 @@ function Pricing() {
             >
               {featured && (
                 <span className="absolute -top-2.5 left-5 rounded-full bg-primary px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-primary-foreground">
-                  Recommended
+                  Most Popular
                 </span>
               )}
               <div className="flex items-baseline justify-between">
@@ -74,7 +76,7 @@ function Pricing() {
               <p className={cn("mt-2 font-display text-3xl font-extrabold", !featured && "text-foreground")}>
                 {billing === "monthly" ? plan.priceMonthly : plan.priceYearly}
                 <span className={cn("text-sm font-semibold", featured ? "text-primary-light" : "text-muted-foreground")}>
-                  /{billing === "monthly" ? "month" : "year"}
+                  {plan.custom || billing === "yearly" ? "" : "/month"}
                 </span>
               </p>
               <p className={cn("mt-1 text-sm font-bold", featured ? "text-primary-light" : "text-primary")}>
@@ -92,15 +94,18 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
+              {plan.idealFor && (
+                <p className={cn("mt-4 text-xs italic", featured ? "text-primary-light" : "text-muted-foreground")}>{plan.idealFor}</p>
+              )}
 
-              <Link to="/subscription/checkout" className="mt-5 block">
+              <Link to={plan.custom ? "/help" : "/subscription/checkout"} search={plan.custom ? {} : { plan: plan.id }} className="mt-5 block">
                 <Button
                   fullWidth
                   size="lg"
                   variant={featured ? "primary" : "outline"}
                   disabled={isCurrent}
                 >
-                  {isCurrent ? "Your current plan" : `Upgrade to ${plan.name}`}
+                  {isCurrent ? "Your current plan" : plan.custom ? "Contact sales" : `Choose ${plan.name}`}
                 </Button>
               </Link>
             </article>

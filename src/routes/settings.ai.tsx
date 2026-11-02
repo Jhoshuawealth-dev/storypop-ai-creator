@@ -20,7 +20,6 @@ function Page() {
         { key: "ai.captions", label: "Auto-add captions", toggle: true },
         { key: "ai.music", label: "Auto-add background music", toggle: true },
       ]}
-      notice={undefined}
     />
   );
 }

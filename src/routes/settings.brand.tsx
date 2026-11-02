@@ -20,7 +20,6 @@ function Page() {
         { key: "brand.website", label: "Website", placeholder: "https://" },
         { key: "brand.avoid", label: "Words or topics to avoid", placeholder: "Anything AI should never say", multiline: true },
       ]}
-      notice={undefined}
     />
   );
 }

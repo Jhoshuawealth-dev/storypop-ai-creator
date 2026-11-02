@@ -19,7 +19,6 @@ function Page() {
         { key: "app.sounds", label: "Sounds and haptics", toggle: true },
         { key: "app.autoplay", label: "Autoplay video previews", toggle: true },
       ]}
-      notice={undefined}
     />
   );
 }

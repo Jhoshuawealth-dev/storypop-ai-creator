@@ -17,7 +17,6 @@ function Page() {
         { key: "aff.disclosure", label: "Disclosure text", placeholder: "#ad · I may earn from links in this post" },
         { key: "aff.autoDisclose", label: "Always add disclosure to affiliate posts", toggle: true },
       ]}
-      notice={undefined}
     />
   );
 }

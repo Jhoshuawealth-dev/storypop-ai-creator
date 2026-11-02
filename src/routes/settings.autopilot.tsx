@@ -18,7 +18,6 @@ function Page() {
         { key: "auto.approval", label: "Approval", options: ["Ask me before anything is posted", "Draft only, never post"] },
         { key: "auto.topics", label: "Topics to focus on", placeholder: "e.g. product tips, behind the scenes", multiline: true },
       ]}
-      notice={undefined}
     />
   );
 }

@@ -18,7 +18,7 @@ function ManageSubscription() {
   const remaining = Math.max(0, minutesTotal - minutesUsed);
   const plan = plans.find((p) => p.id === subscription.planId);
   const isFree = !subscription.planId;
-  const price = plan ? (subscription.billing === "yearly" ? plan.priceYearly : plan.priceMonthly) : "Free";
+  const price = plan ? (subscription.billing === "yearly" ? plan.priceYearly : plan.priceMonthly) : "—";
 
   return (
     <AppShell title="Subscription" showBack backTo="/profile">
@@ -26,7 +26,7 @@ function ManageSubscription() {
         <div className="flex items-center justify-between">
           <p className="text-xs font-bold uppercase tracking-widest text-primary-light">Current plan</p>
           <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-extrabold">
-            {isFree ? "Free" : "Active"}
+            {isFree ? "No plan" : "Active"}
           </span>
         </div>
         <p className="mt-1.5 font-display text-2xl font-extrabold">{planName} Plan</p>
@@ -78,7 +78,7 @@ function ManageSubscription() {
             fullWidth
             onClick={() => {
               cancelPlan();
-              toast.success("Your plan was cancelled. You're back on the Free plan.");
+              toast.success("Your plan was cancelled. You're no longer on a paid plan.");
               navigate({ to: "/profile" });
             }}
           >

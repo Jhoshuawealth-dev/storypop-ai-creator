@@ -15,7 +15,7 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const navigate = useNavigate();
-  const { signIn } = useApp();
+  const { signIn, user } = useApp();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -35,8 +35,8 @@ function Login() {
     setLoading(true);
     setTimeout(() => {
       // Mock auth: any valid-looking credentials succeed
-      signIn();
-      toast.success("Welcome back, Joshua!");
+      signIn(user.email ? {} : { email: email.trim() });
+      toast.success(user.name ? `Welcome back, ${user.name}!` : "Welcome back!");
       navigate({ to: "/home" });
     }, 1200);
   };
@@ -70,7 +70,7 @@ function Login() {
         <div className="flex justify-end">
           <button
             type="button"
-            onClick={() => toast.info("Password reset link sent to your email.")}
+            onClick={() => toast.info("Password reset will be available once Storypop accounts go live.")}
             className="text-sm font-semibold text-primary"
           >
             Forgot password?
@@ -93,10 +93,10 @@ function Login() {
       </div>
 
       <div className="space-y-3">
-        <Button variant="outline" size="lg" fullWidth onClick={() => { signIn(); navigate({ to: "/home" }); }}>
+        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("Google sign-in is coming soon.")}>
           <GoogleIcon /> Continue with Google
         </Button>
-        <Button variant="outline" size="lg" fullWidth onClick={() => { signIn(); navigate({ to: "/home" }); }}>
+        <Button variant="outline" size="lg" fullWidth onClick={() => toast.info("Apple sign-in is coming soon.")}>
           <AppleIcon /> Continue with Apple
         </Button>
       </div>

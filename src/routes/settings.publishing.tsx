@@ -20,7 +20,6 @@ function Page() {
         { key: "pub.seo", label: "Suggest SEO titles and tags", toggle: true },
         { key: "pub.review", label: "Ask me to review before every post", toggle: true },
       ]}
-      notice={undefined}
     />
   );
 }
