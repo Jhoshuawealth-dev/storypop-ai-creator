@@ -29,7 +29,7 @@ function ManageSubscription() {
             {isFree ? "No plan" : "Active"}
           </span>
         </div>
-        <p className="mt-1.5 font-display text-2xl font-extrabold">{planName} Plan</p>
+        <p className="mt-1.5 font-display text-2xl font-extrabold">{planName === "No plan" ? "No plan yet" : `${planName} Plan`}</p>
         <p className="text-sm text-primary-light">
           {isFree
             ? "No payment method required"
