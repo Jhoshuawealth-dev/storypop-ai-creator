@@ -139,7 +139,7 @@ export function WorkspaceNav({ onNavigate }: { onNavigate?: () => void }) {
           </span>
           <span className="min-w-0 flex-1">
             <span className="block truncate text-sm font-bold text-foreground">{user.name || "Your account"}</span>
-            <span className="block truncate text-xs text-muted-foreground">{planName} Plan</span>
+            <span className="block truncate text-xs text-muted-foreground">{planName === "No plan" ? "No plan yet" : `${planName} Plan`}</span>
           </span>
         </Link>
       </div>

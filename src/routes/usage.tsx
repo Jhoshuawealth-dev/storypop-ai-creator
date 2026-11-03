@@ -20,7 +20,7 @@ function Usage() {
     <AppShell title="Video Usage" showBack backTo="/home">
       <div className="mt-6 flex flex-col items-center rounded-3xl bg-card p-7 shadow-card">
         <span className="rounded-full bg-primary-soft px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-          {planName} plan
+          {planName === "No plan" ? "No plan yet" : `${planName} plan`}
         </span>
         <ProgressRing value={minutesTotal ? remaining / minutesTotal : 0} size={180} stroke={16} className="mt-6">
           <span className="font-display text-3xl font-extrabold text-foreground">{formatDuration(remaining)}</span>
