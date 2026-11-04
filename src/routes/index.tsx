@@ -313,17 +313,7 @@ function Landing() {
           <Button size="lg">{authed ? "Open dashboard" : "Create your free account"}</Button>
         </Link>
       </section>
-      <footer className="border-t border-primary-foreground/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-primary-light md:flex-row">
-          <p>© {new Date().getFullYear()} Storypop AI</p>
-          <div className="flex gap-6">
-            <Link to="/about/terms">Terms</Link>
-            <Link to="/about/privacy">Privacy</Link>
-            <Link to="/help">Contact</Link>
-            <Link to="/login">Log In</Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
