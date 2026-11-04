@@ -81,9 +81,9 @@ function SupportPage() {
           )}
         </div>
 
-        <div className="mt-10 rounded-3xl bg-primary p-8 text-center text-white shadow-card">
+        <div className="mt-10 rounded-3xl bg-primary p-8 text-center text-primary-foreground shadow-card">
           <h2 className="font-display text-xl font-bold">Still need help?</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-white/80">
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-primary-foreground/80">
             Send the team a message through our contact form. It goes straight to us and we reply by email.
           </p>
           <Link to="/contact" className="mt-5 inline-block">
