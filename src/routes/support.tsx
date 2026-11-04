@@ -87,7 +87,7 @@ function SupportPage() {
             Send the team a message through our contact form. It goes straight to us and we reply by email.
           </p>
           <Link to="/contact" className="mt-5 inline-block">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+            <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
               Open the contact form
             </Button>
           </Link>
