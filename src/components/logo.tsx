@@ -25,12 +25,12 @@ export function Logo({ size = 40, className }: { size?: number; className?: stri
   );
 }
 
-export function LogoMark({ className }: { className?: string }) {
+export function LogoMark({ className, wordClass }: { className?: string; wordClass?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
       <Logo size={32} />
-      <span className="font-display text-lg font-bold tracking-tight text-foreground">
-        Storypop <span className="text-primary">AI</span>
+      <span className={cn("font-display text-lg font-bold tracking-tight text-foreground", wordClass)}>
+        Storypop <span className={cn("text-primary", !wordClass && "text-primary")}>AI</span>
       </span>
     </span>
   );

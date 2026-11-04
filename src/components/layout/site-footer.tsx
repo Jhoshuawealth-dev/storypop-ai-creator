@@ -31,7 +31,7 @@ export function SiteFooter() {
     <footer className="border-t border-primary-foreground/10 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:grid-cols-[1.4fr_repeat(3,1fr)] md:px-8">
         <div>
-          <LogoMark className="text-primary-foreground" />
+          <LogoMark className="text-primary-foreground" wordClass="text-primary-foreground" />
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-primary-foreground/70">
             Turn one photo into endless AI UGC videos. Create, edit and publish — all in one place.
           </p>
