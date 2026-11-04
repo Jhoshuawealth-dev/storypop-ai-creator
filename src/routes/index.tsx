@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/lib/catalog";
 import { useApp } from "@/lib/store";
