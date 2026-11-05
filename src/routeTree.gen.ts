@@ -91,6 +91,7 @@ import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.c
 import { Route as SubscriptionManageRouteImport } from './routes/subscription.manage'
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as ApiPublicWorkerRouteImport } from './routes/api/public/worker'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
 import { Route as ProjectsIdScenesRouteImport } from './routes/projects.$id.scenes'
 import { Route as SettingsSecurityIndexRouteImport } from './routes/settings.security.index'
@@ -508,6 +509,11 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWorkerRoute = ApiPublicWorkerRouteImport.update({
+  id: '/api/public/worker',
+  path: '/api/public/worker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsIdIndexRoute = ProjectsIdIndexRouteImport.update({
   id: '/projects/$id/',
   path: '/projects/$id/',
@@ -622,6 +628,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/worker': typeof ApiPublicWorkerRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
   '/settings/security/data': typeof SettingsSecurityDataRoute
@@ -712,6 +719,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsIndexRoute
   '/subscription': typeof SubscriptionIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/worker': typeof ApiPublicWorkerRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
   '/settings/security/data': typeof SettingsSecurityDataRoute
@@ -803,6 +811,7 @@ export interface FileRoutesById {
   '/settings/': typeof SettingsIndexRoute
   '/subscription/': typeof SubscriptionIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/worker': typeof ApiPublicWorkerRoute
   '/projects/$id/scenes': typeof ProjectsIdScenesRoute
   '/settings/security/2fa': typeof SettingsSecurity2faRoute
   '/settings/security/data': typeof SettingsSecurityDataRoute
@@ -895,6 +904,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/subscription/'
     | '/api/public/contact'
+    | '/api/public/worker'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
     | '/settings/security/data'
@@ -985,6 +995,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/subscription'
     | '/api/public/contact'
+    | '/api/public/worker'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
     | '/settings/security/data'
@@ -1075,6 +1086,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/subscription/'
     | '/api/public/contact'
+    | '/api/public/worker'
     | '/projects/$id/scenes'
     | '/settings/security/2fa'
     | '/settings/security/data'
@@ -1166,6 +1178,7 @@ export interface RootRouteChildren {
   SettingsIndexRoute: typeof SettingsIndexRoute
   SubscriptionIndexRoute: typeof SubscriptionIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
+  ApiPublicWorkerRoute: typeof ApiPublicWorkerRoute
   ProjectsIdScenesRoute: typeof ProjectsIdScenesRoute
   SettingsSecurity2faRoute: typeof SettingsSecurity2faRoute
   SettingsSecurityDataRoute: typeof SettingsSecurityDataRoute
@@ -1750,6 +1763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/worker': {
+      id: '/api/public/worker'
+      path: '/api/public/worker'
+      fullPath: '/api/public/worker'
+      preLoaderRoute: typeof ApiPublicWorkerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$id/': {
       id: '/projects/$id/'
       path: '/projects/$id'
@@ -1878,6 +1898,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsIndexRoute: SettingsIndexRoute,
   SubscriptionIndexRoute: SubscriptionIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
+  ApiPublicWorkerRoute: ApiPublicWorkerRoute,
   ProjectsIdScenesRoute: ProjectsIdScenesRoute,
   SettingsSecurity2faRoute: SettingsSecurity2faRoute,
   SettingsSecurityDataRoute: SettingsSecurityDataRoute,
