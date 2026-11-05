@@ -4,4 +4,5 @@
 - [ ] Evolve the existing landing, local sign-in/sign-up flow, and app shell into the responsive web-app experience in the brief.
 - [ ] Add grouped, plan-aware Create, Intelligence, Growth, Monetization, and Analytics experiences without replacing existing creator workflows.
 - [ ] Expand Settings into the requested settings center and align plans/pricing throughout the app.
-- [ ] Verify routes and primary flows on desktop and mobile; resolve remaining build errors.
+- [x] Verify routes and primary flows on desktop and mobile; resolve remaining build errors.
+- [x] Add a site footer (Terms, Privacy, Contact, Support) with new /contact (form-only) and /support pages; contact submissions stored in the cloud database.
