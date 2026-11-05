@@ -30,7 +30,7 @@ export function LogoMark({ className, wordClass }: { className?: string; wordCla
     <span className={cn("inline-flex items-center gap-2", className)}>
       <Logo size={32} />
       <span className={cn("font-display text-lg font-bold tracking-tight text-foreground", wordClass)}>
-        Storypop <span className={cn("text-primary", !wordClass && "text-primary")}>AI</span>
+        Storypop <span className={wordClass ? undefined : "text-primary"}>AI</span>
       </span>
     </span>
   );
