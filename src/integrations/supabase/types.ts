@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      characters: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          reference_paths: string[]
+          style: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          reference_paths?: string[]
+          style?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          reference_paths?: string[]
+          style?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -41,12 +68,287 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_balances: {
+        Row: {
+          credits_total: number
+          credits_used: number
+          plan_id: string | null
+          renews_on: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          credits_total?: number
+          credits_used?: number
+          plan_id?: string | null
+          renews_on?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          credits_total?: number
+          credits_used?: number
+          plan_id?: string | null
+          renews_on?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      generation_jobs: {
+        Row: {
+          claimed_at: string | null
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: string
+          input: Json
+          kind: string
+          output_path: string | null
+          progress: number
+          project_id: string | null
+          stage: string
+          status: string
+          updated_at: string
+          user_id: string
+          worker_id: string | null
+        }
+        Insert: {
+          claimed_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          input?: Json
+          kind?: string
+          output_path?: string | null
+          progress?: number
+          project_id?: string | null
+          stage?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          worker_id?: string | null
+        }
+        Update: {
+          claimed_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          input?: Json
+          kind?: string
+          output_path?: string | null
+          progress?: number
+          project_id?: string | null
+          stage?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          worker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generation_jobs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          created_at: string
+          description: string
+          hashtags: string[]
+          id: string
+          platforms: string[]
+          project_id: string | null
+          published_at: string | null
+          scheduled_at: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          hashtags?: string[]
+          id?: string
+          platforms?: string[]
+          project_id?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          title?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          hashtags?: string[]
+          id?: string
+          platforms?: string[]
+          project_id?: string | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string
+          bio: string
+          created_at: string
+          full_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string
+          bio?: string
+          created_at?: string
+          full_name?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string
+          bio?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          character_id: string | null
+          created_at: string
+          duration_seconds: number
+          id: string
+          idea: string
+          ratio: string
+          scenes: Json
+          script: Json
+          status: string
+          style_id: string
+          title: string
+          updated_at: string
+          user_id: string
+          video_path: string | null
+          voice_id: string
+        }
+        Insert: {
+          character_id?: string | null
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          idea?: string
+          ratio?: string
+          scenes?: Json
+          script?: Json
+          status?: string
+          style_id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+          video_path?: string | null
+          voice_id?: string
+        }
+        Update: {
+          character_id?: string | null
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          idea?: string
+          ratio?: string
+          scenes?: Json
+          script?: Json
+          status?: string
+          style_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          video_path?: string | null
+          voice_id?: string
+        }
+        Relationships: []
+      }
+      social_accounts: {
+        Row: {
+          connected: boolean
+          created_at: string
+          handle: string
+          id: string
+          name: string
+          platform: string
+          user_id: string
+        }
+        Insert: {
+          connected?: boolean
+          created_at?: string
+          handle?: string
+          id?: string
+          name?: string
+          platform: string
+          user_id: string
+        }
+        Update: {
+          connected?: boolean
+          created_at?: string
+          handle?: string
+          id?: string
+          name?: string
+          platform?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_next_job: {
+        Args: { _worker_id: string }
+        Returns: {
+          claimed_at: string | null
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          id: string
+          input: Json
+          kind: string
+          output_path: string | null
+          progress: number
+          project_id: string | null
+          stage: string
+          status: string
+          updated_at: string
+          user_id: string
+          worker_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "generation_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
       [_ in never]: never
