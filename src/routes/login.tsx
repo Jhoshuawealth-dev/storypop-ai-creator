@@ -6,6 +6,7 @@ import { Field, Input, PasswordInput } from "@/components/ui/input";
 import { LogoMark } from "@/components/logo";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
+import { supabase } from "@/integrations/supabase/client";
 import { AppleIcon, GoogleIcon } from "./register";
 
 export const Route = createFileRoute("/login")({
@@ -22,7 +23,7 @@ function Login() {
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     setFormError("");
     const next: Record<string, string> = {};
@@ -33,12 +34,16 @@ function Login() {
     if (Object.keys(next).length > 0) return;
 
     setLoading(true);
-    setTimeout(() => {
-      // Mock auth: any valid-looking credentials succeed
-      signIn(user.email ? {} : { email: email.trim() });
-      toast.success(user.name ? `Welcome back, ${user.name}!` : "Welcome back!");
-      navigate({ to: "/home" });
-    }, 1200);
+    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setLoading(false);
+    if (error || !data.user) {
+      setFormError(error?.message === "Email not confirmed" ? "Please confirm your email first — check your inbox." : "Incorrect email or password.");
+      return;
+    }
+    const fullName = String(data.user.user_metadata?.["full_name"] ?? user.fullName ?? "");
+    signIn({ email: data.user.email ?? email.trim(), ...(fullName ? { fullName } : {}) });
+    toast.success(fullName ? `Welcome back, ${fullName.split(" ")[0]}!` : "Welcome back!");
+    navigate({ to: "/home" });
   };
 
   return (
