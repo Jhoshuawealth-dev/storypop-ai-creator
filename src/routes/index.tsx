@@ -279,7 +279,7 @@ function Landing() {
                 {p.idealFor && <p className="mt-4 text-xs italic text-primary-light/80">{p.idealFor}</p>}
                 <Link to={p.custom ? "/help" : authed ? "/subscription" : "/register"} className="mt-5 block">
                   <Button fullWidth variant={p.recommended ? "outline" : "primary"}>
-                    {p.custom ? "Contact sales" : "Get started"}
+                    {p.custom ? "Contact sales" : p.id === "free" ? "Start free" : "Get started"}
                   </Button>
                 </Link>
               </article>
