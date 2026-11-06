@@ -1,5 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, CalendarClock, ChevronRight, Clapperboard, Plus, Send, Sparkles } from "lucide-react";
+import {
+  BarChart3,
+  Bell,
+  Bot,
+  CalendarClock,
+  CalendarDays,
+  ChevronRight,
+  Clapperboard,
+  Lightbulb,
+  Plus,
+  Scissors,
+  Send,
+  Share2,
+  Sparkles,
+  UserRound,
+  WandSparkles,
+} from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { ProgressRing } from "@/components/ui/progress-ring";
@@ -15,7 +31,7 @@ export const Route = createFileRoute("/home")({
 });
 
 function Home() {
-  const { user, minutesTotal, minutesUsed, projects, posts, notifications } = useApp();
+  const { user, minutesTotal, minutesUsed, projects, posts, notifications, planName } = useApp();
   const remaining = Math.max(0, minutesTotal - minutesUsed);
   const recent = projects.slice(0, 3);
   const scheduled = posts.filter((p) => p.status === "scheduled").length;
@@ -60,7 +76,7 @@ function Home() {
           <div className="min-w-0 flex-1">
             <p className="text-xs font-bold uppercase tracking-widest text-primary-light">Video Minutes</p>
             <p className="mt-1 font-display text-2xl font-extrabold">{formatDuration(remaining)} remaining</p>
-            <p className="mt-0.5 text-xs text-primary-light/80">of {formatDuration(minutesTotal)} this cycle</p>
+            <p className="mt-0.5 text-xs text-primary-light/80">of {formatDuration(minutesTotal)} · {planName} plan</p>
           </div>
           <ChevronRight className="h-5 w-5 shrink-0 text-primary-light" />
         </div>
@@ -84,6 +100,33 @@ function Home() {
             <p className="mt-1.5 font-display text-lg font-extrabold text-foreground">{s.value}</p>
             <p className="text-[11px] font-semibold leading-tight text-muted-foreground">{s.label}</p>
           </div>
+        ))}
+      </div>
+
+      {/* Feature launcher */}
+      <SectionHeader title="Your Storypop tools" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {[
+          { icon: WandSparkles, label: "Create Video", desc: "Idea to finished UGC", to: "/create" },
+          { icon: UserRound, label: "Characters", desc: "Reusable AI creators", to: "/characters" },
+          { icon: Scissors, label: "Storypop Clips", desc: "Cut long videos into shorts", to: "/create/clips" },
+          { icon: Bot, label: "Storypop Brain", desc: "Your AI content strategist", to: "/intelligence/brain" },
+          { icon: Lightbulb, label: "Trends", desc: "What's working right now", to: "/intelligence/trends" },
+          { icon: CalendarDays, label: "Calendar", desc: "Schedule your posts", to: "/calendar" },
+          { icon: BarChart3, label: "Analytics", desc: "Track your growth", to: "/analytics" },
+          { icon: Share2, label: "Social accounts", desc: "Connect where you publish", to: "/settings/social" },
+        ].map((f) => (
+          <Link
+            key={f.label}
+            to={f.to}
+            className="rounded-2xl bg-card p-4 shadow-card transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft">
+              <f.icon className="h-5 w-5 text-primary" strokeWidth={1.8} />
+            </span>
+            <p className="mt-3 font-bold text-foreground">{f.label}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{f.desc}</p>
+          </Link>
         ))}
       </div>
 
