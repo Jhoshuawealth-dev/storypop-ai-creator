@@ -26,7 +26,7 @@ function ManageSubscription() {
         <div className="flex items-center justify-between">
           <p className="text-xs font-bold uppercase tracking-widest text-primary-light">Current plan</p>
           <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-extrabold">
-            {isFree ? "No plan" : "Active"}
+            {isFree ? "Free" : "Active"}
           </span>
         </div>
         <p className="mt-1.5 font-display text-2xl font-extrabold">{planName === "No plan" ? "No plan yet" : `${planName} Plan`}</p>

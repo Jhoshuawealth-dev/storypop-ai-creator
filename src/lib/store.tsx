@@ -17,6 +17,7 @@ import {
   type Project,
   type ScheduledPost,
   type Scene,
+  FREE_PLAN_SECONDS,
 } from "./catalog";
 
 const STATE_KEY = "storypop:state:v1";

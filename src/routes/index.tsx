@@ -250,7 +250,7 @@ function Landing() {
           <p className="text-center text-xs font-extrabold uppercase tracking-widest text-primary-light">Pricing</p>
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">Simple plans, powered by AI credits</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-primary-light/90">80 credits = 1 minute of video. Cancel anytime.</p>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {plans.map((p) => (
               <article
                 key={p.id}
@@ -265,7 +265,7 @@ function Landing() {
                 <h3 className="font-display text-lg font-extrabold">{p.name}</h3>
                 <p className="mt-2 font-display text-3xl font-extrabold">
                   {p.priceMonthly}
-                  {!p.custom && <span className="text-sm font-semibold text-primary-light"> / month</span>}
+                  {!p.custom && <span className="text-sm font-semibold text-primary-light">{p.id === "free" ? " forever" : " / month"}</span>}
                 </p>
                 <p className="mt-1 text-xs font-bold text-primary-light">{p.minutes}</p>
                 <ul className="mt-4 flex-1 space-y-2">

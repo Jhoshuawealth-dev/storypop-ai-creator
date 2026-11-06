@@ -23,7 +23,7 @@ const methods = [
 function Checkout() {
   const navigate = useNavigate();
   const { plan: planId } = Route.useSearch();
-  const plan = plans.find((p) => p.id === planId && !p.custom) ?? plans[1]!;
+  const plan = plans.find((p) => p.id === planId && !p.custom && p.id !== "free") ?? plans[1]!;
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
   const [method, setMethod] = useState("card");
   const [loading, setLoading] = useState(false);
