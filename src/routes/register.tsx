@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useApp } from "@/lib/store";
+import { supabase } from "@/integrations/supabase/client";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Check } from "lucide-react";
@@ -37,7 +38,7 @@ function Register() {
 
   const strength = strengthOf(password);
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     const next: Record<string, string> = {};
     if (!name.trim()) next["name"] = "Please enter your full name.";
@@ -49,11 +50,24 @@ function Register() {
     if (Object.keys(next).length > 0) return;
 
     setLoading(true);
-    setTimeout(() => {
-      signIn({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim() });
-      toast.success("Your account is ready!");
-      navigate({ to: "/home" });
-    }, 900);
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/login`, data: { full_name: name.trim() } },
+    });
+    setLoading(false);
+    if (error) {
+      setErrors({ email: error.message });
+      return;
+    }
+    if (!data.session) {
+      toast.success("Check your email to confirm your account, then sign in.");
+      navigate({ to: "/login" });
+      return;
+    }
+    signIn({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim() });
+    toast.success("Your account is ready!");
+    navigate({ to: "/home" });
   };
 
   return (

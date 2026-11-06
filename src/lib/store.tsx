@@ -231,6 +231,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(() => {
+    void import("@/integrations/supabase/client").then(({ supabase }) => supabase.auth.signOut());
     setState((prev) => ({ ...prev, isAuthenticated: false }));
   }, []);
 
