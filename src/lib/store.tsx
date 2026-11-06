@@ -17,6 +17,7 @@ import {
   type Project,
   type ScheduledPost,
   type Scene,
+  FREE_PLAN_SECONDS,
 } from "./catalog";
 
 const STATE_KEY = "storypop:state:v1";
@@ -125,7 +126,7 @@ const emptyUser: UserProfile = {
 const freeSubscription: Subscription = {
   planId: null,
   billing: "monthly",
-  minutesTotalSeconds: 0,
+  minutesTotalSeconds: FREE_PLAN_SECONDS,
   minutesUsedSeconds: 0,
   renewsOn: null,
 };
@@ -152,7 +153,12 @@ function loadState(): PersistedState {
       ...defaultState,
       ...parsed,
       user: { ...emptyUser, ...(parsed.user ?? {}) },
-      subscription: { ...freeSubscription, ...(parsed.subscription ?? {}) },
+      subscription: (() => {
+        const sub = { ...freeSubscription, ...(parsed.subscription ?? {}) };
+        // Accounts on the Free plan always have at least the 5 free minutes.
+        if (!sub.planId && sub.minutesTotalSeconds < FREE_PLAN_SECONDS) sub.minutesTotalSeconds = FREE_PLAN_SECONDS;
+        return sub;
+      })(),
       socialAccounts: (parsed.socialAccounts ?? [])
         .filter((a) => a.connected)
         .map((a) => ({ ...a, platform: a.platform ?? a.id })),
@@ -366,8 +372,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const resetDraft = useCallback(() => setDraft({ ...defaultDraft, post: { ...emptyPost } }), []);
 
   const planName = state.subscription.planId
-    ? (plans.find((p) => p.id === state.subscription.planId)?.name ?? "No plan")
-    : "No plan";
+    ? (plans.find((p) => p.id === state.subscription.planId)?.name ?? "Free")
+    : "Free";
 
   const value = useMemo<AppState>(
     () => ({

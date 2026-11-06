@@ -183,7 +183,27 @@ export const platformSpecs: PlatformSpec[] = [
 
 export const CREDITS_PER_MINUTE = 80;
 
+/** Every new account gets this many seconds of video on the Free plan. */
+export const FREE_PLAN_SECONDS = 300;
+
 export const plans: Plan[] = [
+  {
+    id: "free",
+    name: "Free",
+    priceMonthly: "$0",
+    priceYearly: "$0",
+    credits: 400,
+    minutes: "400 AI credits · 5 minutes",
+    minuteSeconds: FREE_PLAN_SECONDS,
+    idealFor: "Try Storypop AI before choosing a plan.",
+    features: [
+      "5 minutes of AI video",
+      "AI Character Creation",
+      "AI Script and Idea Generation",
+      "AI Voice and Narration",
+      "Basic AI Video Editor",
+    ],
+  },
   {
     id: "starter",
     name: "Starter",
@@ -293,7 +313,7 @@ export const plans: Plan[] = [
 ];
 
 /** Plan rank used for feature gating. "none" = no active plan. */
-export const planLevels: Record<string, number> = { none: 0, starter: 1, creator: 2, pro: 3, professional: 3, business: 4, enterprise: 5 };
+export const planLevels: Record<string, number> = { none: 0, free: 0, starter: 1, creator: 2, pro: 3, professional: 3, business: 4, enterprise: 5 };
 
 export const creditPacks = [
   { id: "c1", minutes: "2:00", seconds: 120, price: "$5" },

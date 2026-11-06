@@ -43,7 +43,7 @@ function Pricing() {
 
       <div className="mt-5 space-y-4">
         {plans.map((plan) => {
-          const isCurrent = plan.id === currentPlan;
+          const isCurrent = plan.id === currentPlan || (plan.id === "free" && !currentPlan);
           const featured = plan.recommended;
           return (
             <article
@@ -98,6 +98,11 @@ function Pricing() {
                 <p className={cn("mt-4 text-xs italic", featured ? "text-primary-light" : "text-muted-foreground")}>{plan.idealFor}</p>
               )}
 
+              {plan.id === "free" ? (
+                <Button fullWidth size="lg" variant="outline" disabled className="mt-5">
+                  {isCurrent ? "Your current plan" : "Included with every account"}
+                </Button>
+              ) : (
               <Link to={plan.custom ? "/help" : "/subscription/checkout"} search={plan.custom ? {} : { plan: plan.id }} className="mt-5 block">
                 <Button
                   fullWidth
@@ -108,6 +113,7 @@ function Pricing() {
                   {isCurrent ? "Your current plan" : plan.custom ? "Contact sales" : `Choose ${plan.name}`}
                 </Button>
               </Link>
+              )}
             </article>
           );
         })}
