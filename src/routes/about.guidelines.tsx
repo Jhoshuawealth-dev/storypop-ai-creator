@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { AppShell } from "@/components/layout/app-shell";
+import { LegalLayout } from "@/components/layout/legal-layout";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 
@@ -28,7 +28,7 @@ const notAllowed = [
 
 function Guidelines() {
   return (
-    <AppShell title="Content Guidelines" showBack backTo="/about">
+    <LegalLayout title="Content Guidelines">
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Storypop AI is built for authentic, responsible creator content. These rules keep the platform safe for everyone.
       </p>
@@ -57,6 +57,6 @@ function Guidelines() {
         Violations can lead to content removal or account suspension. Repeated violations lead to a permanent ban.
         Report abuse anytime from Help & Support or at safety@storypop.ai.
       </p>
-    </AppShell>
+    </LegalLayout>
   );
 }
