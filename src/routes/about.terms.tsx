@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell } from "@/components/layout/app-shell";
+import { LegalLayout } from "@/components/layout/legal-layout";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about/terms")({
@@ -44,7 +44,7 @@ const sections = [
 
 function Terms() {
   return (
-    <AppShell title="Terms of Service" showBack backTo="/about">
+    <LegalLayout title="Terms of Service">
       <p className="mt-4 text-xs font-semibold text-muted-foreground">Last updated: August 15, 2026</p>
       <div className="mt-4 space-y-6">
         {sections.map((s) => (
@@ -55,6 +55,6 @@ function Terms() {
         ))}
       </div>
       <p className="mt-8 text-center text-xs text-muted-foreground">Questions? Contact legal@storypop.ai</p>
-    </AppShell>
+    </LegalLayout>
   );
 }

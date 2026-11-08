@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
-import { AppShell } from "@/components/layout/app-shell";
+import { LegalLayout } from "@/components/layout/legal-layout";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -50,7 +50,7 @@ function Licenses() {
   const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <AppShell title="Open Source Licenses" showBack backTo="/about">
+    <LegalLayout title="Open Source Licenses">
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Storypop AI is built on amazing open source software. Thank you to all the maintainers.
       </p>
@@ -87,6 +87,6 @@ function Licenses() {
           </div>
         </div>
       ))}
-    </AppShell>
+    </LegalLayout>
   );
 }
