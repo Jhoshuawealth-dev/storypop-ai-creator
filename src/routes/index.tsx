@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { plans } from "@/lib/catalog";
 import { useApp } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { HeroParallax } from "@/components/landing/hero-parallax";
+import { Reveal } from "@/components/landing/reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -127,7 +129,7 @@ function Landing() {
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-primary/40 blur-3xl" />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-16 md:grid-cols-2 md:pt-24">
-          <div className="relative">
+          <div className="relative animate-fade-up">
             <span className="inline-flex rounded-full border border-primary-foreground/15 bg-primary-foreground/5 px-3.5 py-1.5 text-xs font-bold text-primary-light">
               Now in Beta — Founding Access Open
             </span>
@@ -145,23 +147,7 @@ function Landing() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-sm rounded-[2rem] border border-primary-foreground/10 bg-primary-foreground/5 p-6 shadow-fab">
-            <p className="text-xs font-bold tracking-widest text-primary-light">CREATE · SCENE 3 OF 4</p>
-            <p className="mt-2 font-display text-xl font-extrabold">Creating your video…</p>
-            <ul className="mt-6 space-y-3.5 text-sm">
-              {["Writing script", "Generating scenes", "Animating character", "Adding voice"].map((s, i) => (
-                <li key={s} className="flex items-center gap-3">
-                  <span className={cn("flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold", i < 2 ? "bg-primary text-primary-foreground" : "bg-primary-foreground/10 text-primary-light")}>
-                    {i < 2 ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : i + 1}
-                  </span>
-                  <span className={i < 2 ? "font-semibold" : "text-primary-light/80"}>{s}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 h-2 overflow-hidden rounded-full bg-primary-foreground/10">
-              <div className="h-full w-3/5 rounded-full bg-primary" />
-            </div>
-          </div>
+          <HeroParallax />
         </div>
         <div className="border-y border-primary-foreground/10 bg-primary-foreground/5">
           <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-10 gap-y-2 px-5 py-4 text-sm font-semibold text-primary-light">
@@ -174,7 +160,7 @@ function Landing() {
       </section>
 
       {/* Problem */}
-      <section className="mx-auto max-w-3xl px-5 py-20 text-center">
+      <Reveal><section className="mx-auto max-w-3xl px-5 py-20 text-center">
         <p className="text-xs font-extrabold uppercase tracking-widest text-primary-light">The problem</p>
         <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight md:text-4xl">Posting consistently shouldn't require a film crew.</h2>
         <p className="mt-4 text-primary-light/90">Filming, scripting, editing, and publishing every single video is exhausting. Storypop AI compresses the entire pipeline into one continuous flow.</p>
@@ -186,7 +172,7 @@ function Landing() {
             </span>
           ))}
         </div>
-      </section>
+      </section></Reveal>
 
       {/* Features */}
       <section id="features" className="scroll-mt-20 bg-background py-20 text-foreground">
@@ -195,12 +181,12 @@ function Landing() {
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">Everything you need to create, edit, and publish</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">No separate apps, no external editors — the entire workflow lives inside Storypop AI.</p>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((f) => (
-              <article key={f.title} className="rounded-3xl bg-card p-6 shadow-card">
+            {features.map((f, i) => (
+              <Reveal as="article" key={f.title} delay={i * 80} className="lift rounded-3xl bg-card p-6 shadow-card">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-soft text-2xl">{f.emoji}</span>
                 <h3 className="mt-4 font-display text-lg font-extrabold">{f.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -213,11 +199,11 @@ function Landing() {
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">From photo to published video in 5 steps</h2>
           <div className="mt-12 grid gap-4 md:grid-cols-5">
             {steps.map((s, i) => (
-              <div key={s.title} className="rounded-3xl border border-primary-foreground/10 bg-primary-foreground/5 p-5">
+              <Reveal key={s.title} delay={i * 100} className="lift rounded-3xl border border-primary-foreground/10 bg-primary-foreground/5 p-5">
                 <p className="font-display text-3xl font-extrabold text-primary-light">0{i + 1}</p>
                 <h3 className="mt-3 font-bold">{s.title}</h3>
                 <p className="mt-2 text-sm text-primary-light/85">{s.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
           <div className="mt-10 text-center">
@@ -233,12 +219,12 @@ function Landing() {
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">Meet your AI self</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">One photo becomes a character you can reuse across unlimited videos — no re-filming, ever.</p>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {styles.map((s) => (
-              <article key={s.name} className="rounded-3xl bg-card p-6 text-center shadow-card">
-                <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-primary-soft text-4xl">{s.emoji}</span>
+            {styles.map((s, i) => (
+              <Reveal as="article" key={s.name} delay={i * 90} className="lift group rounded-3xl bg-card p-6 text-center shadow-card">
+                <span className="transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-primary-soft text-4xl">{s.emoji}</span>
                 <h3 className="mt-4 font-display text-lg font-extrabold">{s.name}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -251,11 +237,13 @@ function Landing() {
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">Simple plans, powered by AI credits</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-primary-light/90">80 credits = 1 minute of video. Cancel anytime.</p>
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {plans.map((p) => (
-              <article
+            {plans.map((p, i) => (
+              <Reveal
+                as="article"
                 key={p.id}
+                delay={i * 70}
                 className={cn(
-                  "relative flex flex-col rounded-3xl p-5",
+                  "lift relative flex flex-col rounded-3xl p-5",
                   p.recommended ? "bg-primary shadow-fab" : "border border-primary-foreground/10 bg-primary-foreground/5"
                 )}
               >
@@ -282,7 +270,7 @@ function Landing() {
                     {p.custom ? "Contact sales" : p.id === "free" ? "Start free" : "Get started"}
                   </Button>
                 </Link>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -295,25 +283,27 @@ function Landing() {
           <h2 className="mt-3 text-center font-display text-3xl font-extrabold tracking-tight md:text-4xl">Questions, answered</h2>
           <div className="mt-10 space-y-3">
             {faqs.map((f, i) => (
-              <div key={f.q} className="rounded-2xl bg-card shadow-card">
+              <Reveal key={f.q} delay={i * 60} className="rounded-2xl bg-card shadow-card">
                 <button className="flex w-full items-center justify-between gap-4 p-5 text-left font-bold" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
                   {f.q}
                   <ChevronDown className={cn("h-5 w-5 shrink-0 text-primary transition-transform", openFaq === i && "rotate-180")} />
                 </button>
-                {openFaq === i && <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">{f.a}</p>}
-              </div>
+                <div className={cn("grid transition-all duration-300 ease-out", openFaq === i ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
+                  <p className="overflow-hidden px-5 text-sm leading-relaxed text-muted-foreground"><span className="block pb-5">{f.a}</span></p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA + footer */}
-      <section className="py-20 text-center">
+      <Reveal><section className="py-20 text-center">
         <h2 className="mx-auto max-w-2xl px-5 font-display text-3xl font-extrabold tracking-tight md:text-4xl">Your next 100 videos start with one photo.</h2>
         <Link to={authed ? "/home" : "/register"} className="mt-8 inline-block">
           <Button size="lg">{authed ? "Open dashboard" : "Create your free account"}</Button>
         </Link>
-      </section>
+      </section></Reveal>
       <SiteFooter />
     </div>
   );
