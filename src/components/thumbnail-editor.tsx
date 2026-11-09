@@ -460,7 +460,7 @@ export function ThumbnailEditor({
           <div className="flex flex-wrap gap-2">
             {(["pill", "outline", "plain"] as TextStyle[]).map((s) => (
               <button key={s} className={chip(d.textStyle === s)} onClick={() => set("textStyle", s)}>
-                {s === "pill" ? "Purple banner" : s === "outline" ? "Bold outline" : "Shadow"}
+                {s === "pill" ? "Colour banner" : s === "outline" ? "Bold outline" : "Shadow"}
               </button>
             ))}
           </div>
