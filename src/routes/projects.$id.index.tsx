@@ -66,6 +66,7 @@ function ProjectDetails() {
       )}
 
       <CoverPicker
+        projectId={project.id}
         {...(project.thumb ? { value: project.thumb } : {})}
         onChange={(t) => updateProject(project.id, { thumb: t })}
       />
