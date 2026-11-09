@@ -64,13 +64,13 @@ function VideoClipper() {
 
   const pick = (f?: File) => {
     if (!f) return;
-    if (!f.type.startsWith("video/")) return toast.error("Choose a video file");
-    if (f.size > MAX_MB * 1024 * 1024) return toast.error(`Video must be under ${MAX_MB}MB`);
+    if (!f.type.startsWith("video/")) { toast.error("Choose a video file"); return; }
+    if (f.size > MAX_MB * 1024 * 1024) { toast.error(`Video must be under ${MAX_MB}MB`); return; }
     setFile(f);
   };
 
   const start = async () => {
-    if (!file) return toast.error("Upload a video first");
+    if (!file) { toast.error("Upload a video first"); return; }
     setBusy(true);
     try {
       const raw = (file.name.split(".").pop() ?? "mp4").toLowerCase();
