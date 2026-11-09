@@ -10,6 +10,9 @@ import { createFileRoute } from "@tanstack/react-router";
  *  { action: "upload-url", jobId }                       -> signed upload URL for the MP4
  *  { action: "complete", jobId, path }                   -> mark done
  *  { action: "fail", jobId, error }                      -> mark failed
+ *  { action: "source-url", jobId }                       -> signed download URL of a clip job's source video
+ *  { action: "upload-url", jobId, kind: "clip", index }  -> signed upload URL for clip N (kind "clip-thumb" for its JPG)
+ *  { action: "complete", jobId, clips: [...] }           -> finish a clip job with its clip list
  */
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
@@ -64,14 +67,50 @@ export const Route = createFileRoute("/api/public/worker")({
           case "upload-url": {
             const { data: job } = await supabaseAdmin.from("generation_jobs").select("id,user_id").eq("id", jobId).maybeSingle();
             if (!job) return json({ error: "Job not found" }, 404);
-            const kind = body["kind"] === "thumbnail" ? "thumbnail" : "video";
-            const path = kind === "thumbnail" ? `${job.user_id}/${job.id}.jpg` : `${job.user_id}/${job.id}.mp4`;
+            const kind = String(body["kind"] ?? "video");
+            const idx = Math.max(0, Math.min(9, Math.floor(Number(body["index"]) || 0)));
+            const path =
+              kind === "thumbnail" ? `${job.user_id}/${job.id}.jpg`
+              : kind === "clip" ? `${job.user_id}/clips/${job.id}_${idx}.mp4`
+              : kind === "clip-thumb" ? `${job.user_id}/clips/${job.id}_${idx}.jpg`
+              : `${job.user_id}/${job.id}.mp4`;
             const { data, error } = await supabaseAdmin.storage.from("generated-videos").createSignedUploadUrl(path, { upsert: true });
             return error ? json({ error: error.message }, 500) : json({ path, signedUrl: data.signedUrl, token: data.token });
           }
+          case "source-url": {
+            const { data: job } = await supabaseAdmin.from("generation_jobs").select("id,user_id,input").eq("id", jobId).maybeSingle();
+            const src = String((job?.input as { sourcePath?: string } | null)?.sourcePath ?? "");
+            if (!job || !src.startsWith(`${job.user_id}/sources/`)) return json({ error: "Source not found" }, 404);
+            const { data, error } = await supabaseAdmin.storage.from("generated-videos").createSignedUrl(src, 3600);
+            return error ? json({ error: error.message }, 500) : json({ signedUrl: data.signedUrl });
+          }
           case "complete": {
-            const { data: job } = await supabaseAdmin.from("generation_jobs").select("id,user_id,project_id").eq("id", jobId).maybeSingle();
+            const { data: job } = await supabaseAdmin.from("generation_jobs").select("id,user_id,project_id,kind,input").eq("id", jobId).maybeSingle();
             if (!job) return json({ error: "Job not found" }, 404);
+            if (job.kind === "clip") {
+              const prefix = `${job.user_id}/clips/${job.id}_`;
+              const raw = Array.isArray(body["clips"]) ? (body["clips"] as Record<string, unknown>[]) : [];
+              const clips = raw.slice(0, 10).flatMap((c) => {
+                const p = String(c["path"] ?? "");
+                if (!p.startsWith(prefix)) return [];
+                const t = String(c["thumbnailPath"] ?? "");
+                return [{
+                  path: p,
+                  thumbnailPath: t.startsWith(prefix) ? t : null,
+                  start: Number(c["start"]) || 0,
+                  end: Number(c["end"]) || 0,
+                  title: String(c["title"] ?? "Clip").slice(0, 120),
+                  score: Math.max(0, Math.min(100, Math.round(Number(c["score"]) || 0))),
+                  quote: String(c["quote"] ?? "").slice(0, 300),
+                }];
+              });
+              if (!clips.length) return json({ error: "No valid clips" }, 400);
+              await supabaseAdmin
+                .from("generation_jobs")
+                .update({ status: "completed", progress: 100, stage: "Done", output_path: clips[0]!.path, input: { ...(job.input as object), clips } as never, completed_at: now, updated_at: now })
+                .eq("id", jobId);
+              return json({ ok: true });
+            }
             const path = String(body["path"] ?? "");
             if (!path.startsWith(`${job.user_id}/`)) return json({ error: "Invalid path" }, 400);
             const rawThumb = typeof body["thumbnailPath"] === "string" ? body["thumbnailPath"] : "";
