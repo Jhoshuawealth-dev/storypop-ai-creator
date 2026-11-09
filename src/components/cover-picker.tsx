@@ -97,7 +97,10 @@ export function CoverPicker({
 
   const captureFrame = async () => {
     const v = videoRef.current;
-    if (!v || !v.videoWidth) return toast.error("Let the video load first");
+    if (!v || !v.videoWidth) {
+      toast.error("Let the video load first");
+      return;
+    }
     setBusy(true);
     try {
       setBase(await renderCover(v, v.videoWidth, v.videoHeight, ""));
@@ -111,8 +114,14 @@ export function CoverPicker({
 
   const onFile = (file?: File) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Choose an image file");
-    if (file.size > 10 * 1024 * 1024) return toast.error("Image must be under 10MB");
+    if (!file.type.startsWith("image/")) {
+      toast.error("Choose an image file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image must be under 10MB");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = async () => {
       try {
