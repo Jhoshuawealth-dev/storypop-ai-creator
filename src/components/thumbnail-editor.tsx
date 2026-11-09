@@ -234,7 +234,7 @@ export function ThumbnailEditor({
 
   const capture = () => {
     const v = videoRef.current;
-    if (!v || !v.videoWidth) return toast.error("Let the video load first");
+    if (!v || !v.videoWidth) { toast.error("Let the video load first"); return; }
     const c = document.createElement("canvas");
     c.width = v.videoWidth;
     c.height = v.videoHeight;
@@ -249,15 +249,15 @@ export function ThumbnailEditor({
 
   const onFile = (file?: File) => {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return toast.error("Choose an image file");
-    if (file.size > 10 * 1024 * 1024) return toast.error("Image must be under 10MB");
+    if (!file.type.startsWith("image/")) { toast.error("Choose an image file"); return; }
+    if (file.size > 10 * 1024 * 1024) { toast.error("Image must be under 10MB"); return; }
     const r = new FileReader();
     r.onload = () => set("bg", String(r.result));
     r.readAsDataURL(file);
   };
 
   const runAi = async () => {
-    if (prompt.trim().length < 3) return toast.error("Describe the thumbnail you want");
+    if (prompt.trim().length < 3) { toast.error("Describe the thumbnail you want"); return; }
     setGenerating(true);
     try {
       const res = await gen({ data: { prompt, ratio: d.ratio } });
