@@ -355,9 +355,9 @@ export function ThumbnailEditor({
       <div className="space-y-4">
         <section className="rounded-2xl bg-card p-4 shadow-card">
           <p className="text-xs font-extrabold uppercase tracking-widest text-primary">Choose a design</p>
-          <div className="mt-2 grid grid-cols-3 gap-2">
+          <div className={cn("mt-2 grid gap-2 items-start", d.ratio === "16:9" ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-3")}>
             {TEMPLATES.map((t, i) => (
-              <TemplateCard key={t.name} name={t.name} desc={t.desc} active={d.template === i} design={{ ...d, ...t.apply, template: i, ratio: "9:16", headline: d.headline || "Your hook here" }} onClick={() => setD((p) => ({ ...p, ...t.apply, template: i }))} />
+              <TemplateCard key={t.name} name={t.name} desc={t.desc} active={d.template === i} design={{ ...d, ...t.apply, template: i, headline: d.headline || "Your hook here" }} onClick={() => setD((p) => ({ ...p, ...t.apply, template: i }))} />
             ))}
           </div>
         </section>
@@ -519,7 +519,7 @@ function TemplateCard({ name, desc, active, design, onClick }: { name: string; d
   }, [key]);
   return (
     <button onClick={onClick} className={cn("overflow-hidden rounded-xl border-2 text-left transition-colors", active ? "border-primary" : "border-border")}>
-      <canvas ref={ref} className="block aspect-[9/16] h-auto w-full" />
+      <canvas ref={ref} className={cn("block h-auto w-full", design.ratio === "16:9" ? "aspect-video" : design.ratio === "1:1" ? "aspect-square" : "aspect-[9/16]")} />
       <div className="p-1.5">
         <p className="text-xs font-extrabold text-foreground">{name}</p>
         <p className="line-clamp-2 text-[10px] leading-tight text-muted-foreground">{desc}</p>
