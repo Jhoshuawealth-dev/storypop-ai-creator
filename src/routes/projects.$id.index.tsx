@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, Copy, Pencil, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
+import { CoverPicker } from "@/components/cover-picker";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { VideoPreviewPlayer } from "@/components/ui/video-player";
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/projects/$id/")({
 function ProjectDetails() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { projects, characters, addProject, removeProject } = useApp();
+  const { projects, characters, addProject, updateProject, removeProject } = useApp();
   const project = projects.find((p) => p.id === id);
 
   if (!project) {
@@ -63,6 +64,11 @@ function ProjectDetails() {
           <p className="mt-2 text-sm font-semibold text-secondary-foreground">{project.script.cta}</p>
         </section>
       )}
+
+      <CoverPicker
+        {...(project.thumb ? { value: project.thumb } : {})}
+        onChange={(t) => updateProject(project.id, { thumb: t })}
+      />
 
       <Link
         to="/projects/$id/scenes"

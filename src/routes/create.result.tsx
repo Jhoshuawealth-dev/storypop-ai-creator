@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CoverPicker, remoteThumbToDataUrl } from "@/components/cover-picker";
 import { CheckCircle2, Pencil, RefreshCw, Save } from "lucide-react";
 import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
@@ -16,8 +17,20 @@ export const Route = createFileRoute("/create/result")({
 
 function VideoResult() {
   const navigate = useNavigate();
-  const { draft, addProject, consumeMinutes, addNotification } = useApp();
+  const { draft, projects, addProject, updateProject, consumeMinutes, addNotification } = useApp();
   const savedId = useRef<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const thumb = projects.find((p) => p.id === savedId.current)?.thumb;
+
+  // Pick up the real video + auto thumbnail from the worker, if any.
+  useEffect(() => {
+    setVideoUrl(sessionStorage.getItem("storypop:last-video"));
+    const remote = sessionStorage.getItem("storypop:last-thumb");
+    if (!remote) return;
+    remoteThumbToDataUrl(remote).then((data) => {
+      if (data && savedId.current) updateProject(savedId.current, { thumb: data });
+    });
+  }, [updateProject]);
 
   const title = draft.post.title.trim() || draft.idea.trim().slice(0, 60) || "Untitled video";
 
@@ -47,6 +60,7 @@ function VideoResult() {
       </div>
 
       <VideoPreviewPlayer
+        {...(thumb ? { poster: thumb } : {})}
         durationSeconds={draft.duration}
         className="mt-4 aspect-[9/16] w-full"
       />
@@ -86,6 +100,12 @@ function VideoResult() {
           <Save className="h-5 w-5" /> <span className="text-xs">Save draft</span>
         </Button>
       </div>
+
+      <CoverPicker
+        videoUrl={videoUrl}
+        {...(thumb ? { value: thumb } : {})}
+        onChange={(t) => savedId.current && updateProject(savedId.current, { thumb: t })}
+      />
 
       <Link to="/publish" className="mt-4 block">
         <Button size="lg" fullWidth>

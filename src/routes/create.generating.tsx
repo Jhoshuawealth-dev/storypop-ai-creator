@@ -24,6 +24,7 @@ type JobState = {
   stage: string;
   error: string | null;
   videoUrl: string | null;
+  thumbnailUrl: string | null;
   queuePosition: number;
 };
 
@@ -82,6 +83,8 @@ function Generating() {
           sessionStorage.removeItem(JOB_KEY);
           if (j.status === "completed") {
             if (j.videoUrl) sessionStorage.setItem("storypop:last-video", j.videoUrl);
+            if (j.thumbnailUrl) sessionStorage.setItem("storypop:last-thumb", j.thumbnailUrl);
+            else sessionStorage.removeItem("storypop:last-thumb");
             setTimeout(() => navigate({ to: "/create/result" }), 700);
           }
           return;
