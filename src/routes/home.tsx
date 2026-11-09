@@ -10,6 +10,7 @@ import {
   Lightbulb,
   Plus,
   Scissors,
+  Palette,
   Send,
   Share2,
   Sparkles,
