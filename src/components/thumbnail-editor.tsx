@@ -211,7 +211,9 @@ export function ThumbnailEditor({
       const a = document.createElement("a");
       a.href = url;
       a.download = `storypop-thumbnail-${Date.now()}.${fmt}`;
+      document.body.appendChild(a);
       a.click();
+      a.remove();
       toast.success(`Downloaded ${fmt.toUpperCase()}`);
     } catch {
       toast.error("Could not export. If you used a video frame, try uploading the image instead.");
