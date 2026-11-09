@@ -96,7 +96,7 @@ async function render(canvas: HTMLCanvasElement, d: Design) {
     ctx.font = `800 ${unit * 4.2}px Sora, sans-serif`;
     const bw = ctx.measureText(d.badge).width + unit * 6;
     const bh = unit * 8;
-    const by = d.pos === "top" ? H - unit * 18 : unit * 10;
+    const by = d.pos === "top" ? H * 0.8 : H * 0.11;
     ctx.fillStyle = pfg;
     ctx.beginPath();
     ctx.roundRect(W / 2 - bw / 2, by, bw, bh, bh / 2);
