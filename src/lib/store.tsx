@@ -64,6 +64,7 @@ export interface CreateDraft {
   styleId: string;
   duration: number;
   ratio: "9:16" | "16:9" | "1:1";
+  monetizationSafe?: boolean;
   post: PostMeta;
 }
 

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { MONETIZATION_SAFE_PROMPT } from "@/lib/monetization-safe";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const draftSchema = z.object({
@@ -11,6 +12,7 @@ const draftSchema = z.object({
   styleId: z.string().max(100).default(""),
   ratio: z.enum(["9:16", "16:9", "1:1"]).default("9:16"),
   duration: z.number().int().min(5).max(600).default(30),
+  monetizationSafe: z.boolean().default(true),
 });
 
 /** Saves the draft as a project and queues a generation job for the local worker. */
@@ -44,7 +46,11 @@ export const enqueueGeneration = createServerFn({ method: "POST" })
       .insert({
         user_id: userId,
         project_id: project.id,
-        input: { ...data, projectId: project.id } as never,
+        input: {
+          ...data,
+          projectId: project.id,
+          scriptRules: data.monetizationSafe ? MONETIZATION_SAFE_PROMPT : null,
+        } as never,
       })
       .select("id")
       .single();
