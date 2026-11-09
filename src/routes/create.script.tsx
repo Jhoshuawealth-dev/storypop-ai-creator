@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, ShieldCheck } from "lucide-react";
+import { checkScript } from "@/lib/monetization-safe";
 import { toast } from "sonner";
 import { FlowShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,8 @@ function ScriptScreen() {
   const { draft, updateDraft } = useApp();
   const [tab, setTab] = useState<"script" | "hook" | "cta">("script");
   const [regenerating, setRegenerating] = useState(false);
+  const safeOn = draft.monetizationSafe !== false;
+  const issues = checkScript(draft.script);
 
   const refine = (label: string) => {
     setRegenerating(true);
@@ -84,6 +87,42 @@ function ScriptScreen() {
           </section>
         )}
       </div>
+
+      <section className="mt-5 rounded-2xl bg-card p-4 shadow-card">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+            <div>
+              <p className="text-sm font-bold text-foreground">Monetization &amp; Partner Safe</p>
+              <p className="text-xs text-muted-foreground">Avoids clickbait and repetition that platforms flag.</p>
+            </div>
+          </div>
+          <button
+            role="switch"
+            aria-checked={safeOn}
+            aria-label="Monetization-safe mode"
+            onClick={() => updateDraft({ monetizationSafe: !safeOn })}
+            className={cn("relative h-7 w-12 shrink-0 rounded-full transition-colors", safeOn ? "bg-primary" : "bg-muted")}
+          >
+            <span className={cn("absolute top-1 h-5 w-5 rounded-full bg-card transition-all", safeOn ? "left-6" : "left-1")} />
+          </button>
+        </div>
+        {safeOn && (
+          issues.length === 0 ? (
+            <p className="mt-3 rounded-xl bg-primary-soft px-3 py-2 text-xs font-semibold text-primary">
+              ✓ Script passes the monetization-safe check
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-1 rounded-xl bg-muted px-3 py-2 text-xs text-foreground">
+              {issues.map((i) => (
+                <li key={i.kind + i.text}>
+                  • {i.kind === "banned" ? `Remove flagged phrase: "${i.text}"` : i.text}
+                </li>
+              ))}
+            </ul>
+          )
+        )}
+      </section>
 
       <p className="mt-6 text-sm font-bold text-foreground">Refine with AI</p>
       <div className="mt-2.5 flex flex-wrap gap-2">

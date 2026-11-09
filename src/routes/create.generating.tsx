@@ -58,6 +58,7 @@ function Generating() {
             styleId: draft.styleId,
             ratio: draft.ratio,
             duration: draft.duration,
+            monetizationSafe: draft.monetizationSafe !== false,
           },
         });
         sessionStorage.setItem(JOB_KEY, res.jobId);
