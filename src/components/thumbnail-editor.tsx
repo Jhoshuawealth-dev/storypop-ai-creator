@@ -8,13 +8,30 @@ import { cn } from "@/lib/utils";
 
 export type Ratio = "9:16" | "16:9" | "1:1";
 const SIZES: Record<Ratio, [number, number]> = { "9:16": [720, 1280], "16:9": [1280, 720], "1:1": [1080, 1080] };
-const BADGES = ["", "MUST WATCH", "NEW", "WAIT TILL THE END", "BEFORE / AFTER", "WARNING", "VIRAL"];
-const GRADIENTS = [
-  ["#2e1065", "#7c3aed"],
-  ["#4c1d95", "#c4b5fd"],
-  ["#1e1b4b", "#a855f7"],
-  ["#0f0a1f", "#6d28d9"],
-] as const;
+const BADGES = ["", "MUST WATCH", "NEW", "POV", "WAIT TILL THE END", "BEFORE / AFTER", "SECRET", "WARNING", "VIRAL"];
+// Thumbnail backgrounds are the creator's content, so they span a full colour range.
+export const GRADIENTS: { name: string; c: [string, string]; radial?: boolean }[] = [
+  { name: "Royal purple", c: ["#2e1065", "#7c3aed"] },
+  { name: "Fire red", c: ["#450a0a", "#ef4444"] },
+  { name: "Sunset orange", c: ["#7c2d12", "#fb923c"] },
+  { name: "Gold", c: ["#713f12", "#facc15"] },
+  { name: "Emerald", c: ["#022c22", "#10b981"] },
+  { name: "Ocean", c: ["#082f49", "#0ea5e9"] },
+  { name: "Hot pink", c: ["#500724", "#ec4899"] },
+  { name: "Midnight black", c: ["#000000", "#27272a"] },
+  { name: "Clean white", c: ["#e4e4e7", "#ffffff"] },
+  { name: "Purple spotlight", c: ["#a855f7", "#0b0614"], radial: true },
+  { name: "Red spotlight", c: ["#f87171", "#1a0505"], radial: true },
+  { name: "Yellow spotlight", c: ["#fde047", "#1c1404"], radial: true },
+];
+export const ACCENTS = [
+  { name: "Purple", c: "#7c3aed", fg: "#ffffff" },
+  { name: "Yellow", c: "#facc15", fg: "#111111" },
+  { name: "Red", c: "#ef4444", fg: "#ffffff" },
+  { name: "White", c: "#ffffff", fg: "#111111" },
+  { name: "Black", c: "#111111", fg: "#ffffff" },
+  { name: "Green", c: "#22c55e", fg: "#ffffff" },
+];
 type TextStyle = "pill" | "outline" | "plain";
 type Pos = "top" | "center" | "bottom";
 
@@ -54,7 +71,16 @@ interface Design {
   badge: string;
   brightness: number;
   vignette: boolean;
+  accent: number;
+  template: number;
 }
+
+/** Three ready-made, platform-standard thumbnail layouts. */
+export const TEMPLATES: { name: string; desc: string; apply: Partial<Design> }[] = [
+  { name: "Viral Punch", desc: "Bold banner + badge for TikTok / Reels", apply: { textStyle: "pill", pos: "bottom", size: 10, badge: "MUST WATCH", vignette: false, accent: 1, gradient: 0 } },
+  { name: "Cinematic", desc: "Big shadow text, dark edges, YouTube style", apply: { textStyle: "plain", pos: "center", size: 12, badge: "", vignette: true, accent: 3, gradient: 9 } },
+  { name: "High-Energy Hook", desc: "Thick outline, spotlight, reaction style", apply: { textStyle: "outline", pos: "top", size: 11, badge: "WAIT TILL THE END", vignette: true, accent: 2, gradient: 11 } },
+];
 
 async function render(canvas: HTMLCanvasElement, d: Design) {
   const [W, H] = SIZES[d.ratio];
@@ -62,12 +88,17 @@ async function render(canvas: HTMLCanvasElement, d: Design) {
   canvas.height = H;
   const ctx = canvas.getContext("2d")!;
   const css = getComputedStyle(document.documentElement);
-  const primary = css.getPropertyValue("--primary").trim() || "#7c3aed";
-  const pfg = css.getPropertyValue("--primary-foreground").trim() || "#ffffff";
-  const g = GRADIENTS[d.gradient] ?? GRADIENTS[0];
-  const grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, g[0]);
-  grad.addColorStop(1, g[1]);
+  void css;
+  const acc = ACCENTS[d.accent] ?? ACCENTS[0]!;
+  const primary = acc.c;
+  const pfg = acc.fg;
+  const textFill = d.textStyle === "pill" ? acc.fg : d.textStyle === "outline" ? "#ffffff" : acc.c === "#111111" ? "#ffffff" : acc.c;
+  const gg = GRADIENTS[d.gradient] ?? GRADIENTS[0]!;
+  const grad = gg.radial
+    ? ctx.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.45, Math.max(W, H) * 0.7)
+    : ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, gg.c[0]);
+  grad.addColorStop(1, gg.c[1]);
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
   if (d.bg) {
@@ -97,11 +128,11 @@ async function render(canvas: HTMLCanvasElement, d: Design) {
     const bw = ctx.measureText(d.badge).width + unit * 6;
     const bh = unit * 8;
     const by = d.pos === "top" ? H * 0.8 : H * 0.11;
-    ctx.fillStyle = pfg;
+    ctx.fillStyle = primary;
     ctx.beginPath();
     ctx.roundRect(W / 2 - bw / 2, by, bw, bh, bh / 2);
     ctx.fill();
-    ctx.fillStyle = primary;
+    ctx.fillStyle = pfg;
     ctx.fillText(d.badge, W / 2, by + bh / 2);
   }
   // Headline + subtitle
@@ -125,22 +156,24 @@ async function render(canvas: HTMLCanvasElement, d: Design) {
   lines.forEach((l, i) => {
     const y = top + lh / 2 + i * lh;
     if (d.textStyle === "outline") {
-      ctx.lineWidth = fs * 0.14;
-      ctx.strokeStyle = primary;
+      ctx.lineWidth = fs * 0.22;
+      ctx.strokeStyle = acc.c === "#ffffff" ? "#111111" : primary;
       ctx.lineJoin = "round";
       ctx.strokeText(l, W / 2, y);
     }
     if (d.textStyle === "plain") {
-      ctx.shadowColor = "rgba(0,0,0,0.6)";
-      ctx.shadowBlur = fs * 0.3;
+      ctx.shadowColor = "rgba(0,0,0,0.85)";
+      ctx.shadowBlur = fs * 0.35;
+      ctx.shadowOffsetY = fs * 0.06;
     }
-    ctx.fillStyle = pfg;
+    ctx.fillStyle = textFill;
     ctx.fillText(l, W / 2, y);
     ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
   });
   if (sub) {
     ctx.font = `700 ${subFs}px Manrope, sans-serif`;
-    ctx.fillStyle = pfg;
+    ctx.fillStyle = "#ffffff";
     ctx.shadowColor = "rgba(0,0,0,0.6)";
     ctx.shadowBlur = subFs * 0.4;
     ctx.fillText(sub.slice(0, 80), W / 2, top + lines.length * lh + (d.textStyle === "pill" ? unit * 5 : 0) + subFs);
@@ -184,6 +217,9 @@ export function ThumbnailEditor({
     badge: "",
     brightness: 100,
     vignette: false,
+    accent: 1,
+    template: 0,
+    ...TEMPLATES[0]!.apply,
   });
   const set = <K extends keyof Design>(k: K, v: Design[K]) => setD((p) => ({ ...p, [k]: v }));
 
@@ -318,6 +354,14 @@ export function ThumbnailEditor({
       {/* Controls */}
       <div className="space-y-4">
         <section className="rounded-2xl bg-card p-4 shadow-card">
+          <p className="text-xs font-extrabold uppercase tracking-widest text-primary">Choose a design</p>
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            {TEMPLATES.map((t, i) => (
+              <TemplateCard key={t.name} name={t.name} desc={t.desc} active={d.template === i} design={{ ...d, ...t.apply, template: i, ratio: "9:16", headline: d.headline || "Your hook here" }} onClick={() => setD((p) => ({ ...p, ...t.apply, template: i }))} />
+            ))}
+          </div>
+        </section>
+        <section className="rounded-2xl bg-card p-4 shadow-card">
           <p className="text-xs font-extrabold uppercase tracking-widest text-primary">Size</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {(["9:16", "16:9", "1:1"] as Ratio[]).map((r) => (
@@ -379,17 +423,19 @@ export function ThumbnailEditor({
               )}
               <div>
                 <p className="text-xs font-bold text-foreground">Background colour</p>
-                <div className="mt-1.5 flex gap-2">
+                <div className="mt-1.5 flex flex-wrap gap-2">
                   {GRADIENTS.map((g, i) => (
                     <button
-                      key={i}
-                      aria-label={`Gradient ${i + 1}`}
+                      key={g.name}
+                      aria-label={g.name}
+                      title={g.name}
                       onClick={() => set("gradient", i)}
-                      className={cn("h-9 w-9 rounded-full border-2", d.gradient === i ? "border-primary" : "border-transparent")}
-                      style={{ background: `linear-gradient(135deg, ${g[0]}, ${g[1]})` }}
+                      className={cn("h-9 w-9 rounded-full border-2 ring-1 ring-border", d.gradient === i ? "border-primary" : "border-transparent")}
+                      style={{ background: g.radial ? `radial-gradient(circle, ${g.c[0]}, ${g.c[1]})` : `linear-gradient(135deg, ${g.c[0]}, ${g.c[1]})` }}
                     />
                   ))}
                 </div>
+                {d.bg && <p className="mt-1 text-xs text-muted-foreground">Remove the image to see the colour.</p>}
               </div>
             </div>
           )}
@@ -414,7 +460,7 @@ export function ThumbnailEditor({
           <div className="flex flex-wrap gap-2">
             {(["pill", "outline", "plain"] as TextStyle[]).map((s) => (
               <button key={s} className={chip(d.textStyle === s)} onClick={() => set("textStyle", s)}>
-                {s === "pill" ? "Purple banner" : s === "outline" ? "Bold outline" : "Shadow"}
+                {s === "pill" ? "Colour banner" : s === "outline" ? "Bold outline" : "Shadow"}
               </button>
             ))}
           </div>
@@ -424,6 +470,16 @@ export function ThumbnailEditor({
                 {p[0]!.toUpperCase() + p.slice(1)}
               </button>
             ))}
+          </div>
+          <div>
+            <p className="text-xs font-bold text-foreground">Text & badge colour</p>
+            <div className="mt-1.5 flex flex-wrap gap-2">
+              {ACCENTS.map((a, i) => (
+                <button key={a.name} aria-label={a.name} title={a.name} onClick={() => set("accent", i)}
+                  className={cn("h-8 w-8 rounded-full border-2 ring-1 ring-border", d.accent === i ? "border-primary" : "border-transparent")}
+                  style={{ background: a.c }} />
+              ))}
+            </div>
           </div>
           <label className="block text-xs font-bold text-foreground">
             Text size
@@ -451,5 +507,23 @@ export function ThumbnailEditor({
         </section>
       </div>
     </div>
+  );
+}
+
+function TemplateCard({ name, desc, active, design, onClick }: { name: string; desc: string; active: boolean; design: Design; onClick: () => void }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const key = JSON.stringify(design);
+  useEffect(() => {
+    if (ref.current) void render(ref.current, design);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+  return (
+    <button onClick={onClick} className={cn("overflow-hidden rounded-xl border-2 text-left transition-colors", active ? "border-primary" : "border-border")}>
+      <canvas ref={ref} className="block aspect-[9/16] h-auto w-full" />
+      <div className="p-1.5">
+        <p className="text-xs font-extrabold text-foreground">{name}</p>
+        <p className="line-clamp-2 text-[10px] leading-tight text-muted-foreground">{desc}</p>
+      </div>
+    </button>
   );
 }

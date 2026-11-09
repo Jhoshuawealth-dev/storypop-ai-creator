@@ -91,6 +91,7 @@ import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.c
 import { Route as SubscriptionManageRouteImport } from './routes/subscription.manage'
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
 import { Route as ToolsThumbnailCreatorRouteImport } from './routes/tools.thumbnail-creator'
+import { Route as ToolsVideoClipperRouteImport } from './routes/tools.video-clipper'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 import { Route as ApiPublicWorkerRouteImport } from './routes/api/public/worker'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
@@ -510,6 +511,11 @@ const ToolsThumbnailCreatorRoute = ToolsThumbnailCreatorRouteImport.update({
   path: '/tools/thumbnail-creator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsVideoClipperRoute = ToolsVideoClipperRouteImport.update({
+  id: '/tools/video-clipper',
+  path: '/tools/video-clipper',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -624,6 +630,7 @@ export interface FileRoutesByFullPath {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
+  '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
@@ -716,6 +723,7 @@ export interface FileRoutesByTo {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
+  '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about': typeof AboutIndexRoute
   '/analytics': typeof AnalyticsIndexRoute
   '/calendar': typeof CalendarIndexRoute
@@ -809,6 +817,7 @@ export interface FileRoutesById {
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
+  '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
@@ -903,6 +912,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/tools/thumbnail-creator'
+    | '/tools/video-clipper'
     | '/about/'
     | '/analytics/'
     | '/calendar/'
@@ -995,6 +1005,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/tools/thumbnail-creator'
+    | '/tools/video-clipper'
     | '/about'
     | '/analytics'
     | '/calendar'
@@ -1087,6 +1098,7 @@ export interface FileRouteTypes {
     | '/subscription/manage'
     | '/subscription/success'
     | '/tools/thumbnail-creator'
+    | '/tools/video-clipper'
     | '/about/'
     | '/analytics/'
     | '/calendar/'
@@ -1180,6 +1192,7 @@ export interface RootRouteChildren {
   SubscriptionManageRoute: typeof SubscriptionManageRoute
   SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
   ToolsThumbnailCreatorRoute: typeof ToolsThumbnailCreatorRoute
+  ToolsVideoClipperRoute: typeof ToolsVideoClipperRoute
   AboutIndexRoute: typeof AboutIndexRoute
   AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   CalendarIndexRoute: typeof CalendarIndexRoute
@@ -1776,6 +1789,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsThumbnailCreatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/video-clipper': {
+      id: '/tools/video-clipper'
+      path: '/tools/video-clipper'
+      fullPath: '/tools/video-clipper'
+      preLoaderRoute: typeof ToolsVideoClipperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -1908,6 +1928,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubscriptionManageRoute: SubscriptionManageRoute,
   SubscriptionSuccessRoute: SubscriptionSuccessRoute,
   ToolsThumbnailCreatorRoute: ToolsThumbnailCreatorRoute,
+  ToolsVideoClipperRoute: ToolsVideoClipperRoute,
   AboutIndexRoute: AboutIndexRoute,
   AnalyticsIndexRoute: AnalyticsIndexRoute,
   CalendarIndexRoute: CalendarIndexRoute,

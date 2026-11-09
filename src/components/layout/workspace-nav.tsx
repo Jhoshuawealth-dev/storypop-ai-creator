@@ -45,7 +45,7 @@ const groups: NavGroup[] = [
     items: [
       { label: "Create Video", to: "/create", icon: WandSparkles },
       { label: "Characters", to: "/characters", icon: UserRound },
-      { label: "Storypop Clips", to: "/create/clips", icon: Clapperboard },
+      { label: "Video Clipper", to: "/tools/video-clipper", icon: Clapperboard },
       { label: "Thumbnail Studio", to: "/tools/thumbnail-creator", icon: ImageIcon },
       { label: "Reverse Engineer", to: "/create/reverse-engineer", icon: Sparkles, minimum: "pro" },
     ],
