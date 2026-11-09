@@ -65,7 +65,7 @@ export const getGenerationJob = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: job, error } = await context.supabase
       .from("generation_jobs")
-      .select("id,status,progress,stage,error,output_path,created_at")
+      .select("id,status,progress,stage,error,output_path,thumbnail_path,created_at")
       .eq("id", data.jobId)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -74,6 +74,11 @@ export const getGenerationJob = createServerFn({ method: "POST" })
     if (job.status === "completed" && job.output_path) {
       const { data: signed } = await context.supabase.storage.from("generated-videos").createSignedUrl(job.output_path, 3600);
       videoUrl = signed?.signedUrl ?? null;
+    }
+    let thumbnailUrl: string | null = null;
+    if (job.status === "completed" && job.thumbnail_path) {
+      const { data: signed } = await context.supabase.storage.from("generated-videos").createSignedUrl(job.thumbnail_path, 3600);
+      thumbnailUrl = signed?.signedUrl ?? null;
     }
     let queuePosition = 0;
     if (job.status === "queued") {
@@ -85,5 +90,5 @@ export const getGenerationJob = createServerFn({ method: "POST" })
         .lt("created_at", job.created_at);
       queuePosition = (count ?? 0) + 1;
     }
-    return { ...job, videoUrl, queuePosition };
+    return { ...job, videoUrl, thumbnailUrl, queuePosition };
   });

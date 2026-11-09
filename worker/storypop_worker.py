@@ -16,6 +16,7 @@ Setup:
 Plug your model into `render_video()` below.
 """
 import os
+import subprocess
 import time
 import traceback
 
@@ -68,12 +69,29 @@ def render_video(job: dict) -> str:
     raise NotImplementedError("Connect your local model inside render_video()")
 
 
-def upload(job_id: str, file_path: str) -> str:
-    info = call("upload-url", jobId=job_id)
+def upload(job_id: str, file_path: str, kind: str = "video") -> str:
+    info = call("upload-url", jobId=job_id, kind=kind)
+    content_type = "image/jpeg" if kind == "thumbnail" else "video/mp4"
     with open(file_path, "rb") as f:
-        r = requests.put(info["signedUrl"], data=f, headers={"Content-Type": "video/mp4"}, timeout=600)
+        r = requests.put(info["signedUrl"], data=f, headers={"Content-Type": content_type}, timeout=600)
     r.raise_for_status()
     return info["path"]
+
+
+def make_thumbnail(video_path: str):
+    """Grab a crisp JPEG frame at 1s with FFmpeg (falls back to the first frame)."""
+    out = os.path.splitext(video_path)[0] + "_thumb.jpg"
+    for seek in ("00:00:01", "00:00:00"):
+        try:
+            subprocess.run(
+                ["ffmpeg", "-y", "-ss", seek, "-i", video_path, "-vframes", "1", "-q:v", "2", out],
+                check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=60,
+            )
+            if os.path.exists(out) and os.path.getsize(out) > 0:
+                return out
+        except Exception as e:
+            print("thumbnail attempt failed:", e)
+    return None
 
 
 def main():
@@ -96,7 +114,14 @@ def main():
             path = render_video(job)
             report(job_id, 95, "Uploading video")
             remote = upload(job_id, path)
-            call("complete", jobId=job_id, path=remote)
+            thumb_remote = None
+            thumb = make_thumbnail(path)
+            if thumb:
+                try:
+                    thumb_remote = upload(job_id, thumb, kind="thumbnail")
+                except Exception as e:  # a missing thumbnail never fails the video
+                    print("thumbnail upload failed:", e)
+            call("complete", jobId=job_id, path=remote, thumbnailPath=thumb_remote)
             print("Done", job_id)
         except Exception as e:
             traceback.print_exc()

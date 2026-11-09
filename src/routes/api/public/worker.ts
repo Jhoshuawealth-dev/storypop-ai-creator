@@ -64,7 +64,8 @@ export const Route = createFileRoute("/api/public/worker")({
           case "upload-url": {
             const { data: job } = await supabaseAdmin.from("generation_jobs").select("id,user_id").eq("id", jobId).maybeSingle();
             if (!job) return json({ error: "Job not found" }, 404);
-            const path = `${job.user_id}/${job.id}.mp4`;
+            const kind = body["kind"] === "thumbnail" ? "thumbnail" : "video";
+            const path = kind === "thumbnail" ? `${job.user_id}/${job.id}.jpg` : `${job.user_id}/${job.id}.mp4`;
             const { data, error } = await supabaseAdmin.storage.from("generated-videos").createSignedUploadUrl(path, { upsert: true });
             return error ? json({ error: error.message }, 500) : json({ path, signedUrl: data.signedUrl, token: data.token });
           }
@@ -73,12 +74,14 @@ export const Route = createFileRoute("/api/public/worker")({
             if (!job) return json({ error: "Job not found" }, 404);
             const path = String(body["path"] ?? "");
             if (!path.startsWith(`${job.user_id}/`)) return json({ error: "Invalid path" }, 400);
+            const rawThumb = typeof body["thumbnailPath"] === "string" ? body["thumbnailPath"] : "";
+            const thumb = rawThumb && rawThumb.startsWith(`${job.user_id}/`) ? rawThumb : null;
             await supabaseAdmin
               .from("generation_jobs")
-              .update({ status: "completed", progress: 100, stage: "Done", output_path: path, completed_at: now, updated_at: now })
+              .update({ status: "completed", progress: 100, stage: "Done", output_path: path, thumbnail_path: thumb, completed_at: now, updated_at: now })
               .eq("id", jobId);
             if (job.project_id) {
-              await supabaseAdmin.from("projects").update({ status: "ready", video_path: path, updated_at: now }).eq("id", job.project_id);
+              await supabaseAdmin.from("projects").update({ status: "ready", video_path: path, thumbnail_path: thumb, updated_at: now }).eq("id", job.project_id);
             }
             return json({ ok: true });
           }
