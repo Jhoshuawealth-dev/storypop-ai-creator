@@ -11,7 +11,6 @@ import {
   Plus,
   Scissors,
   Palette,
-  Scissors,
   Send,
   Share2,
   Sparkles,
