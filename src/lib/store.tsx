@@ -242,8 +242,64 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, isAuthenticated: false }));
   }, []);
 
+  // Keep the signed-in user's profile in sync with the cloud database.
+  useEffect(() => {
+    let cancelled = false;
+    let unsub: (() => void) | undefined;
+    void import("@/integrations/supabase/client").then(({ supabase }) => {
+      const load = async (userId: string, email: string, metaName: string) => {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, avatar_url, bio")
+          .eq("id", userId)
+          .maybeSingle();
+        if (cancelled) return;
+        const fullName = profile?.full_name || metaName;
+        setState((prev) => ({
+          ...prev,
+          isAuthenticated: true,
+          user: {
+            ...prev.user,
+            email,
+            fullName: fullName || prev.user.fullName,
+            name: (fullName || prev.user.fullName).split(" ")[0] ?? "",
+            avatar: profile?.avatar_url || prev.user.avatar,
+            bio: profile?.bio ?? prev.user.bio,
+          },
+        }));
+      };
+      const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+          setState((prev) => ({ ...prev, isAuthenticated: false, user: emptyUser }));
+          return;
+        }
+        if (!session?.user) return;
+        if (event !== "INITIAL_SESSION" && event !== "SIGNED_IN" && event !== "USER_UPDATED") return;
+        const u = session.user;
+        // Defer to avoid calling Supabase inside the auth callback.
+        setTimeout(() => void load(u.id, u.email ?? "", String(u.user_metadata?.["full_name"] ?? "")), 0);
+      });
+      unsub = () => data.subscription.unsubscribe();
+    });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
+  }, []);
+
   const updateUser = useCallback((patch: Partial<UserProfile>) => {
     setState((prev) => ({ ...prev, user: { ...prev.user, ...patch } }));
+    const row: { full_name?: string; bio?: string; avatar_url?: string } = {};
+    if (patch.fullName !== undefined) row.full_name = patch.fullName;
+    if (patch.bio !== undefined) row.bio = patch.bio;
+    // Only persist real URLs, not temporary in-browser previews.
+    if (patch.avatar !== undefined && !patch.avatar.startsWith("blob:")) row.avatar_url = patch.avatar;
+    if (Object.keys(row).length === 0) return;
+    void import("@/integrations/supabase/client").then(async ({ supabase }) => {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) return;
+      await supabase.from("profiles").upsert({ id: data.user.id, ...row, updated_at: new Date().toISOString() });
+    });
   }, []);
 
   const subscribe = useCallback((planId: string, billing: "monthly" | "yearly") => {
