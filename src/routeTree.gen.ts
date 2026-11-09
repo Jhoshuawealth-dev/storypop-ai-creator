@@ -90,6 +90,7 @@ import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.
 import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.credits'
 import { Route as SubscriptionManageRouteImport } from './routes/subscription.manage'
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
+import { Route as ToolsThumbnailCreatorRouteImport } from './routes/tools.thumbnail-creator'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 import { Route as ApiPublicWorkerRouteImport } from './routes/api/public/worker'
 import { Route as ProjectsIdIndexRouteImport } from './routes/projects.$id.index'
@@ -504,6 +505,11 @@ const SubscriptionSuccessRoute = SubscriptionSuccessRouteImport.update({
   path: '/subscription/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsThumbnailCreatorRoute = ToolsThumbnailCreatorRouteImport.update({
+  id: '/tools/thumbnail-creator',
+  path: '/tools/thumbnail-creator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -617,6 +623,7 @@ export interface FileRoutesByFullPath {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
@@ -708,6 +715,7 @@ export interface FileRoutesByTo {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/about': typeof AboutIndexRoute
   '/analytics': typeof AnalyticsIndexRoute
   '/calendar': typeof CalendarIndexRoute
@@ -800,6 +808,7 @@ export interface FileRoutesById {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/about/': typeof AboutIndexRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/calendar/': typeof CalendarIndexRoute
@@ -893,6 +902,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/thumbnail-creator'
     | '/about/'
     | '/analytics/'
     | '/calendar/'
@@ -984,6 +994,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/thumbnail-creator'
     | '/about'
     | '/analytics'
     | '/calendar'
@@ -1075,6 +1086,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/thumbnail-creator'
     | '/about/'
     | '/analytics/'
     | '/calendar/'
@@ -1167,6 +1179,7 @@ export interface RootRouteChildren {
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
   SubscriptionManageRoute: typeof SubscriptionManageRoute
   SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
+  ToolsThumbnailCreatorRoute: typeof ToolsThumbnailCreatorRoute
   AboutIndexRoute: typeof AboutIndexRoute
   AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   CalendarIndexRoute: typeof CalendarIndexRoute
@@ -1756,6 +1769,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubscriptionSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/thumbnail-creator': {
+      id: '/tools/thumbnail-creator'
+      path: '/tools/thumbnail-creator'
+      fullPath: '/tools/thumbnail-creator'
+      preLoaderRoute: typeof ToolsThumbnailCreatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -1887,6 +1907,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
   SubscriptionManageRoute: SubscriptionManageRoute,
   SubscriptionSuccessRoute: SubscriptionSuccessRoute,
+  ToolsThumbnailCreatorRoute: ToolsThumbnailCreatorRoute,
   AboutIndexRoute: AboutIndexRoute,
   AnalyticsIndexRoute: AnalyticsIndexRoute,
   CalendarIndexRoute: CalendarIndexRoute,

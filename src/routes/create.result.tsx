@@ -103,6 +103,7 @@ function VideoResult() {
 
       <CoverPicker
         videoUrl={videoUrl}
+        projectId={savedId.current}
         {...(thumb ? { value: thumb } : {})}
         onChange={(t) => savedId.current && updateProject(savedId.current, { thumb: t })}
       />

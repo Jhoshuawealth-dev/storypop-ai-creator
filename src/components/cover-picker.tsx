@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, ImagePlus, Type } from "lucide-react";
+import { Camera, ImagePlus, Palette, Type } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -69,7 +70,9 @@ export function CoverPicker({
   videoUrl,
   value,
   onChange,
+  projectId,
 }: {
+  projectId?: string | null;
   videoUrl?: string | null;
   value?: string;
   onChange: (thumb: string) => void;
@@ -157,6 +160,13 @@ export function CoverPicker({
             <Button variant="outline" fullWidth size="sm" onClick={captureFrame} disabled={busy}>
               <Camera className="h-4 w-4" /> Use current frame
             </Button>
+          )}
+          {projectId && (
+            <Link to="/tools/thumbnail-creator" search={{ project: projectId }} className="block">
+              <Button fullWidth size="sm">
+                <Palette className="h-4 w-4" /> Edit thumbnail
+              </Button>
+            </Link>
           )}
           <Button variant="outline" fullWidth size="sm" onClick={() => fileRef.current?.click()}>
             <ImagePlus className="h-4 w-4" /> Upload cover
