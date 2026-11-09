@@ -109,6 +109,7 @@ export type Database = {
           project_id: string | null
           stage: string
           status: string
+          thumbnail_path: string | null
           updated_at: string
           user_id: string
           worker_id: string | null
@@ -126,6 +127,7 @@ export type Database = {
           project_id?: string | null
           stage?: string
           status?: string
+          thumbnail_path?: string | null
           updated_at?: string
           user_id: string
           worker_id?: string | null
@@ -143,6 +145,7 @@ export type Database = {
           project_id?: string | null
           stage?: string
           status?: string
+          thumbnail_path?: string | null
           updated_at?: string
           user_id?: string
           worker_id?: string | null
@@ -246,6 +249,7 @@ export type Database = {
           script: Json
           status: string
           style_id: string
+          thumbnail_path: string | null
           title: string
           updated_at: string
           user_id: string
@@ -263,6 +267,7 @@ export type Database = {
           script?: Json
           status?: string
           style_id?: string
+          thumbnail_path?: string | null
           title?: string
           updated_at?: string
           user_id: string
@@ -280,6 +285,7 @@ export type Database = {
           script?: Json
           status?: string
           style_id?: string
+          thumbnail_path?: string | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -338,6 +344,7 @@ export type Database = {
           project_id: string | null
           stage: string
           status: string
+          thumbnail_path: string | null
           updated_at: string
           user_id: string
           worker_id: string | null
