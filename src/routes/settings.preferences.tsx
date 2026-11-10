@@ -13,7 +13,7 @@ function Page() {
       title="App Preferences"
       description="Language, appearance and other everyday choices."
       fields={[
-        { key: "app.language", label: "App language", options: ["English", "French", "Spanish", "Portuguese"] },
+        { key: "app.language", label: "App language", options: ["English", "French", "Spanish", "Portuguese", "German", "Italian", "Dutch"] },
         { key: "app.theme", label: "Appearance", options: ["System", "Light", "Dark"] },
         { key: "app.currency", label: "Currency", options: ["USD ($)", "NGN (₦)", "GBP (£)", "EUR (€)"] },
         { key: "app.sounds", label: "Sounds and haptics", toggle: true },

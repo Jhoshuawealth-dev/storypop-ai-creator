@@ -27,7 +27,7 @@ export function BottomNav() {
               <div key={item.to} className="flex justify-center">
                 <Link
                   to={item.to}
-                  aria-label="Create UGC"
+                  aria-label="Create Video"
                   className={cn(
                     "-mt-7 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-fab ring-4 ring-card transition-transform hover:scale-105 active:scale-95",
                     active && "bg-primary-deep"

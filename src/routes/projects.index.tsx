@@ -48,7 +48,7 @@ function Projects() {
           icon={Clapperboard}
           title="No videos yet"
           description="Create your first AI-powered UGC video and it will show up here."
-          actionLabel="Create UGC"
+          actionLabel="Create Video"
           actionTo="/create"
         />
       ) : (

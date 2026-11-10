@@ -208,7 +208,7 @@ export const plans: Plan[] = [
     id: "starter",
     name: "Starter",
     priceMonthly: "$9",
-    priceYearly: "Annual pricing coming soon",
+    priceYearly: "$8.10",
     credits: 1500,
     minutes: "1,500 AI credits · 18.75 minutes",
     minuteSeconds: 1125,
@@ -228,7 +228,7 @@ export const plans: Plan[] = [
     id: "creator",
     name: "Creator",
     priceMonthly: "$29",
-    priceYearly: "Annual pricing coming soon",
+    priceYearly: "$26.10",
     credits: 6000,
     minutes: "6,000 AI credits · 75 minutes",
     minuteSeconds: 4500,
@@ -249,7 +249,7 @@ export const plans: Plan[] = [
     id: "pro",
     name: "Professional",
     priceMonthly: "$59",
-    priceYearly: "Annual pricing coming soon",
+    priceYearly: "$53.10",
     credits: 15000,
     minutes: "15,000 AI credits · 187.5 minutes",
     minuteSeconds: 11250,
@@ -271,7 +271,7 @@ export const plans: Plan[] = [
     id: "business",
     name: "Business",
     priceMonthly: "$149",
-    priceYearly: "Annual pricing coming soon",
+    priceYearly: "$134.10",
     credits: 50000,
     minutes: "50,000 AI credits · 625 minutes",
     minuteSeconds: 37500,
@@ -373,3 +373,14 @@ export function formatDate(iso: string | null | undefined) {
   if (Number.isNaN(d.getTime())) return "—";
   return d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 }
+
+/** Yearly billing discount. */
+export const ANNUAL_DISCOUNT = 0.1;
+
+/** Monthly-equivalent price when billed yearly, e.g. 9 -> 8.1. */
+export function yearlyMonthlyPrice(monthly: number) {
+  return Math.round(monthly * (1 - ANNUAL_DISCOUNT) * 100) / 100;
+}
+
+/** Temporary testing switch: true opens every Pro/Business/Enterprise tool. Set false to restore plan locks. */
+export const FEATURES_UNLOCKED = true;

@@ -1,4 +1,4 @@
-import { planLevels } from "@/lib/catalog";
+import { FEATURES_UNLOCKED, planLevels } from "@/lib/catalog";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   BarChart3,
@@ -47,6 +47,7 @@ const groups: NavGroup[] = [
       { label: "Characters", to: "/characters", icon: UserRound },
       { label: "Video Clipper", to: "/tools/video-clipper", icon: Clapperboard },
       { label: "Thumbnail Studio", to: "/tools/thumbnail-creator", icon: ImageIcon },
+      { label: "Affiliate to Video", to: "/tools/affiliate-to-video", icon: Megaphone },
       { label: "Reverse Engineer", to: "/create/reverse-engineer", icon: Sparkles, minimum: "pro" },
     ],
   },
@@ -89,11 +90,11 @@ export function WorkspaceNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { planName, user } = useApp();
   const planLevel = levels[planName.toLowerCase()] ?? 0;
-  const visibleBusinessItems = planLevel >= (levels["business"] ?? 4) ? businessItems : [];
+  const visibleBusinessItems = FEATURES_UNLOCKED || planLevel >= (levels["business"] ?? 4) ? businessItems : [];
 
   const itemLink = (item: NavItem) => {
     const requiredLevel = item.minimum ? levels[item.minimum] ?? 0 : 0;
-    const locked = item.minimum ? planLevel < requiredLevel : false;
+    const locked = !FEATURES_UNLOCKED && item.minimum ? planLevel < requiredLevel : false;
     const Icon = item.icon;
     const active = pathname === item.to || (item.to !== "/dashboard" && pathname.startsWith(item.to));
     return (

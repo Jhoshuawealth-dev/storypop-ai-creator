@@ -36,7 +36,7 @@ function Pricing() {
             )}
           >
             {b}
-            
+            {b === "yearly" && <span className="ml-1.5 rounded-full bg-primary px-2 py-0.5 text-[10px] text-primary-foreground">10% OFF</span>}
           </button>
         ))}
       </div>
@@ -76,7 +76,7 @@ function Pricing() {
               <p className={cn("mt-2 font-display text-3xl font-extrabold", !featured && "text-foreground")}>
                 {billing === "monthly" ? plan.priceMonthly : plan.priceYearly}
                 <span className={cn("text-sm font-semibold", featured ? "text-primary-light" : "text-muted-foreground")}>
-                  {plan.custom || billing === "yearly" ? "" : "/month"}
+                  {plan.custom || plan.id === "free" ? "" : billing === "yearly" ? "/month, billed yearly" : "/month"}
                 </span>
               </p>
               <p className={cn("mt-1 text-sm font-bold", featured ? "text-primary-light" : "text-primary")}>

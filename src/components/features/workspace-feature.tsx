@@ -1,4 +1,4 @@
-import { planLevels } from "@/lib/catalog";
+import { FEATURES_UNLOCKED, planLevels } from "@/lib/catalog";
 import { useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, LockKeyhole, Plus, Sparkles, Upload } from "lucide-react";
@@ -175,7 +175,7 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
   const [enabled, setEnabled] = useState(false);
   const [source, setSource] = useState("");
   const planKey = planName.toLowerCase();
-  const locked = Boolean(definition?.minimumPlan && (numericPlan[planKey] ?? 0) < (numericPlan[definition.minimumPlan] ?? 0));
+  const locked = !FEATURES_UNLOCKED && Boolean(definition?.minimumPlan && (numericPlan[planKey] ?? 0) < (numericPlan[definition.minimumPlan] ?? 0));
 
   if (!definition) return null;
 

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
-  Bell, Bot, Briefcase, ChevronRight, CreditCard, Gauge, Info, LifeBuoy, LogOut, Mic, Palette, Plug,
+  Bell, Bot, ChevronRight, CreditCard, Gauge, Info, LifeBuoy, LogOut, Mic, Palette, Plug,
   Send, Share2, Shield, SlidersHorizontal, Sparkles, User, Users, type LucideIcon,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
@@ -43,7 +43,6 @@ const groups: { title: string; items: Item[] }[] = [
   {
     title: "Business",
     items: [
-      { to: "/settings/affiliate", label: "Affiliate", desc: "Networks and disclosures", icon: Briefcase },
       { to: "/settings/team", label: "Team", desc: "Invite teammates", icon: Users },
       { to: "/settings/apps", label: "Connected Apps", desc: "Drive, Canva, Shopify and more", icon: Plug },
     ],
