@@ -88,6 +88,7 @@ import { Route as SubscriptionCheckoutRouteImport } from './routes/subscription.
 import { Route as SubscriptionCreditsRouteImport } from './routes/subscription.credits'
 import { Route as SubscriptionManageRouteImport } from './routes/subscription.manage'
 import { Route as SubscriptionSuccessRouteImport } from './routes/subscription.success'
+import { Route as ToolsAffiliateToVideoRouteImport } from './routes/tools.affiliate-to-video'
 import { Route as ToolsThumbnailCreatorRouteImport } from './routes/tools.thumbnail-creator'
 import { Route as ToolsVideoClipperRouteImport } from './routes/tools.video-clipper'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
@@ -494,6 +495,11 @@ const SubscriptionSuccessRoute = SubscriptionSuccessRouteImport.update({
   path: '/subscription/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsAffiliateToVideoRoute = ToolsAffiliateToVideoRouteImport.update({
+  id: '/tools/affiliate-to-video',
+  path: '/tools/affiliate-to-video',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsThumbnailCreatorRoute = ToolsThumbnailCreatorRouteImport.update({
   id: '/tools/thumbnail-creator',
   path: '/tools/thumbnail-creator',
@@ -615,6 +621,7 @@ export interface FileRoutesByFullPath {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/affiliate-to-video': typeof ToolsAffiliateToVideoRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about/': typeof AboutIndexRoute
@@ -706,6 +713,7 @@ export interface FileRoutesByTo {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/affiliate-to-video': typeof ToolsAffiliateToVideoRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about': typeof AboutIndexRoute
@@ -798,6 +806,7 @@ export interface FileRoutesById {
   '/subscription/credits': typeof SubscriptionCreditsRoute
   '/subscription/manage': typeof SubscriptionManageRoute
   '/subscription/success': typeof SubscriptionSuccessRoute
+  '/tools/affiliate-to-video': typeof ToolsAffiliateToVideoRoute
   '/tools/thumbnail-creator': typeof ToolsThumbnailCreatorRoute
   '/tools/video-clipper': typeof ToolsVideoClipperRoute
   '/about/': typeof AboutIndexRoute
@@ -891,6 +900,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/affiliate-to-video'
     | '/tools/thumbnail-creator'
     | '/tools/video-clipper'
     | '/about/'
@@ -982,6 +992,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/affiliate-to-video'
     | '/tools/thumbnail-creator'
     | '/tools/video-clipper'
     | '/about'
@@ -1073,6 +1084,7 @@ export interface FileRouteTypes {
     | '/subscription/credits'
     | '/subscription/manage'
     | '/subscription/success'
+    | '/tools/affiliate-to-video'
     | '/tools/thumbnail-creator'
     | '/tools/video-clipper'
     | '/about/'
@@ -1165,6 +1177,7 @@ export interface RootRouteChildren {
   SubscriptionCreditsRoute: typeof SubscriptionCreditsRoute
   SubscriptionManageRoute: typeof SubscriptionManageRoute
   SubscriptionSuccessRoute: typeof SubscriptionSuccessRoute
+  ToolsAffiliateToVideoRoute: typeof ToolsAffiliateToVideoRoute
   ToolsThumbnailCreatorRoute: typeof ToolsThumbnailCreatorRoute
   ToolsVideoClipperRoute: typeof ToolsVideoClipperRoute
   AboutIndexRoute: typeof AboutIndexRoute
@@ -1742,6 +1755,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubscriptionSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/affiliate-to-video': {
+      id: '/tools/affiliate-to-video'
+      path: '/tools/affiliate-to-video'
+      fullPath: '/tools/affiliate-to-video'
+      preLoaderRoute: typeof ToolsAffiliateToVideoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/thumbnail-creator': {
       id: '/tools/thumbnail-creator'
       path: '/tools/thumbnail-creator'
@@ -1885,6 +1905,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubscriptionCreditsRoute: SubscriptionCreditsRoute,
   SubscriptionManageRoute: SubscriptionManageRoute,
   SubscriptionSuccessRoute: SubscriptionSuccessRoute,
+  ToolsAffiliateToVideoRoute: ToolsAffiliateToVideoRoute,
   ToolsThumbnailCreatorRoute: ToolsThumbnailCreatorRoute,
   ToolsVideoClipperRoute: ToolsVideoClipperRoute,
   AboutIndexRoute: AboutIndexRoute,
