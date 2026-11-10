@@ -15,6 +15,8 @@ export interface SettingsField {
   options?: string[];
   /** Renders an on/off switch. */
   toggle?: boolean;
+  /** With options: choosing "Other" shows a free-text box. */
+  allowOther?: boolean;
   hint?: string;
 }
 
@@ -33,13 +35,16 @@ export function SettingsSection({
 }) {
   const { preferences, updatePreference } = useApp();
   const [values, setValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries((fields ?? []).map((field) => [field.key, String(preferences[field.key] ?? "")]))
+    Object.fromEntries((fields ?? []).flatMap((field) => [[field.key, String(preferences[field.key] ?? "")], [`${field.key}.other`, String(preferences[`${field.key}.other`] ?? "")]]))
   );
   const [saved, setSaved] = useState(false);
 
   const save = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    for (const field of fields ?? []) updatePreference(field.key, values[field.key] || field.options?.[0] || "");
+    for (const field of fields ?? []) {
+      updatePreference(field.key, values[field.key] || field.options?.[0] || "");
+      if (field.allowOther) updatePreference(`${field.key}.other`, values[`${field.key}.other`] ?? "");
+    }
     setSaved(true);
   };
 
@@ -67,14 +72,26 @@ export function SettingsSection({
                     <span className={`absolute top-1 h-5 w-5 rounded-full bg-card shadow-card transition-all ${values[field.key] === "true" ? "left-6" : "left-1"}`} />
                   </button>
                 ) : field.options ? (
-                  <SelectField
-                    options={field.options}
-                    value={values[field.key] || field.options[0] || ""}
-                    onChange={(value) => {
-                      setValues((current) => ({ ...current, [field.key]: value }));
-                      setSaved(false);
-                    }}
-                  />
+                  <div className="space-y-2">
+                    <SelectField
+                      options={field.allowOther ? [...field.options, "Other"] : field.options}
+                      value={values[field.key] || field.options[0] || ""}
+                      onChange={(value) => {
+                        setValues((current) => ({ ...current, [field.key]: value }));
+                        setSaved(false);
+                      }}
+                    />
+                    {field.allowOther && values[field.key] === "Other" && (
+                      <Input
+                        value={values[`${field.key}.other`] ?? ""}
+                        placeholder="Type your own"
+                        onChange={(event) => {
+                          setValues((current) => ({ ...current, [`${field.key}.other`]: event.target.value }));
+                          setSaved(false);
+                        }}
+                      />
+                    )}
+                  </div>
                 ) : field.multiline ? (
                   <TextArea
                     rows={4}

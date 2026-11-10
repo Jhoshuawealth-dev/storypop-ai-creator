@@ -43,12 +43,18 @@ function Projects() {
         ))}
       </div>
 
+      <p className="mt-3 text-sm text-muted-foreground">
+        {tab === "Drafts" ? "Videos you started but haven't generated yet. Open one to pick up where you left off."
+          : tab === "Completed" ? "Finished videos. Open one to download, publish, make clips or remix it."
+          : "Every video you've started or finished."}
+      </p>
+
       {visible.length === 0 ? (
         <EmptyState
           icon={Clapperboard}
           title="No videos yet"
           description="Create your first AI-powered UGC video and it will show up here."
-          actionLabel="Create UGC"
+          actionLabel="Create Video"
           actionTo="/create"
         />
       ) : (
@@ -71,6 +77,9 @@ function Projects() {
                   {p.platform && <span className="text-[11px] font-semibold text-muted-foreground">{p.platform}</span>}
                 </div>
               </div>
+              <span className="shrink-0 rounded-full bg-primary-soft px-3 py-1.5 text-xs font-bold text-primary">
+                {p.status === "draft" ? "Continue" : "Open"}
+              </span>
               <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
             </Link>
           ))}

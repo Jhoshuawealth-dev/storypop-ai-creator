@@ -53,6 +53,10 @@ export interface PostMeta {
 
 export interface CreateDraft {
   idea: string;
+  topic?: string;
+  mode?: "idea" | "product" | "template";
+  productUrl?: string;
+  template?: string;
   audience: string;
   tone: string;
   platform: string;

@@ -255,6 +255,9 @@ function Landing() {
                   {p.priceMonthly}
                   {!p.custom && <span className="text-sm font-semibold text-primary-light">{p.id === "free" ? " forever" : " / month"}</span>}
                 </p>
+                {!p.custom && p.id !== "free" && (
+                  <p className="mt-1 text-xs font-bold text-primary-light">or {p.priceYearly}/month billed yearly — save 10%</p>
+                )}
                 <p className="mt-1 text-xs font-bold text-primary-light">{p.minutes}</p>
                 <ul className="mt-4 flex-1 space-y-2">
                   {p.features.map((f) => (

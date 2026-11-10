@@ -85,7 +85,7 @@ function Home() {
 
       <Link to="/create" className="mt-4 block">
         <Button size="lg" fullWidth>
-          <Plus className="h-5 w-5" strokeWidth={2.5} /> Create UGC
+          <Plus className="h-5 w-5" strokeWidth={2.5} /> Create Video
         </Button>
       </Link>
 
@@ -110,9 +110,9 @@ function Home() {
         {[
           { icon: WandSparkles, label: "Create Video", desc: "Idea to finished UGC", to: "/create" },
           { icon: UserRound, label: "Characters", desc: "Reusable AI creators", to: "/characters" },
-          { icon: Scissors, label: "Storypop Clips", desc: "Cut long videos into shorts", to: "/create/clips" },
           { icon: Palette, label: "Thumbnail Studio", desc: "AI or manual covers", to: "/tools/thumbnail-creator" },
           { icon: Scissors, label: "Video Clipper", desc: "Long video to viral clips", to: "/tools/video-clipper" },
+          { icon: Share2, label: "Affiliate to Video", desc: "Paste a link, get a promo video", to: "/tools/affiliate-to-video" },
           { icon: Bot, label: "Storypop Brain", desc: "Your AI content strategist", to: "/intelligence/brain" },
           { icon: Lightbulb, label: "Trends", desc: "What's working right now", to: "/intelligence/trends" },
           { icon: CalendarDays, label: "Calendar", desc: "Schedule your posts", to: "/calendar" },
@@ -147,7 +147,7 @@ function Home() {
           icon={Clapperboard}
           title="No projects yet"
           description="Your videos will appear here once you create your first UGC video."
-          actionLabel="Create UGC"
+          actionLabel="Create Video"
           actionTo="/create"
         />
       ) : (

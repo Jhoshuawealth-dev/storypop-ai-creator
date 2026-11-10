@@ -63,7 +63,7 @@ function Notifications() {
           icon={BellOff}
           title="No notifications"
           description="You're all caught up. New video and publishing updates will appear here."
-          actionLabel="Create UGC"
+          actionLabel="Create Video"
           actionTo="/create"
         />
       ) : (
