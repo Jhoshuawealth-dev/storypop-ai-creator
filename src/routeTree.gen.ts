@@ -42,7 +42,6 @@ import { Route as CharactersStyleRouteImport } from './routes/characters.style'
 import { Route as CharactersUploadRouteImport } from './routes/characters.upload'
 import { Route as CreateIndexRouteImport } from './routes/create.index'
 import { Route as CreateCharacterRouteImport } from './routes/create.character'
-import { Route as CreateClipsRouteImport } from './routes/create.clips'
 import { Route as CreateGeneratingRouteImport } from './routes/create.generating'
 import { Route as CreateIdeaRouteImport } from './routes/create.idea'
 import { Route as CreateResultRouteImport } from './routes/create.result'
@@ -73,7 +72,6 @@ import { Route as PublishIndexRouteImport } from './routes/publish.index'
 import { Route as PublishDetailsRouteImport } from './routes/publish.details'
 import { Route as PublishScheduleRouteImport } from './routes/publish.schedule'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
-import { Route as SettingsAffiliateRouteImport } from './routes/settings.affiliate'
 import { Route as SettingsAiRouteImport } from './routes/settings.ai'
 import { Route as SettingsAppsRouteImport } from './routes/settings.apps'
 import { Route as SettingsAutopilotRouteImport } from './routes/settings.autopilot'
@@ -266,11 +264,6 @@ const CreateCharacterRoute = CreateCharacterRouteImport.update({
   path: '/create/character',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CreateClipsRoute = CreateClipsRouteImport.update({
-  id: '/create/clips',
-  path: '/create/clips',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CreateGeneratingRoute = CreateGeneratingRouteImport.update({
   id: '/create/generating',
   path: '/create/generating',
@@ -419,11 +412,6 @@ const PublishScheduleRoute = PublishScheduleRouteImport.update({
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsAffiliateRoute = SettingsAffiliateRouteImport.update({
-  id: '/settings/affiliate',
-  path: '/settings/affiliate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsAiRoute = SettingsAiRouteImport.update({
@@ -586,7 +574,6 @@ export interface FileRoutesByFullPath {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
-  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
@@ -613,7 +600,6 @@ export interface FileRoutesByFullPath {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
-  '/settings/affiliate': typeof SettingsAffiliateRoute
   '/settings/ai': typeof SettingsAiRoute
   '/settings/apps': typeof SettingsAppsRoute
   '/settings/autopilot': typeof SettingsAutopilotRoute
@@ -679,7 +665,6 @@ export interface FileRoutesByTo {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
-  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
@@ -706,7 +691,6 @@ export interface FileRoutesByTo {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
-  '/settings/affiliate': typeof SettingsAffiliateRoute
   '/settings/ai': typeof SettingsAiRoute
   '/settings/apps': typeof SettingsAppsRoute
   '/settings/autopilot': typeof SettingsAutopilotRoute
@@ -773,7 +757,6 @@ export interface FileRoutesById {
   '/characters/style': typeof CharactersStyleRoute
   '/characters/upload': typeof CharactersUploadRoute
   '/create/character': typeof CreateCharacterRoute
-  '/create/clips': typeof CreateClipsRoute
   '/create/generating': typeof CreateGeneratingRoute
   '/create/idea': typeof CreateIdeaRoute
   '/create/result': typeof CreateResultRoute
@@ -800,7 +783,6 @@ export interface FileRoutesById {
   '/monetization/autopilot': typeof MonetizationAutopilotRoute
   '/publish/details': typeof PublishDetailsRoute
   '/publish/schedule': typeof PublishScheduleRoute
-  '/settings/affiliate': typeof SettingsAffiliateRoute
   '/settings/ai': typeof SettingsAiRoute
   '/settings/apps': typeof SettingsAppsRoute
   '/settings/autopilot': typeof SettingsAutopilotRoute
@@ -868,7 +850,6 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
-    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
@@ -895,7 +876,6 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
-    | '/settings/affiliate'
     | '/settings/ai'
     | '/settings/apps'
     | '/settings/autopilot'
@@ -961,7 +941,6 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
-    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
@@ -988,7 +967,6 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
-    | '/settings/affiliate'
     | '/settings/ai'
     | '/settings/apps'
     | '/settings/autopilot'
@@ -1054,7 +1032,6 @@ export interface FileRouteTypes {
     | '/characters/style'
     | '/characters/upload'
     | '/create/character'
-    | '/create/clips'
     | '/create/generating'
     | '/create/idea'
     | '/create/result'
@@ -1081,7 +1058,6 @@ export interface FileRouteTypes {
     | '/monetization/autopilot'
     | '/publish/details'
     | '/publish/schedule'
-    | '/settings/affiliate'
     | '/settings/ai'
     | '/settings/apps'
     | '/settings/autopilot'
@@ -1148,7 +1124,6 @@ export interface RootRouteChildren {
   CharactersStyleRoute: typeof CharactersStyleRoute
   CharactersUploadRoute: typeof CharactersUploadRoute
   CreateCharacterRoute: typeof CreateCharacterRoute
-  CreateClipsRoute: typeof CreateClipsRoute
   CreateGeneratingRoute: typeof CreateGeneratingRoute
   CreateIdeaRoute: typeof CreateIdeaRoute
   CreateResultRoute: typeof CreateResultRoute
@@ -1175,7 +1150,6 @@ export interface RootRouteChildren {
   MonetizationAutopilotRoute: typeof MonetizationAutopilotRoute
   PublishDetailsRoute: typeof PublishDetailsRoute
   PublishScheduleRoute: typeof PublishScheduleRoute
-  SettingsAffiliateRoute: typeof SettingsAffiliateRoute
   SettingsAiRoute: typeof SettingsAiRoute
   SettingsAppsRoute: typeof SettingsAppsRoute
   SettingsAutopilotRoute: typeof SettingsAutopilotRoute
@@ -1446,13 +1420,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateCharacterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/create/clips': {
-      id: '/create/clips'
-      path: '/create/clips'
-      fullPath: '/create/clips'
-      preLoaderRoute: typeof CreateClipsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/create/generating': {
       id: '/create/generating'
       path: '/create/generating'
@@ -1661,13 +1628,6 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings/'
       preLoaderRoute: typeof SettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings/affiliate': {
-      id: '/settings/affiliate'
-      path: '/settings/affiliate'
-      fullPath: '/settings/affiliate'
-      preLoaderRoute: typeof SettingsAffiliateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/ai': {
@@ -1884,7 +1844,6 @@ const rootRouteChildren: RootRouteChildren = {
   CharactersStyleRoute: CharactersStyleRoute,
   CharactersUploadRoute: CharactersUploadRoute,
   CreateCharacterRoute: CreateCharacterRoute,
-  CreateClipsRoute: CreateClipsRoute,
   CreateGeneratingRoute: CreateGeneratingRoute,
   CreateIdeaRoute: CreateIdeaRoute,
   CreateResultRoute: CreateResultRoute,
@@ -1911,7 +1870,6 @@ const rootRouteChildren: RootRouteChildren = {
   MonetizationAutopilotRoute: MonetizationAutopilotRoute,
   PublishDetailsRoute: PublishDetailsRoute,
   PublishScheduleRoute: PublishScheduleRoute,
-  SettingsAffiliateRoute: SettingsAffiliateRoute,
   SettingsAiRoute: SettingsAiRoute,
   SettingsAppsRoute: SettingsAppsRoute,
   SettingsAutopilotRoute: SettingsAutopilotRoute,
