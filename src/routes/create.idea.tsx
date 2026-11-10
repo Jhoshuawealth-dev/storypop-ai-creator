@@ -8,7 +8,19 @@ import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
 import { useState } from "react";
 
+const templates = [
+  { id: "Problem → Solution", desc: "Show a pain point, then how the product fixes it." },
+  { id: "3-second hook", desc: "A bold opening line that stops the scroll." },
+  { id: "Before & After", desc: "Show the transformation side by side." },
+  { id: "Honest review", desc: "Pros, cons and a clear verdict." },
+  { id: "Quick tutorial", desc: "Teach one thing in under 60 seconds." },
+];
+
+const topicSuggestions = ["Product launch", "Customer story", "Behind the scenes", "Tips & tricks", "Myth vs fact", "Day in my life"];
+
 export const Route = createFileRoute("/create/idea")({
+  validateSearch: (s: Record<string, unknown>): { mode?: "idea" | "product" | "template" } =>
+    s.mode === "product" || s.mode === "template" || s.mode === "idea" ? { mode: s.mode } : {},
   head: pageHead("Content Idea", "Describe the UGC video you want to create."),
   component: Idea,
 });
@@ -22,6 +34,7 @@ const examples = [
 function Idea() {
   const navigate = useNavigate();
   const { draft, updateDraft } = useApp();
+  const { mode = "idea" } = Route.useSearch();
   const [loading, setLoading] = useState(false);
 
   const generate = () => {
@@ -40,6 +53,27 @@ function Idea() {
       </p>
 
       <div className="mt-6 space-y-4">
+        {mode === "product" && (
+          <div className="rounded-2xl bg-primary-soft p-4">
+            <p className="text-sm font-bold text-foreground">From Product</p>
+            <p className="mt-1 text-xs text-muted-foreground">Paste the product page link. AI uses its benefits and the problems it solves to write your video.</p>
+            <Input className="mt-3" value={draft.productUrl ?? ""} onChange={(e) => updateDraft({ productUrl: e.target.value, mode })} placeholder="https://yourstore.com/product" />
+          </div>
+        )}
+        {mode === "template" && (
+          <div className="rounded-2xl bg-primary-soft p-4">
+            <p className="text-sm font-bold text-foreground">Pick a template</p>
+            <div className="mt-3 grid gap-2">
+              {templates.map((t) => (
+                <button key={t.id} type="button" onClick={() => updateDraft({ template: t.id, mode })}
+                  className={`rounded-xl border-2 bg-card p-3 text-left ${draft.template === t.id ? "border-primary" : "border-transparent"}`}>
+                  <span className="block text-sm font-bold text-foreground">{t.id}</span>
+                  <span className="block text-xs text-muted-foreground">{t.desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <Field label="Your idea">
           <TextArea
             value={draft.idea}
@@ -63,11 +97,19 @@ function Idea() {
 
         <Field label="Topic">
           <Input
-            value={draft.cta === "" ? "" : undefined}
-            defaultValue="Sneaker business"
+            value={draft.topic ?? ""}
+            onChange={(e) => updateDraft({ topic: e.target.value })}
             placeholder="e.g. Sneaker business"
           />
         </Field>
+        <div className="flex flex-wrap gap-2">
+          {topicSuggestions.map((t) => (
+            <button key={t} type="button" onClick={() => updateDraft({ topic: t })}
+              className={`rounded-full px-3 py-1.5 text-xs font-semibold ${draft.topic === t ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
+              {t}
+            </button>
+          ))}
+        </div>
         <Field label="Audience">
           <SelectField
             options={["Young adults", "Teens", "Parents", "Professionals", "Fitness enthusiasts"]}
