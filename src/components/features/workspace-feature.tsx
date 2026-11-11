@@ -1,7 +1,7 @@
 import { FEATURES_UNLOCKED, planLevels } from "@/lib/catalog";
 import { useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, LockKeyhole, Plus, Sparkles, Upload } from "lucide-react";
+import { Check, LockKeyhole, Plus, Sparkles, Upload } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Field, Input, TextArea } from "@/components/ui/input";
@@ -252,10 +252,13 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
                     <Field label="Video URL or transcript">
                     <TextArea rows={5} value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Paste a public URL or a transcript you have permission to analyze." />
                     </Field>
+                    <Button type="button" size="lg" fullWidth className="mt-3" onClick={() => setSaved(true)} disabled={message.trim().length < 3}>
+                      {saved ? <><Check className="h-4 w-4" /> Saved locally</> : <><Sparkles className="h-4 w-4" /> {definition.action}</>}
+                    </Button>
                   </div>
                 )}
               </div>
-              <form onSubmit={save} className="space-y-4">
+              {featureKey !== "reverse-engineer" && <form onSubmit={save} className="space-y-4">
                 {featureKey === "affiliates" && <Field label="Product name"><Input value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Enter a product you are authorized to promote" /></Field>}
                 {featureKey !== "clips" && featureKey !== "reverse-engineer" && featureKey !== "affiliates" && (
                   <Field label={featureKey === "brain" ? "Niche, audience, or brand voice" : featureKey === "competitors" ? "Public profile or observation" : featureKey === "community" ? "Audience question or feedback" : featureKey === "revenue" ? "Revenue note" : featureKey === "experiments" ? "Hypothesis to test" : "Notes"}>
@@ -266,7 +269,7 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
                   {saved ? <><Check className="h-4 w-4" /> Saved locally</> : <><Plus className="h-4 w-4" /> {definition.action}</>}
                 </Button>
                 {saved && <p role="status" className="text-sm text-muted-foreground">Saved in this screen’s temporary state.</p>}
-              </form>
+              </form>}
             </section>
 
             {(featureKey === "competitors" || featureKey === "experiments" || featureKey === "affiliates" || featureKey === "affiliate-autopilot") && (
@@ -275,9 +278,6 @@ export function WorkspaceFeature({ featureKey }: { featureKey: string }) {
           </>
         )}
 
-        <Link to="/create" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary">
-          Continue to Create Video <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </AppShell>
   );

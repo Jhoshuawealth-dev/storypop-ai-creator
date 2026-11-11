@@ -1,6 +1,7 @@
-import { forwardRef, useState, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { VoiceDictationButton } from "@/components/ui/voice-dictation";
 
 interface FieldProps {
   label?: string | undefined;
@@ -29,19 +30,26 @@ const inputBase =
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   invalid?: boolean;
   rightSlot?: ReactNode;
+  /** Show a voice-note (speech-to-text) button. */
+  dictation?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, invalid, rightSlot, ...props }, ref) => (
-    <div className="relative">
-      <input
-        ref={ref}
-        className={cn(inputBase, "h-[52px]", invalid && "border-destructive focus:border-destructive focus:ring-destructive/10", rightSlot && "pr-12", className)}
-        {...props}
-      />
-      {rightSlot && <div className="absolute inset-y-0 right-3 flex items-center">{rightSlot}</div>}
-    </div>
-  )
+  ({ className, invalid, rightSlot, dictation, ...props }, ref) => {
+    const inner = useRef<HTMLInputElement>(null);
+    useImperativeHandle(ref, () => inner.current as HTMLInputElement);
+    const slot = rightSlot ?? (dictation ? <VoiceDictationButton target={inner} /> : null);
+    return (
+      <div className="relative">
+        <input
+          ref={inner}
+          className={cn(inputBase, "h-[52px]", invalid && "border-destructive focus:border-destructive focus:ring-destructive/10", slot && (dictation && !rightSlot ? "pr-14" : "pr-12"), className)}
+          {...props}
+        />
+        {slot && <div className="absolute inset-y-0 right-3 flex items-center">{slot}</div>}
+      </div>
+    );
+  }
 );
 Input.displayName = "Input";
 
@@ -69,16 +77,26 @@ PasswordInput.displayName = "PasswordInput";
 
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   invalid?: boolean;
+  /** Voice-note (speech-to-text) button; on by default for editable prompts. */
+  dictation?: boolean;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, invalid, ...props }, ref) => (
-    <textarea
-      ref={ref}
-      className={cn(inputBase, "min-h-28 resize-none py-3.5 leading-relaxed", invalid && "border-destructive focus:border-destructive focus:ring-destructive/10", className)}
-      {...props}
-    />
-  )
+  ({ className, invalid, dictation = true, ...props }, ref) => {
+    const inner = useRef<HTMLTextAreaElement>(null);
+    useImperativeHandle(ref, () => inner.current as HTMLTextAreaElement);
+    const showMic = dictation && !props.readOnly && !props.disabled;
+    return (
+      <div className="relative">
+        <textarea
+          ref={inner}
+          className={cn(inputBase, "min-h-28 resize-none py-3.5 leading-relaxed", showMic && "pb-12", invalid && "border-destructive focus:border-destructive focus:ring-destructive/10", className)}
+          {...props}
+        />
+        {showMic && <VoiceDictationButton target={inner} className="absolute bottom-2.5 right-2.5" />}
+      </div>
+    );
+  }
 );
 TextArea.displayName = "TextArea";
 
