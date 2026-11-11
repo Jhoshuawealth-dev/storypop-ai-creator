@@ -1,8 +1,9 @@
-# Storypop platform update
-
-- [ ] Finish the empty-account migration and restore a clean build.
-- [ ] Evolve the existing landing, local sign-in/sign-up flow, and app shell into the responsive web-app experience in the brief.
-- [ ] Add grouped, plan-aware Create, Intelligence, Growth, Monetization, and Analytics experiences without replacing existing creator workflows.
-- [ ] Expand Settings into the requested settings center and align plans/pricing throughout the app.
-- [x] Verify routes and primary flows on desktop and mobile; resolve remaining build errors.
-- [x] Add a site footer (Terms, Privacy, Contact, Support) with new /contact (form-only) and /support pages; contact submissions stored in the cloud database.
+# Roadmap
+- [x] Publishing defaults popup before Create Video
+- [x] Analyze format button under the URL/transcript field
+- [x] Removed "Continue to Create Video" links
+- [x] Voice-note (speech-to-text) on prompt fields
+- [ ] Set up email sending on notify.storypop.cc
+- [ ] Connect laptop worker (models) + test a real video render
+- [ ] Payments (deferred)
+- [ ] Restore Pro/Business locks after testing (FEATURES_UNLOCKED)
