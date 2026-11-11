@@ -27,7 +27,10 @@ function AffiliateToVideo() {
   const [result, setResult] = useState<AffiliateAnalysis | null>(null);
 
   const run = async () => {
-    if (!/^https?:\/\//i.test(url.trim())) return toast.error("Paste a full link starting with https://");
+    if (!/^https?:\/\//i.test(url.trim())) {
+      toast.error("Paste a full link starting with https://");
+      return;
+    }
     setBusy(true);
     try {
       const r = await analyze({ data: { url: url.trim(), notes, platform, length } });
@@ -50,7 +53,6 @@ function AffiliateToVideo() {
       platform,
       duration: length,
       script: result.script,
-      post: { title: result.productName, description: result.caption, tags: result.hashtags } as never,
     });
     navigate({ to: "/create/script" });
   };

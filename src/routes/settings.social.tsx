@@ -20,11 +20,15 @@ function SocialAccounts() {
   const [handle, setHandle] = useState("");
 
   const submit = (platform: string, name: string) => {
-    if (handle.trim().replace("@", "").length < 2) {
-      toast.error("Enter the account's username.");
+    // Accept a full profile link (e.g. https://tiktok.com/@brand) or a plain handle.
+    const raw = handle.trim();
+    const fromUrl = raw.match(/^https?:\/\/[^/]+\/(?:c\/|channel\/|user\/)?@?([^/?#]+)/i)?.[1];
+    const value = fromUrl ?? raw;
+    if (value.replace("@", "").length < 2) {
+      toast.error("Paste your profile link or username.");
       return;
     }
-    if (!addSocialAccount(platform, handle)) {
+    if (!addSocialAccount(platform, value)) {
       toast.error(`That ${name} account is already linked.`);
       return;
     }
@@ -80,7 +84,7 @@ function SocialAccounts() {
 
                 {adding === p.id && (
                   <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); submit(p.id, p.name); }}>
-                    <Input autoFocus placeholder={`@your${p.id}handle`} value={handle} onChange={(e) => setHandle(e.target.value)} />
+                    <Input autoFocus placeholder={`Paste your ${p.name} profile link or @handle`} value={handle} onChange={(e) => setHandle(e.target.value)} />
                     <Button type="submit">Save</Button>
                   </form>
                 )}

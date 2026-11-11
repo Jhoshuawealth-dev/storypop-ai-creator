@@ -20,7 +20,10 @@ const topicSuggestions = ["Product launch", "Customer story", "Behind the scenes
 
 export const Route = createFileRoute("/create/idea")({
   validateSearch: (s: Record<string, unknown>): { mode?: "idea" | "product" | "template" } =>
-    s.mode === "product" || s.mode === "template" || s.mode === "idea" ? { mode: s.mode } : {},
+    {
+    const m = s["mode"];
+    return m === "product" || m === "template" || m === "idea" ? { mode: m } : {};
+  },
   head: pageHead("Content Idea", "Describe the UGC video you want to create."),
   component: Idea,
 });
