@@ -100,6 +100,7 @@ function Idea() {
 
         <Field label="Topic">
           <Input
+            dictation
             value={draft.topic ?? ""}
             onChange={(e) => updateDraft({ topic: e.target.value })}
             placeholder="e.g. Sneaker business"
