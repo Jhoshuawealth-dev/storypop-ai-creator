@@ -50,7 +50,6 @@ function AffiliateToVideo() {
       platform,
       duration: length,
       script: result.script,
-      post: { title: result.productName, description: result.caption, tags: result.hashtags } as never,
     });
     navigate({ to: "/create/script" });
   };

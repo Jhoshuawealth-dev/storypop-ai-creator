@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
+import { ClipPublish } from "@/components/clip-publish";
 import { Download, Film, Loader2, Palette, Scissors, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
@@ -198,6 +199,7 @@ function VideoClipper() {
                     </div>
                     <p className="text-sm font-bold text-foreground">{c.title || `Clip ${i + 1}`}</p>
                     {c.quote && <p className="line-clamp-2 text-xs italic text-muted-foreground">“{c.quote}”</p>}
+                    <ClipPublish title={c.title || `Clip ${i + 1}`} quote={c.quote ?? ""} videoUrl={c.videoUrl ?? null} />
                     <div className="flex gap-2">
                       {c.videoUrl && (
                         <a href={c.videoUrl} download className="flex-1"><Button size="sm" fullWidth variant="outline"><Download className="h-4 w-4" /> MP4</Button></a>
