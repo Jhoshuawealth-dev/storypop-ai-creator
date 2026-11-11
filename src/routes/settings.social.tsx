@@ -28,23 +28,7 @@ function SocialAccounts() {
       toast.error("Paste your profile link or username.");
       return;
     }
-    setHandle(value);
     if (!addSocialAccount(platform, value)) {
-      toast.error(`That ${name} account is already linked.`);
-      return;
-    }
-    toast.success(`${name} account added`);
-    setHandle("");
-    setAdding(null);
-  };
-
-  void 0;
-  const _old = (_p: string, _n: string) => {
-    if (handle.trim().replace("@", "").length < 2) {
-      toast.error("Enter the account's username.");
-      return;
-    }
-    if (!addSocialAccount(platform, handle)) {
       toast.error(`That ${name} account is already linked.`);
       return;
     }
