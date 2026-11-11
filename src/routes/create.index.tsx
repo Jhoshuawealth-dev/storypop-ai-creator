@@ -21,7 +21,7 @@ const options = [
   },
   { to: "/create/idea", search: { mode: "product" }, icon: Package, title: "From Product", desc: "Paste a product link or describe what you sell. AI pulls out the benefits and pain points and writes a demo or unboxing video." },
   { to: "/create/idea", search: { mode: "template" }, icon: LayoutTemplate, title: "From Template", desc: "Start from a proven video structure — Problem → Solution, 3-second hook, Before & After, Review or Tutorial." },
-  { to: "/projects", icon: FolderOpen, title: "From Existing Project", desc: "Open a draft you didn't finish, or remix a video you already completed." },
+  { to: "/projects", search: {}, icon: FolderOpen, title: "From Existing Project", desc: "Open a draft you didn't finish, or remix a video you already completed." },
 ] as const;
 
 function CreateStart() {
@@ -52,7 +52,7 @@ function CreateStart() {
           <Link
             key={i}
             to={o.to}
-            search={"search" in o ? o.search : undefined}
+            search={"search" in o ? o.search : {}}
             className={
               "featured" in o && o.featured
                 ? "flex items-center gap-4 rounded-3xl bg-primary-deep p-5 text-primary-foreground shadow-fab transition-transform active:scale-[0.98]"
