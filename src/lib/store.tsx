@@ -258,6 +258,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .eq("id", userId)
           .maybeSingle();
         if (cancelled) return;
+        let avatarUrl = profile?.avatar_url ?? "";
+        if (avatarUrl.startsWith("storage:")) {
+          const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(avatarUrl.slice(8), 60 * 60 * 24 * 7);
+          avatarUrl = signed?.signedUrl ?? "";
+        }
+        if (cancelled) return;
         const fullName = profile?.full_name || metaName;
         setState((prev) => ({
           ...prev,
@@ -267,7 +273,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             email,
             fullName: fullName || prev.user.fullName,
             name: (fullName || prev.user.fullName).split(" ")[0] ?? "",
-            avatar: profile?.avatar_url || prev.user.avatar,
+            avatar: avatarUrl || prev.user.avatar,
             bio: profile?.bio ?? prev.user.bio,
           },
         }));
@@ -297,7 +303,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (patch.fullName !== undefined) row.full_name = patch.fullName;
     if (patch.bio !== undefined) row.bio = patch.bio;
     // Only persist real URLs, not temporary in-browser previews.
-    if (patch.avatar !== undefined && !patch.avatar.startsWith("blob:")) row.avatar_url = patch.avatar;
+    // Uploaded photos are saved separately as a storage path; signed links expire, so never store them.
+    if (patch.avatar !== undefined && !patch.avatar.startsWith("blob:") && !patch.avatar.startsWith("data:") && !patch.avatar.includes("/object/sign/")) row.avatar_url = patch.avatar;
     if (Object.keys(row).length === 0) return;
     void import("@/integrations/supabase/client").then(async ({ supabase }) => {
       const { data } = await supabase.auth.getUser();

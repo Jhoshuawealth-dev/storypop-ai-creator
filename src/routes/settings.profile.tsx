@@ -7,6 +7,7 @@ import { Field, Input, SelectField, TextArea } from "@/components/ui/input";
 import { pageHead } from "@/lib/seo";
 import { Avatar } from "@/components/ui/avatar";
 import { useApp } from "@/lib/store";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/settings/profile")({
   head: pageHead("Profile Settings", "Update your Storypop AI profile details."),
@@ -29,10 +30,34 @@ function AccountSettings() {
     setPhoto(user.avatar);
   }, [user]);
 
-  const pickPhoto = (file: File | undefined) => {
+  const [uploading, setUploading] = useState(false);
+
+  const pickPhoto = async (file: File | undefined) => {
     if (!file) return;
-    setPhoto(URL.createObjectURL(file));
-    toast.success("Profile photo updated");
+    if (!file.type.startsWith("image/")) return void toast.error("Please choose an image file.");
+    if (file.size > 5 * 1024 * 1024) return void toast.error("Photo must be under 5 MB.");
+    setUploading(true);
+    try {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user) throw new Error("Please sign in to change your photo.");
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+      const path = `${auth.user.id}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { error: dbErr } = await supabase
+        .from("profiles")
+        .upsert({ id: auth.user.id, avatar_url: `storage:${path}`, updated_at: new Date().toISOString() });
+      if (dbErr) throw dbErr;
+      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 7);
+      const url = signed?.signedUrl ?? "";
+      setPhoto(url);
+      updateUser({ avatar: url });
+      toast.success("Profile photo saved");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Couldn't upload your photo.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -40,12 +65,13 @@ function AccountSettings() {
       <div className="mt-5 flex flex-col items-center">
         <Avatar src={photo} name={name} className="h-24 w-24 rounded-3xl text-2xl shadow-card" />
         <label className="mt-2.5 cursor-pointer">
-          <span className="text-sm font-semibold text-primary">Change photo</span>
+          <span className="text-sm font-semibold text-primary">{uploading ? "Uploading…" : "Change photo"}</span>
           <input
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => pickPhoto(e.target.files?.[0])}
+            disabled={uploading}
+            onChange={(e) => void pickPhoto(e.target.files?.[0])}
           />
         </label>
       </div>
@@ -70,7 +96,7 @@ function AccountSettings() {
             toast.error("Please enter your full name.");
             return;
           }
-          updateUser({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim(), bio, language, avatar: photo });
+          updateUser({ fullName: name.trim(), name: name.trim().split(" ")[0] ?? "", email: email.trim(), bio, language });
           toast.success("Changes saved");
         }}>
         Save changes
