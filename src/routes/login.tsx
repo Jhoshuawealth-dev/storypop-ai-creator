@@ -73,13 +73,9 @@ function Login() {
           />
         </Field>
         <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={() => toast.info("Password reset will be available once Storypop accounts go live.")}
-            className="text-sm font-semibold text-primary"
-          >
+          <Link to="/forgot-password" className="text-sm font-semibold text-primary">
             Forgot password?
-          </button>
+          </Link>
         </div>
 
         {formError && (
