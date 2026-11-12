@@ -1,89 +1,75 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Laptop, Smartphone, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Laptop, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/ui/feedback";
 import { pageHead } from "@/lib/seo";
-import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/settings/security/devices")({
   head: pageHead("Active Devices", "See and manage devices signed in to Storypop AI."),
   component: Devices,
 });
 
-interface Device {
-  id: string;
-  name: string;
-  meta: string;
-  lastActive: string;
-  current?: boolean;
-  icon: "phone" | "laptop";
+function describeDevice(ua: string) {
+  const mobile = /Mobi|Android|iPhone|iPad/i.test(ua);
+  const os = /iPhone|iPad/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac OS X/.test(ua) ? "macOS" : /Windows/.test(ua) ? "Windows" : /Linux/.test(ua) ? "Linux" : "Unknown system";
+  const browser = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Browser";
+  return { mobile, label: `${browser} on ${os}` };
 }
 
-const initialDevices: Device[] = [
-  { id: "d1", name: "iPhone 15 Pro", meta: "Lagos, Nigeria · Storypop App", lastActive: "Active now", current: true, icon: "phone" },
-  { id: "d2", name: "MacBook Pro", meta: "Lagos, Nigeria · Chrome", lastActive: "2 hours ago", icon: "laptop" },
-  { id: "d3", name: "Samsung Galaxy S24", meta: "Abuja, Nigeria · Storypop App", lastActive: "3 days ago", icon: "phone" },
-];
-
 function Devices() {
-  const [devices, setDevices] = useState(initialDevices);
+  const [device, setDevice] = useState<{ mobile: boolean; label: string } | null>(null);
+  const [lastSignIn, setLastSignIn] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  const revoke = (id: string) => {
-    setDevices((prev) => prev.filter((d) => d.id !== id));
-    toast.success("Device signed out");
+  useEffect(() => {
+    setDevice(describeDevice(navigator.userAgent));
+    void supabase.auth.getUser().then(({ data }) => {
+      const at = data.user?.last_sign_in_at;
+      if (at) setLastSignIn(new Date(at).toLocaleString());
+    });
+  }, []);
+
+  const signOutOthers = async () => {
+    setBusy(true);
+    const { error } = await supabase.auth.signOut({ scope: "others" });
+    setBusy(false);
+    if (error) return void toast.error(error.message);
+    toast.success("Signed out of all other devices");
   };
+
+  const Icon = device?.mobile ? Smartphone : Laptop;
 
   return (
     <AppShell title="Active Devices" showBack backTo="/settings/security">
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-        These devices are currently signed in to your account. Remove any device you don't recognise.
+        If you don't recognise activity on your account, sign out everywhere else and change your password.
       </p>
 
-      <SectionHeader title={`Signed in (${devices.length})`} />
-      <div className="space-y-3">
-        {devices.map((device) => (
-          <div key={device.id} className="flex items-center gap-3.5 rounded-2xl bg-card p-4 shadow-card">
-            <div className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-xl", device.current ? "bg-primary" : "bg-primary-soft")}>
-              {device.icon === "phone" ? (
-                <Smartphone className={cn("h-5 w-5", device.current ? "text-primary-foreground" : "text-primary")} strokeWidth={1.8} />
-              ) : (
-                <Laptop className={cn("h-5 w-5", device.current ? "text-primary-foreground" : "text-primary")} strokeWidth={1.8} />
-              )}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-foreground">
-                {device.name}
-                {device.current && <span className="ml-2 rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold text-primary">This device</span>}
-              </p>
-              <p className="truncate text-xs text-muted-foreground">{device.meta}</p>
-              <p className="text-xs font-semibold text-muted-foreground">{device.lastActive}</p>
-            </div>
-            {!device.current && (
-              <button
-                onClick={() => revoke(device.id)}
-                aria-label={`Sign out ${device.name}`}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            )}
+      <SectionHeader title="This device" />
+      {device && (
+        <div className="flex items-center gap-3.5 rounded-2xl bg-card p-4 shadow-card">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary">
+            <Icon className="h-5 w-5 text-primary-foreground" strokeWidth={1.8} />
           </div>
-        ))}
-      </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-semibold text-foreground">
+              {device.label}
+              <span className="ml-2 rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold text-primary">Active now</span>
+            </p>
+            {lastSignIn && <p className="truncate text-xs text-muted-foreground">Last sign-in: {lastSignIn}</p>}
+          </div>
+        </div>
+      )}
 
-      <Button
-        variant="outline"
-        size="lg"
-        fullWidth
-        className="mt-8"
-        onClick={() => {
-          setDevices((prev) => prev.filter((d) => d.current));
-          toast.success("Signed out of all other devices");
-        }}
-      >
+      <SectionHeader title="Other devices" />
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        Any phone, tablet or computer you've signed in on stays signed in until you sign out. Use the button below to sign them all out at once — this device stays signed in.
+      </p>
+      <Button variant="outline" size="lg" fullWidth className="mt-5" loading={busy} onClick={() => void signOutOthers()}>
         Sign out all other devices
       </Button>
     </AppShell>
