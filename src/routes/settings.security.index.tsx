@@ -1,5 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
+import { deleteMyAccount } from "@/lib/account.functions";
+import { useApp } from "@/lib/store";
 import { ChevronRight, Download, KeyRound, Smartphone, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/layout/app-shell";
@@ -14,8 +18,8 @@ export const Route = createFileRoute("/settings/security/")({
 });
 
 const protectionRows = [
-  { label: "Two-factor authentication", value: "Off", icon: KeyRound, to: "/settings/security/2fa" },
-  { label: "Active devices", value: "3 devices", icon: Smartphone, to: "/settings/security/devices" },
+  { label: "Two-factor authentication", value: "", icon: KeyRound, to: "/settings/security/2fa" },
+  { label: "Active devices", value: "", icon: Smartphone, to: "/settings/security/devices" },
   { label: "Download my data", value: "", icon: Download, to: "/settings/security/data" },
 ] as const;
 
@@ -24,6 +28,56 @@ function Security() {
   const [next, setNext] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteText, setDeleteText] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [mfaOn, setMfaOn] = useState<boolean | null>(null);
+  const navigate = useNavigate();
+  const { signOut } = useApp();
+  const removeAccount = useServerFn(deleteMyAccount);
+
+  useEffect(() => {
+    void supabase.auth.mfa.listFactors().then(({ data }) => setMfaOn(Boolean(data?.totp.some((f) => f.status === "verified"))));
+  }, []);
+
+  const changePassword = async () => {
+    if (!current) return void toast.error("Enter your current password.");
+    if (next.length < 8) return void toast.error("New password must be at least 8 characters.");
+    if (next === current) return void toast.error("Choose a password different from your current one.");
+    setSaving(true);
+    const { data: u } = await supabase.auth.getUser();
+    const email = u.user?.email;
+    if (!email) {
+      setSaving(false);
+      return void toast.error("Please sign in again.");
+    }
+    // Confirm the current password before changing it.
+    const { error: authErr } = await supabase.auth.signInWithPassword({ email, password: current });
+    if (authErr) {
+      setSaving(false);
+      return void toast.error("Your current password is incorrect.");
+    }
+    const { error } = await supabase.auth.updateUser({ password: next, current_password: current } as { password: string });
+    setSaving(false);
+    if (error) return void toast.error(error.message);
+    toast.success("Password updated");
+    setCurrent("");
+    setNext("");
+  };
+
+  const doDelete = async () => {
+    setDeleting(true);
+    try {
+      await removeAccount({ data: { confirm: "DELETE" } });
+      try { localStorage.clear(); } catch { /* ignore */ }
+      signOut();
+      toast.success("Your account has been deleted.");
+      navigate({ to: "/", replace: true });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not delete your account.");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <AppShell title="Security & Privacy" showBack backTo="/profile">
@@ -40,15 +94,8 @@ function Security() {
         size="lg"
         fullWidth
         className="mt-4"
-        onClick={() => {
-          if (next.length < 8) {
-            toast.error("New password is too short.");
-            return;
-          }
-          toast.success("Password updated");
-          setCurrent("");
-          setNext("");
-        }}
+        loading={saving}
+        onClick={() => void changePassword()}
       >
         Update password
       </Button>
@@ -59,7 +106,7 @@ function Security() {
           <Link key={row.label} to={row.to} className="flex w-full items-center gap-3.5 px-4 py-3.5 text-left">
             <row.icon className="h-5 w-5 shrink-0 text-primary" strokeWidth={1.8} />
             <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{row.label}</span>
-            {row.value && <span className="shrink-0 text-xs font-semibold text-muted-foreground">{row.value}</span>}
+            {(row.label.startsWith("Two") ? (mfaOn === null ? "" : mfaOn ? "On" : "Off") : row.value) && <span className="shrink-0 text-xs font-semibold text-muted-foreground">{row.label.startsWith("Two") ? (mfaOn ? "On" : "Off") : row.value}</span>}
             <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
           </Link>
         ))}
@@ -97,11 +144,9 @@ function Security() {
               size="lg"
               fullWidth
               className="mt-4"
-              disabled={deleteText !== "DELETE"}
-              onClick={() => {
-                setConfirmDelete(false);
-                toast.success("Account deletion scheduled. You'll receive a confirmation email.");
-              }}
+              disabled={deleteText !== "DELETE" || deleting}
+              loading={deleting}
+              onClick={() => void doDelete()}
             >
               Permanently delete account
             </Button>

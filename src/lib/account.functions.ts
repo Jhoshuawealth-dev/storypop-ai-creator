@@ -11,7 +11,7 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Remove stored files owned by this user.
-    for (const bucket of ["avatars", "generated-videos", "reference-images"]) {
+    for (const bucket of ["avatars", "generated-videos", "character-references"]) {
       const { data: files } = await supabaseAdmin.storage.from(bucket).list(userId, { limit: 1000 });
       if (files?.length) await supabaseAdmin.storage.from(bucket).remove(files.map((f) => `${userId}/${f.name}`));
     }
