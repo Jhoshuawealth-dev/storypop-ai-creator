@@ -44,21 +44,9 @@ function Security() {
     if (next.length < 8) return void toast.error("New password must be at least 8 characters.");
     if (next === current) return void toast.error("Choose a password different from your current one.");
     setSaving(true);
-    const { data: u } = await supabase.auth.getUser();
-    const email = u.user?.email;
-    if (!email) {
-      setSaving(false);
-      return void toast.error("Please sign in again.");
-    }
-    // Confirm the current password before changing it.
-    const { error: authErr } = await supabase.auth.signInWithPassword({ email, password: current });
-    if (authErr) {
-      setSaving(false);
-      return void toast.error("Your current password is incorrect.");
-    }
     const { error } = await supabase.auth.updateUser({ password: next, current_password: current } as { password: string });
     setSaving(false);
-    if (error) return void toast.error(error.message);
+    if (error) return void toast.error(/current|reauth|password/i.test(error.message) && !/weak|short/i.test(error.message) ? "Your current password is incorrect." : error.message);
     toast.success("Password updated");
     setCurrent("");
     setNext("");
@@ -86,7 +74,7 @@ function Security() {
         <Field label="Current password">
           <PasswordInput value={current} onChange={(e) => setCurrent(e.target.value)} placeholder="••••••••" />
         </Field>
-        <Field label="New password" hint="At least 8 characters with a number and a symbol.">
+        <Field label="New password" hint="At least 8 characters.">
           <PasswordInput value={next} onChange={(e) => setNext(e.target.value)} placeholder="••••••••" />
         </Field>
       </div>
