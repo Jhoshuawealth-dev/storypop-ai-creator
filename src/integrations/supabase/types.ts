@@ -324,6 +324,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_library: {
+        Row: {
+          characters: Json
+          posts: Json
+          projects: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          characters?: Json
+          posts?: Json
+          projects?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          characters?: Json
+          posts?: Json
+          projects?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

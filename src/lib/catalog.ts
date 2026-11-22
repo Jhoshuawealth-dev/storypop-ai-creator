@@ -67,6 +67,9 @@ export interface ScheduledPost {
   platform: string;
   status: "draft" | "scheduled" | "published";
   thumb?: string;
+  /** Results the creator logs from the platform (views, likes, comments, shares). */
+  stats?: { views: number; likes: number; comments: number; shares: number };
+  postUrl?: string;
 }
 
 export interface Plan {

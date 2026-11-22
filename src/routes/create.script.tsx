@@ -1,5 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { writeScript } from "@/lib/script.functions";
 import { RefreshCw, ShieldCheck } from "lucide-react";
 import { checkScript } from "@/lib/monetization-safe";
 import { toast } from "sonner";
@@ -26,12 +28,25 @@ function ScriptScreen() {
   const safeOn = draft.monetizationSafe !== false;
   const issues = checkScript(draft.script);
 
-  const refine = (label: string) => {
+  const write = useServerFn(writeScript);
+  const refine = async (label: string) => {
+    if (regenerating) return;
     setRegenerating(true);
-    setTimeout(() => {
+    try {
+      const r = await write({ data: {
+        idea: draft.idea, topic: draft.topic ?? "", audience: draft.audience, tone: draft.tone,
+        platform: draft.platform, cta: draft.cta, duration: draft.duration, template: draft.template ?? "",
+        productUrl: draft.productUrl ?? "", monetizationSafe: safeOn,
+        ...(label === "Regenerate" ? {} : { instruction: label, current: draft.script }),
+      } });
+      if (!r.ok) { toast.error(r.error); return; }
+      updateDraft({ script: r.script });
+      toast.success(label === "Regenerate" ? "New script written" : `Applied: ${label}`);
+    } catch {
+      toast.error("Please sign in to use AI refinements.");
+    } finally {
       setRegenerating(false);
-      toast.success(`Applied: ${label}`);
-    }, 1100);
+    }
   };
 
   return (

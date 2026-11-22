@@ -297,6 +297,58 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  // Keep projects, characters and posts in the user's cloud library (works across devices).
+  const [libraryUser, setLibraryUser] = useState<string | null>(null);
+  useEffect(() => {
+    let unsub: (() => void) | undefined;
+    void import("@/integrations/supabase/client").then(({ supabase }) => {
+      const pull = async (userId: string) => {
+        const { data } = await supabase.from("user_library").select("projects, characters, posts").eq("user_id", userId).maybeSingle();
+        const mergeById = <T extends { id: string }>(cloud: unknown, local: T[]): T[] => {
+          const list = Array.isArray(cloud) ? (cloud as T[]) : [];
+          const ids = new Set(list.map((x) => x.id));
+          return [...list, ...local.filter((x) => !ids.has(x.id))];
+        };
+        setState((prev) => ({
+          ...prev,
+          projects: mergeById(data?.projects, prev.projects),
+          characters: mergeById(data?.characters, prev.characters),
+          posts: mergeById(data?.posts, prev.posts),
+        }));
+        setLibraryUser(userId);
+      };
+      const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+          setLibraryUser(null);
+          setState((prev) => ({ ...prev, projects: [], characters: [], posts: [] }));
+          return;
+        }
+        if (session?.user && (event === "INITIAL_SESSION" || event === "SIGNED_IN")) {
+          const id = session.user.id;
+          setTimeout(() => void pull(id), 0);
+        }
+      });
+      unsub = () => data.subscription.unsubscribe();
+    });
+    return () => unsub?.();
+  }, []);
+
+  useEffect(() => {
+    if (!libraryUser) return;
+    const t = setTimeout(() => {
+      void import("@/integrations/supabase/client").then(({ supabase }) =>
+        supabase.from("user_library").upsert({
+          user_id: libraryUser,
+          projects: state.projects as never,
+          characters: state.characters as never,
+          posts: state.posts as never,
+          updated_at: new Date().toISOString(),
+        })
+      );
+    }, 800);
+    return () => clearTimeout(t);
+  }, [libraryUser, state.projects, state.characters, state.posts]);
+
   const updateUser = useCallback((patch: Partial<UserProfile>) => {
     setState((prev) => ({ ...prev, user: { ...prev.user, ...patch } }));
     const row: { full_name?: string; bio?: string; avatar_url?: string } = {};

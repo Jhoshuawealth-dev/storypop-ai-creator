@@ -14,6 +14,19 @@ export const Route = createFileRoute("/publish/schedule")({
   component: PublishSchedule,
 });
 
+const UPLOAD_PAGES: Record<string, string> = {
+  TikTok: "https://www.tiktok.com/upload",
+  Instagram: "https://www.instagram.com/",
+  YouTube: "https://studio.youtube.com/",
+  "YouTube Shorts": "https://studio.youtube.com/",
+  Facebook: "https://www.facebook.com/",
+  X: "https://x.com/compose/post",
+  LinkedIn: "https://www.linkedin.com/feed/",
+  Pinterest: "https://www.pinterest.com/pin-creation-tool/",
+  Threads: "https://www.threads.net/",
+  Snapchat: "https://my.snapchat.com/",
+};
+
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -38,6 +51,14 @@ function PublishSchedule() {
     }
 
     const title = draft.post.title || "Untitled post";
+    if (mode === "now") {
+      const text = [draft.post.title, "", draft.post.description, "", draft.post.cta, "", draft.post.hashtags.join(" ")].join("\n").trim();
+      void navigator.clipboard?.writeText(text);
+      for (const name of platformNames) {
+        const url = UPLOAD_PAGES[name];
+        if (url) window.open(url, "_blank", "noopener");
+      }
+    }
     for (const id of draft.post.platforms) {
       addPost({
         id: `post_${Date.now()}_${id}`,
@@ -55,8 +76,8 @@ function PublishSchedule() {
       body: `${title} — ${platformNames.join(", ")}`,
     });
 
-    toast.success(mode === "now" ? "Publishing your video" : "Post scheduled");
-    navigate({ to: "/calendar/publishing" });
+    toast.success(mode === "now" ? "Caption copied — paste it in the upload pages we opened" : "Post scheduled");
+    navigate({ to: mode === "now" ? "/calendar/published" : "/calendar/publishing" });
   };
 
   return (
@@ -93,6 +114,12 @@ function PublishSchedule() {
             <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
           </Field>
         </div>
+      )}
+
+      {mode === "now" && (
+        <p className="mt-4 text-xs text-muted-foreground">
+          We copy your title, description and hashtags and open each platform's upload page so you can post your video in seconds. After posting, add your views and likes in Analytics to track results.
+        </p>
       )}
 
       <Button size="lg" fullWidth className="mt-7" onClick={submit}>

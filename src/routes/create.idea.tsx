@@ -7,6 +7,9 @@ import { ProgressBar } from "@/components/ui/progress-ring";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
+import { writeScript } from "@/lib/script.functions";
 
 const templates = [
   { id: "Problem → Solution", desc: "Show a pain point, then how the product fixes it." },
@@ -40,9 +43,27 @@ function Idea() {
   const { mode = "idea" } = Route.useSearch();
   const [loading, setLoading] = useState(false);
 
-  const generate = () => {
+  const write = useServerFn(writeScript);
+  const generate = async () => {
+    if (!draft.idea.trim() && !draft.topic?.trim() && !draft.productUrl?.trim()) {
+      toast.error("Describe your idea or pick a topic first.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => navigate({ to: "/create/script" }), 1200);
+    try {
+      const r = await write({ data: {
+        idea: draft.idea, topic: draft.topic ?? "", audience: draft.audience, tone: draft.tone,
+        platform: draft.platform, cta: draft.cta, duration: draft.duration, template: draft.template ?? "",
+        productUrl: draft.productUrl ?? "", monetizationSafe: draft.monetizationSafe !== false,
+      } });
+      if (!r.ok) { toast.error(r.error); return; }
+      updateDraft({ script: r.script });
+      navigate({ to: "/create/script" });
+    } catch {
+      toast.error("Please sign in to generate scripts.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
