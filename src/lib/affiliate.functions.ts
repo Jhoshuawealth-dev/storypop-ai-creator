@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const schema = z.object({
-  url: z.string().trim().url().max(2000),
+  url: z.string().trim().url().max(2000).refine((v) => /^https?:\/\//i.test(v), "Use an http(s) link"),
   notes: z.string().trim().max(1000).default(""),
   platform: z.enum(["TikTok", "Instagram", "YouTube", "Facebook"]).default("TikTok"),
   length: z.union([z.literal(30), z.literal(60)]).default(30),
@@ -22,9 +22,33 @@ export interface AffiliateAnalysis {
 }
 
 /** Reads the product page title/description so the AI has real context. */
+function isSafePublicUrl(raw: string): boolean {
+  let u: URL;
+  try { u = new URL(raw); } catch { return false; }
+  if (u.protocol !== "https:" && u.protocol !== "http:") return false;
+  if (u.username || u.password) return false;
+  if (u.port && u.port !== "80" && u.port !== "443") return false;
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (!host.includes(".") || host.includes(":")) return false; // no bare names or IPv6 literals
+  if (/(^|\.)(localhost|local|internal|intranet|lan|home|corp|localdomain)$/.test(host)) return false;
+  if (/^[0-9.]+$/.test(host) || /^0x/i.test(host)) {
+    const p = host.split(".").map(Number);
+    if (p.length !== 4 || p.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) return false;
+    const [a, b] = p as [number, number, number, number];
+    if (a === 0 || a === 10 || a === 127 || a >= 224) return false;
+    if (a === 169 && b === 254) return false;
+    if (a === 172 && b >= 16 && b <= 31) return false;
+    if (a === 192 && b === 168) return false;
+    if (a === 100 && b >= 64 && b <= 127) return false;
+  }
+  return true;
+}
+
 async function readPage(url: string) {
   try {
-    const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 StorypopBot" }, signal: AbortSignal.timeout(8000) });
+    if (!isSafePublicUrl(url)) return { title: "", desc: "", text: "" };
+    const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 StorypopBot" }, redirect: "manual", signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return { title: "", desc: "", text: "" };
     const html = (await res.text()).slice(0, 200_000);
     const pick = (re: RegExp) => html.match(re)?.[1]?.trim() ?? "";
     const title = pick(/<title[^>]*>([^<]{1,300})<\/title>/i);
