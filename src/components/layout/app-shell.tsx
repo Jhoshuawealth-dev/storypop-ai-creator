@@ -4,6 +4,16 @@ import { cn } from "@/lib/utils";
 import { TopBar } from "./top-bar";
 import { WorkspaceNav } from "./workspace-nav";
 import { Button } from "@/components/ui/button";
+import { useApp } from '@/lib/store';
+
+function LibraryStatus() {
+  const { syncStatus, retrySync } = useApp();
+  if (syncStatus === 'signed-out' || syncStatus === 'saved') return null;
+  return <div role="status" className="flex items-center justify-between gap-3 border-b border-border bg-muted px-5 py-2 text-xs text-muted-foreground">
+    <span>{syncStatus === 'offline' ? 'Changes not synced yet. Keep this device until saving completes.' : syncStatus === 'loading' ? 'Loading your saved content…' : 'Saving to your account…'}</span>
+    {syncStatus === 'offline' && <Button size="sm" variant="outline" onClick={retrySync}>Retry</Button>}
+  </div>;
+}
 
 export function AppShell({
   children,
@@ -40,6 +50,7 @@ export function AppShell({
           onMenuClick={!hideNav ? () => setDrawerOpen((open) => !open) : undefined}
           menuOpen={drawerOpen}
         />
+        <LibraryStatus />
         <main className={cn("mx-auto min-h-[calc(100dvh-4rem)] w-full max-w-7xl animate-screen-in", padded && "px-5 sm:px-8", !hideNav && "pb-8", className)}>{children}</main>
       </div>
       {!hideNav && drawerOpen && (
@@ -76,6 +87,7 @@ export function FlowShell({
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-xl flex-col bg-background">
       {title ? <TopBar title={title} showBack={showBack} backTo={backTo} right={right} /> : null}
+      <LibraryStatus />
       <main className={cn("flex-1 animate-screen-in px-5 pb-10", className)}>{children}</main>
     </div>
   );

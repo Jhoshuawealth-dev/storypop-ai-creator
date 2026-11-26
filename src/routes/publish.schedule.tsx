@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/input";
 import { pageHead } from "@/lib/seo";
 import { useApp } from "@/lib/store";
-import { specFor } from "@/lib/post-seo";
+import { captionText, manualPost, uploadPages } from '@/lib/social-publishing';
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/publish/schedule")({
@@ -14,34 +14,22 @@ export const Route = createFileRoute("/publish/schedule")({
   component: PublishSchedule,
 });
 
-const UPLOAD_PAGES: Record<string, string> = {
-  TikTok: "https://www.tiktok.com/upload",
-  Instagram: "https://www.instagram.com/",
-  YouTube: "https://studio.youtube.com/",
-  "YouTube Shorts": "https://studio.youtube.com/",
-  Facebook: "https://www.facebook.com/",
-  X: "https://x.com/compose/post",
-  LinkedIn: "https://www.linkedin.com/feed/",
-  Pinterest: "https://www.pinterest.com/pin-creation-tool/",
-  Threads: "https://www.threads.net/",
-  Snapchat: "https://my.snapchat.com/",
-};
-
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
 function PublishSchedule() {
   const navigate = useNavigate();
-  const { draft, addPost, addNotification } = useApp();
+  const { draft, addPost, addNotification, socialAccounts } = useApp();
   const [mode, setMode] = useState<"now" | "later">("now");
   const [date, setDate] = useState(todayISO());
   const [time, setTime] = useState("18:00");
 
-  const platformNames = draft.post.platforms.map((id) => specFor(id).name);
+  const accounts = socialAccounts.filter((account) => draft.post.platforms.includes(account.id));
+  const platformNames = accounts.map((account) => `${account.name} (${account.handle})`);
 
   const submit = () => {
-    if (draft.post.platforms.length === 0) {
+    if (accounts.length === 0) {
       toast.error("Go back and choose at least one platform.");
       return;
     }
@@ -52,32 +40,25 @@ function PublishSchedule() {
 
     const title = draft.post.title || "Untitled post";
     if (mode === "now") {
-      const text = [draft.post.title, "", draft.post.description, "", draft.post.cta, "", draft.post.hashtags.join(" ")].join("\n").trim();
+      const text = captionText(draft.post);
       void navigator.clipboard?.writeText(text);
-      for (const name of platformNames) {
-        const url = UPLOAD_PAGES[name];
+      for (const account of accounts) {
+        const url = uploadPages[account.platform];
         if (url) window.open(url, "_blank", "noopener");
       }
     }
-    for (const id of draft.post.platforms) {
-      addPost({
-        id: `post_${Date.now()}_${id}`,
-        title,
-        date: mode === "now" ? todayISO() : date,
-        time: mode === "now" ? new Date().toTimeString().slice(0, 5) : time,
-        platform: specFor(id).name,
-        status: mode === "now" ? "published" : "scheduled",
-      });
+    for (const account of accounts) {
+      addPost(manualPost(account, draft.post, mode === 'now' ? todayISO() : date, mode === 'now' ? new Date().toTimeString().slice(0, 5) : time, mode === 'later'));
     }
 
     addNotification({
       type: mode === "now" ? "publish" : "schedule",
-      title: mode === "now" ? "Publishing started" : "Post scheduled",
+      title: mode === "now" ? "Upload prepared" : "Manual upload scheduled",
       body: `${title} — ${platformNames.join(", ")}`,
     });
 
-    toast.success(mode === "now" ? "Caption copied — paste it in the upload pages we opened" : "Post scheduled");
-    navigate({ to: mode === "now" ? "/calendar/published" : "/calendar/publishing" });
+    toast.success(mode === "now" ? "Upload prepared — confirm your post after it goes live" : "Added to calendar for manual upload");
+    navigate({ to: '/calendar/publishing' });
   };
 
   return (
@@ -92,7 +73,7 @@ function PublishSchedule() {
               mode === m ? "bg-card text-primary shadow-card" : "text-muted-foreground"
             )}
           >
-            {m === "now" ? "Publish now" : "Schedule"}
+            {m === "now" ? "Manual upload" : "Schedule"}
           </button>
         ))}
       </div>
@@ -118,12 +99,12 @@ function PublishSchedule() {
 
       {mode === "now" && (
         <p className="mt-4 text-xs text-muted-foreground">
-          We copy your title, description and hashtags and open each platform's upload page so you can post your video in seconds. After posting, add your views and likes in Analytics to track results.
+          Upload on the platform, then confirm the live post in Publishing Status. Opening an upload page does not publish your video.
         </p>
       )}
 
       <Button size="lg" fullWidth className="mt-7" onClick={submit}>
-        {mode === "now" ? "Publish now" : "Schedule post"}
+        {mode === "now" ? "Prepare manual upload" : "Schedule manual upload"}
       </Button>
     </FlowShell>
   );

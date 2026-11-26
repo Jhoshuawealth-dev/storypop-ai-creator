@@ -12,7 +12,7 @@ import { CalendarX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/calendar/schedule")({
-  head: pageHead("Schedule Post", "Schedule your video to publish automatically."),
+  head: pageHead("Schedule Post", "Plan a manual video upload in your Storypop calendar."),
   component: SchedulePost,
 });
 
@@ -23,7 +23,6 @@ function SchedulePost() {
   const [platform, setPlatform] = useState(platformSpecs[0]?.name ?? "");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [time, setTime] = useState("10:00");
-  const [auto, setAuto] = useState(true);
   const selectedProject = projects.find((project) => project.id === video);
 
   if (projects.length === 0) {
@@ -72,28 +71,7 @@ function SchedulePost() {
         </Field>
       </div>
 
-      <button
-        onClick={() => setAuto((a) => !a)}
-        className="mt-5 flex w-full items-center justify-between rounded-2xl bg-card p-4 text-left shadow-card"
-      >
-        <span>
-          <span className="block font-bold text-foreground">Auto-publish</span>
-          <span className="block text-xs text-muted-foreground">Publish automatically at the scheduled time</span>
-        </span>
-        <span
-          className={cn(
-            "relative h-7 w-12 shrink-0 rounded-full transition-colors",
-            auto ? "bg-primary" : "bg-muted"
-          )}
-        >
-          <span
-            className={cn(
-              "absolute top-1 h-5 w-5 rounded-full bg-card shadow transition-all",
-              auto ? "left-6" : "left-1"
-            )}
-          />
-        </span>
-      </button>
+      <p className="mt-5 text-sm text-muted-foreground">Calendar entry for manual upload. Automatic publishing is not connected.</p>
 
       <Button
         size="lg"
@@ -111,6 +89,8 @@ function SchedulePost() {
             time,
             platform,
             status: "scheduled" as const,
+            projectId: selectedProject.id,
+            delivery: 'manual' as const,
             ...(selectedProject.thumb ? { thumb: selectedProject.thumb } : {}),
           };
           addPost(post);

@@ -18,12 +18,13 @@ export const Route = createFileRoute("/publish/details")({
 
 function PublishDetails() {
   const navigate = useNavigate();
-  const { draft, updatePost_Draft } = useApp();
+  const { draft, updatePost_Draft, socialAccounts } = useApp();
   const post = draft.post;
+  const platformIds = socialAccounts.filter((account) => post.platforms.includes(account.id)).map((account) => account.platform);
   const [tagInput, setTagInput] = useState("");
 
-  const limits = useMemo(() => combinedLimits(post.platforms), [post.platforms]);
-  const report = useMemo(() => analysePost(post, post.platforms), [post]);
+  const limits = combinedLimits(platformIds);
+  const report = analysePost(post, platformIds);
   const suggestions = useMemo(
     () => suggestHashtags(post, limits.hashtagsMax).filter((t) => !post.hashtags.includes(t)),
     [post, limits.hashtagsMax]

@@ -66,6 +66,12 @@ export interface ScheduledPost {
   time: string;
   platform: string;
   status: "draft" | "scheduled" | "published";
+  accountId?: string;
+  projectId?: string;
+  description?: string;
+  hashtags?: string[];
+  cta?: string;
+  delivery?: 'manual' | 'api';
   thumb?: string;
   /** Results the creator logs from the platform (views, likes, comments, shares). */
   stats?: { views: number; likes: number; comments: number; shares: number };

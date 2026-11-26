@@ -27,7 +27,7 @@ function PublishScreen() {
       <h1 className="mt-6 font-display text-2xl font-extrabold tracking-tight text-foreground">
         Where should this go?
       </h1>
-      <p className="mt-1.5 text-[15px] text-muted-foreground">Select one or more connected platforms.</p>
+      <p className="mt-1.5 text-[15px] text-muted-foreground">Select saved accounts for manual upload.</p>
 
       <div className="mt-5 space-y-3">
         {socialAccounts.map((p) => {
@@ -36,10 +36,6 @@ function PublishScreen() {
             <button
               key={p.id}
               onClick={() => {
-                if (!p.connected) {
-                  toast.error(`Connect ${p.name} in Settings → Social Accounts first.`);
-                  return;
-                }
                 toggle(p.id);
               }}
               className={cn(
@@ -54,7 +50,7 @@ function PublishScreen() {
               <span className="min-w-0 flex-1">
                 <span className="block font-bold text-foreground">{p.name}</span>
                 <span className="block text-xs text-muted-foreground">
-                  {p.connected ? p.handle || "Connected" : "Not connected"}
+                  {p.handle} · Manual upload
                 </span>
               </span>
               <span

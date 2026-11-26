@@ -41,7 +41,7 @@ function SocialAccounts() {
     <AppShell title="Social Accounts" showBack backTo="/settings">
       <div className="mx-auto w-full max-w-3xl pb-10">
         <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">
-          Add every account you post to — personal pages, brand pages, client pages. You can pick which ones to use each time you publish.
+          Save the profiles you post to. A profile link does not authorize Storypop to publish or read private analytics.
         </p>
 
         <div className="mt-5 space-y-4">
@@ -69,7 +69,7 @@ function SocialAccounts() {
                     {accounts.map((a) => (
                       <li key={a.id} className="flex items-center gap-3 py-3">
                         <span className="h-2 w-2 rounded-full bg-primary" />
-                        <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{a.handle}</span>
+                        <span className="min-w-0 flex-1"><span className="block truncate font-semibold text-foreground">{a.handle}</span><span className="text-xs text-muted-foreground">Saved profile · Manual upload only</span></span>
                         <button
                           aria-label={`Remove ${a.handle}`}
                           onClick={() => { removeSocialAccount(a.id); toast.success(`${a.handle} removed`); }}
@@ -94,8 +94,17 @@ function SocialAccounts() {
         </div>
 
         <p className="mt-6 rounded-xl bg-muted/60 p-4 text-sm text-muted-foreground">
-          Accounts are saved on this device. Posting directly to each platform switches on once Storypop AI is linked to the live social services.
+          Saved profiles sync across your signed-in devices. Direct publishing and automatic analytics require approved account authorization.
         </p>
+        <section className="mt-6 border-t border-border pt-5">
+          <h2 className="font-display text-lg font-bold text-foreground">Direct connection requirements</h2>
+          <dl className="mt-3 space-y-4 text-sm">
+            <div><dt className="font-semibold text-foreground">TikTok</dt><dd className="text-muted-foreground">Not configured. Requires a TikTok developer app, approved Content Posting access, video.publish and video.list permissions, and each user's consent. Unaudited clients have publishing restrictions.</dd></div>
+            <div><dt className="font-semibold text-foreground">LinkedIn</dt><dd className="text-muted-foreground">Not configured. Requires a LinkedIn developer app with Share on LinkedIn access and member consent. Organization posting and analytics require additional Community Management approval.</dd></div>
+            <div><dt className="font-semibold text-foreground">X</dt><dd className="text-muted-foreground">Not configured. Requires an X developer app, user posting permissions and an API plan that supports media uploads and the metrics requested.</dd></div>
+            <div><dt className="font-semibold text-foreground">YouTube, Instagram and Facebook</dt><dd className="text-muted-foreground">Manual upload for now. Custom account authorization is deferred; provider app registration, review and eligible account permissions will be needed.</dd></div>
+          </dl>
+        </section>
       </div>
     </AppShell>
   );

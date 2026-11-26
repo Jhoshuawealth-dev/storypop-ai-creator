@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -19,6 +20,8 @@ import {
   type Scene,
   FREE_PLAN_SECONDS,
 } from "./catalog";
+import { toast } from 'sonner';
+import { LibrarySync, emptyLibrary, parseLibrary, type Collection, type LibraryOperation, type SyncStatus } from './library-sync';
 
 const STATE_KEY = "storypop:state:v1";
 
@@ -157,6 +160,7 @@ function loadState(): PersistedState {
     return {
       ...defaultState,
       ...parsed,
+      ...emptyLibrary(),
       user: { ...emptyUser, ...(parsed.user ?? {}) },
       subscription: (() => {
         const sub = { ...freeSubscription, ...(parsed.subscription ?? {}) };
@@ -164,9 +168,6 @@ function loadState(): PersistedState {
         if (!sub.planId && sub.minutesTotalSeconds < FREE_PLAN_SECONDS) sub.minutesTotalSeconds = FREE_PLAN_SECONDS;
         return sub;
       })(),
-      socialAccounts: (parsed.socialAccounts ?? [])
-        .filter((a) => a.connected)
-        .map((a) => ({ ...a, platform: a.platform ?? a.id })),
     };
   } catch {
     return defaultState;
@@ -177,6 +178,8 @@ function loadState(): PersistedState {
 
 interface AppState extends PersistedState {
   hydrated: boolean;
+  syncStatus: SyncStatus;
+  retrySync: () => void;
   signIn: (profile?: Partial<UserProfile>) => void;
   signOut: () => void;
   updateUser: (patch: Partial<UserProfile>) => void;
@@ -214,8 +217,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PersistedState>(defaultState);
   const [hydrated, setHydrated] = useState(false);
   const [draft, setDraft] = useState<CreateDraft>(defaultDraft);
+  const librarySync = useRef<LibrarySync | null>(null);
+  const profileIdentity = useRef<string | null>(null);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('signed-out');
+  const retrySync = useCallback(() => { void librarySync.current?.flush(); }, []);
+  const mutateLibrary = useCallback((collection: Collection, kind: LibraryOperation['kind'], id: string, value?: Record<string, unknown>) => {
+    const sync = librarySync.current;
+    if (!sync) { toast.error('Sign in before saving to your account.'); return; }
+    sync.enqueue({ operationId: crypto.randomUUID(), collection, kind, id, ...(value ? { value } : {}) });
+  }, []);
 
   useEffect(() => {
+    // Keep legacy content intact until ownership is known; never merge unscoped data.
+    try {
+      const raw = window.localStorage.getItem(STATE_KEY);
+      if (raw && !window.localStorage.getItem('storypop:legacy-library:v1')) {
+        window.localStorage.setItem('storypop:legacy-library:v1', raw);
+      }
+    } catch { /* Storage may be unavailable. */ }
     setState(loadState());
     setHydrated(true);
   }, []);
@@ -223,7 +242,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     try {
-      window.localStorage.setItem(STATE_KEY, JSON.stringify(state));
+      // User library content belongs only in an account-keyed cache/outbox.
+      window.localStorage.setItem(STATE_KEY, JSON.stringify({ ...state, ...emptyLibrary() }));
     } catch {
       /* storage unavailable — state stays in memory */
     }
@@ -242,8 +262,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(() => {
+    librarySync.current?.stop();
+    librarySync.current = null;
+    profileIdentity.current = null;
+    setSyncStatus('signed-out');
     void import("@/integrations/supabase/client").then(({ supabase }) => supabase.auth.signOut());
-    setState((prev) => ({ ...prev, isAuthenticated: false }));
+    setState(defaultState);
+    setDraft(defaultDraft);
   }, []);
 
   // Keep the signed-in user's profile in sync with the cloud database.
@@ -257,13 +282,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .select("full_name, avatar_url, bio")
           .eq("id", userId)
           .maybeSingle();
-        if (cancelled) return;
+        if (cancelled || profileIdentity.current !== userId) return;
         let avatarUrl = profile?.avatar_url ?? "";
         if (avatarUrl.startsWith("storage:")) {
           const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(avatarUrl.slice(8), 60 * 60 * 24 * 7);
           avatarUrl = signed?.signedUrl ?? "";
         }
-        if (cancelled) return;
+        if (cancelled || profileIdentity.current !== userId) return;
         const fullName = profile?.full_name || metaName;
         setState((prev) => ({
           ...prev,
@@ -280,12 +305,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
       const { data } = supabase.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_OUT") {
-          setState((prev) => ({ ...prev, isAuthenticated: false, user: emptyUser }));
+          profileIdentity.current = null;
+          setState(defaultState);
           return;
         }
-        if (!session?.user) return;
+        if (!session?.user) {
+          if (event === 'INITIAL_SESSION') setState(defaultState);
+          return;
+        }
         if (event !== "INITIAL_SESSION" && event !== "SIGNED_IN" && event !== "USER_UPDATED") return;
         const u = session.user;
+        profileIdentity.current = u.id;
         // Defer to avoid calling Supabase inside the auth callback.
         setTimeout(() => void load(u.id, u.email ?? "", String(u.user_metadata?.["full_name"] ?? "")), 0);
       });
@@ -297,57 +327,72 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Keep projects, characters and posts in the user's cloud library (works across devices).
-  const [libraryUser, setLibraryUser] = useState<string | null>(null);
+  // One account-isolated outbox, serialized atomic writes, and foreground refreshes.
   useEffect(() => {
+    let cancelled = false;
+    let identity: string | null = null;
     let unsub: (() => void) | undefined;
     void import("@/integrations/supabase/client").then(({ supabase }) => {
-      const pull = async (userId: string) => {
-        const { data } = await supabase.from("user_library").select("projects, characters, posts").eq("user_id", userId).maybeSingle();
-        const mergeById = <T extends { id: string }>(cloud: unknown, local: T[]): T[] => {
-          const list = Array.isArray(cloud) ? (cloud as T[]) : [];
-          const ids = new Set(list.map((x) => x.id));
-          return [...list, ...local.filter((x) => !ids.has(x.id))];
-        };
-        setState((prev) => ({
-          ...prev,
-          projects: mergeById(data?.projects, prev.projects),
-          characters: mergeById(data?.characters, prev.characters),
-          posts: mergeById(data?.posts, prev.posts),
-        }));
-        setLibraryUser(userId);
-      };
+      if (cancelled) return;
       const { data } = supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_OUT") {
-          setLibraryUser(null);
-          setState((prev) => ({ ...prev, projects: [], characters: [], posts: [] }));
-          return;
-        }
-        if (session?.user && (event === "INITIAL_SESSION" || event === "SIGNED_IN")) {
-          const id = session.user.id;
-          setTimeout(() => void pull(id), 0);
-        }
+        if (event !== 'INITIAL_SESSION' && event !== 'SIGNED_IN' && event !== 'SIGNED_OUT') return;
+        const id = session?.user.id ?? null;
+        if (id === identity && event !== 'INITIAL_SESSION') return;
+        identity = id;
+        librarySync.current?.stop();
+        librarySync.current = null;
+        setState((prev) => ({ ...prev, ...emptyLibrary() }));
+        if (!id) { setSyncStatus('signed-out'); return; }
+        let checkedLegacy = false;
+        const sync = new LibrarySync({
+          userId: id,
+          storage: window.localStorage,
+          exchange: async (operations) => {
+            // Import only a legacy account's first cloud library; existing cloud
+            // rows remain authoritative so old devices cannot resurrect deletions.
+            if (!checkedLegacy) {
+              const { data: existing, error: lookupError } = await supabase.from('user_library').select('user_id').eq('user_id', id).maybeSingle();
+              if (lookupError) throw lookupError;
+              const raw = window.localStorage.getItem('storypop:legacy-library:v1');
+              if (!existing && raw) {
+                const legacy = JSON.parse(raw) as Partial<PersistedState>;
+                if (session?.user.email && legacy.user?.email?.toLowerCase() === session.user.email.toLowerCase()) {
+                  const library = parseLibrary(legacy);
+                  for (const collection of ['projects', 'characters', 'posts', 'socialAccounts'] as const) {
+                    for (const item of library[collection]) sync.enqueue({ operationId: `legacy:${collection}:${item.id}`, collection, kind: 'add', id: item.id, value: { ...item } });
+                  }
+                }
+              }
+              checkedLegacy = true;
+            }
+            const mapped = operations.map((op) => ({ ...op, collection: op.collection === 'socialAccounts' ? 'social_accounts' : op.collection }));
+            const { data: cloud, error } = await supabase.rpc('sync_user_library', { operations: JSON.parse(JSON.stringify(mapped)) });
+            if (error) throw error;
+            return parseLibrary(cloud);
+          },
+          onChange: (library) => { if (!cancelled && identity === id) setState((prev) => ({ ...prev, ...library })); },
+          onStatus: (status) => { if (!cancelled && identity === id) setSyncStatus(status); },
+        });
+        librarySync.current = sync;
+        // Never call the database inside the auth event itself.
+        setTimeout(() => { if (!cancelled && identity === id) sync.start(); }, 0);
       });
       unsub = () => data.subscription.unsubscribe();
     });
-    return () => unsub?.();
+    const refresh = () => { if (document.visibilityState === 'visible') void librarySync.current?.flush(); };
+    window.addEventListener('online', refresh);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => {
+      cancelled = true;
+      unsub?.();
+      librarySync.current?.stop();
+      librarySync.current = null;
+      window.removeEventListener('online', refresh);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refresh);
+    };
   }, []);
-
-  useEffect(() => {
-    if (!libraryUser) return;
-    const t = setTimeout(() => {
-      void import("@/integrations/supabase/client").then(({ supabase }) =>
-        supabase.from("user_library").upsert({
-          user_id: libraryUser,
-          projects: state.projects as never,
-          characters: state.characters as never,
-          posts: state.posts as never,
-          updated_at: new Date().toISOString(),
-        })
-      );
-    }, 800);
-    return () => clearTimeout(t);
-  }, [libraryUser, state.projects, state.characters, state.posts]);
 
   const updateUser = useCallback((patch: Partial<UserProfile>) => {
     setState((prev) => ({ ...prev, user: { ...prev.user, ...patch } }));
@@ -407,24 +452,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addProject = useCallback((project: Project) => {
-    setState((prev) => ({ ...prev, projects: [project, ...prev.projects] }));
-  }, []);
+    mutateLibrary('projects', 'add', project.id, { ...project });
+  }, [mutateLibrary]);
 
   const updateProject = useCallback((id: string, patch: Partial<Project>) => {
-    setState((prev) => ({ ...prev, projects: prev.projects.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
-  }, []);
+    mutateLibrary('projects', 'patch', id, { ...patch });
+  }, [mutateLibrary]);
 
   const removeProject = useCallback((id: string) => {
-    setState((prev) => ({ ...prev, projects: prev.projects.filter((p) => p.id !== id) }));
-  }, []);
+    mutateLibrary('projects', 'remove', id);
+  }, [mutateLibrary]);
 
   const addCharacter = useCallback((character: Character) => {
-    setState((prev) => ({ ...prev, characters: [character, ...prev.characters] }));
-  }, []);
+    mutateLibrary('characters', 'add', character.id, { ...character });
+  }, [mutateLibrary]);
 
   const removeCharacter = useCallback((id: string) => {
-    setState((prev) => ({ ...prev, characters: prev.characters.filter((c) => c.id !== id) }));
-  }, []);
+    mutateLibrary('characters', 'remove', id);
+  }, [mutateLibrary]);
 
   const addNotification = useCallback((n: Omit<AppNotification, "id" | "time" | "read">) => {
     setState((prev) => ({
@@ -443,39 +488,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const clearNotifications = useCallback(() => patchState({ notifications: [] }), [patchState]);
 
   const addPost = useCallback((post: ScheduledPost) => {
-    setState((prev) => ({ ...prev, posts: [post, ...prev.posts] }));
-  }, []);
+    mutateLibrary('posts', 'add', post.id, { ...post });
+  }, [mutateLibrary]);
 
   const updatePost = useCallback((id: string, patch: Partial<ScheduledPost>) => {
-    setState((prev) => ({ ...prev, posts: prev.posts.map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
-  }, []);
+    mutateLibrary('posts', 'patch', id, { ...patch });
+  }, [mutateLibrary]);
 
   const removePost = useCallback((id: string) => {
-    setState((prev) => ({ ...prev, posts: prev.posts.filter((p) => p.id !== id) }));
-  }, []);
+    mutateLibrary('posts', 'remove', id);
+  }, [mutateLibrary]);
 
   const addSocialAccount = useCallback((platform: string, handle: string) => {
     const spec = platformSpecs.find((p) => p.id === platform);
     const clean = handle.trim().replace(/^@?/, "@");
     if (!spec || clean.length < 2) return false;
-    let added = false;
-    setState((prev) => {
-      if (prev.socialAccounts.some((a) => a.platform === platform && a.handle.toLowerCase() === clean.toLowerCase())) return prev;
-      added = true;
-      return {
-        ...prev,
-        socialAccounts: [
-          ...prev.socialAccounts,
-          { id: `${platform}-${Date.now().toString(36)}`, platform, name: spec.name, handle: clean, connected: true },
-        ],
-      };
-    });
-    return added;
-  }, []);
+    if (!librarySync.current || state.socialAccounts.some((a) => a.platform === platform && a.handle.toLowerCase() === clean.toLowerCase())) return false;
+    const id = `${platform}-${crypto.randomUUID()}`;
+    mutateLibrary('socialAccounts', 'add', id, { id, platform, name: spec.name, handle: clean, connected: false });
+    return true;
+  }, [mutateLibrary, state.socialAccounts]);
 
   const removeSocialAccount = useCallback((id: string) => {
-    setState((prev) => ({ ...prev, socialAccounts: prev.socialAccounts.filter((a) => a.id !== id) }));
-  }, []);
+    mutateLibrary('socialAccounts', 'remove', id);
+  }, [mutateLibrary]);
 
   const updatePreference = useCallback((key: string, value: string | boolean) => {
     setState((prev) => ({ ...prev, preferences: { ...prev.preferences, [key]: value } }));
@@ -499,6 +535,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     () => ({
       ...state,
       hydrated,
+      syncStatus,
+      retrySync,
       signIn,
       signOut,
       updateUser,
@@ -531,6 +569,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [
       state,
       hydrated,
+      syncStatus,
+      retrySync,
       draft,
       planName,
       signIn,

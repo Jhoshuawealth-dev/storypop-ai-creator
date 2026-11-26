@@ -58,7 +58,7 @@ function Analytics() {
       </Link>
 
       <SectionHeader title="Your posts" />
-      <p className="-mt-1 mb-3 text-xs text-muted-foreground">Add the numbers from each platform to track what works. Saved to your account.</p>
+      <p className="-mt-1 mb-3 text-xs text-muted-foreground">Results entered by you, saved across your devices. Automatic platform analytics is not connected.</p>
       {published.length === 0 ? (
         <EmptyState icon={BarChart3} title="No analytics yet" description="Publish your first video to start building a performance history." actionLabel="Create Video" actionTo="/create" />
       ) : (
@@ -71,7 +71,7 @@ function Analytics() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate font-bold text-foreground">{p.title || "Untitled post"}</p>
-                    <p className="text-xs text-muted-foreground">{p.platform} · {p.date}</p>
+                    <p className="text-xs text-muted-foreground">{p.platform} · {p.date} · Manually entered</p>
                   </div>
                   <div className="flex shrink-0 gap-1">
                     {p.postUrl && (
@@ -107,7 +107,7 @@ function StatsForm({ post, onDone }: { post: ScheduledPost; onDone: (patch?: Par
       <p className="font-bold text-foreground">{post.title || "Untitled post"} · {post.platform}</p>
       <div className="grid grid-cols-2 gap-3">
         {(["views", "likes", "comments", "shares"] as const).map((k) => (
-          <Field key={k} label={k[0]!.toUpperCase() + k.slice(1)}>
+          <Field key={k} label={(k[0] ?? '').toUpperCase() + k.slice(1)}>
             <Input inputMode="numeric" value={v[k]} onChange={(e) => setV({ ...v, [k]: e.target.value })} />
           </Field>
         ))}

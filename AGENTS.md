@@ -15,4 +15,4 @@
 
 - Profile photos live in the private `avatars` bucket; `profiles.avatar_url` stores `storage:<path>` and the app signs it on load, because public buckets are blocked for this workspace.
 - Account deletion and data export run in authenticated server functions (src/lib/account.functions.ts); only deletion uses the admin client, after verifying the caller.
-- User videos, characters and posts sync to the cloud via one per-user user_library row (jsonb) because their client shapes don't match the normalized tables; normalized tables stay for worker jobs.
+- User library mutations use an account-keyed durable outbox and the atomic sync_user_library RPC; per-item patches and idempotent receipts prevent multi-device overwrites, replayed writes, and stale deletion resurrection. Normalized tables remain for worker jobs.

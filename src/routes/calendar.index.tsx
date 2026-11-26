@@ -19,7 +19,7 @@ const weekdays = ["M", "T", "W", "T", "F", "S", "S"];
 function CalendarScreen() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("Scheduled");
   const { posts } = useApp();
-  const visible = posts.filter((p) => p.status === tab.toLowerCase().replace(/s$/, ""));
+  const visible = posts.filter((p) => p.status === (tab === 'Drafts' ? 'draft' : tab === 'Scheduled' ? 'scheduled' : 'published'));
   const today = new Date();
   const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
   const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();

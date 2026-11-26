@@ -326,23 +326,29 @@ export type Database = {
       }
       user_library: {
         Row: {
+          applied_mutations: Json
           characters: Json
           posts: Json
           projects: Json
+          social_accounts: Json
           updated_at: string
           user_id: string
         }
         Insert: {
+          applied_mutations?: Json
           characters?: Json
           posts?: Json
           projects?: Json
+          social_accounts?: Json
           updated_at?: string
           user_id: string
         }
         Update: {
+          applied_mutations?: Json
           characters?: Json
           posts?: Json
           projects?: Json
+          social_accounts?: Json
           updated_at?: string
           user_id?: string
         }
@@ -380,6 +386,7 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      sync_user_library: { Args: { operations?: Json }; Returns: Json }
     }
     Enums: {
       [_ in never]: never

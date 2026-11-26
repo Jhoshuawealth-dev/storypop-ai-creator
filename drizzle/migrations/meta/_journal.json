@@ -50,6 +50,13 @@
       "when": 1795356677981,
       "tag": "0006_user_library",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795660491306,
+      "tag": "0007_atomic_library_sync",
+      "breakpoints": true
     }
   ]
 }
