@@ -1,4 +1,6 @@
 # Roadmap
+- [ ] Verify and repair account-isolated cross-device library sync
+- [ ] Enable supported per-user social publishing and analytics (requires provider client configuration)
 - [x] Publishing defaults popup before Create Video
 - [x] Analyze format button under the URL/transcript field
 - [x] Removed "Continue to Create Video" links
